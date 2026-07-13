@@ -367,6 +367,7 @@
     .result.win{color:var(--green)}
     .result.loss{color:var(--red)}
     .result.pending{color:var(--gold)}
+    .result.push,.result.void{color:var(--muted)}
     .record-summary{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;padding:0 24px 24px}
     .summary-panel{padding:18px;border:1px solid rgba(255,255,255,.06);border-radius:17px;background:rgba(255,255,255,.02)}
     .summary-panel-head{display:flex;justify-content:space-between;gap:12px;margin-bottom:9px;color:#c2d0d6}
@@ -675,7 +676,7 @@
           <div class="card free-record-card">
             <div class="record-card-head">
               <div><h3>免費推薦公開紀錄</h3><p>每一筆推薦保留日期、方向與賽後結果。</p></div>
-              <span class="micro-pill demo-pill">介面展示資料</span>
+              <span class="micro-pill" id="homeRecordsApiStatus" aria-live="polite">真實資料連線中</span>
             </div>
             <div class="pick-list" id="homePickList"></div>
             <div class="record-summary">
@@ -685,7 +686,7 @@
                 <small id="homeRecordCount">等待推薦紀錄</small>
               </div>
               <div class="record-actions">
-                <span class="micro-pill">系統串接後自動更新</span>
+                <span class="micro-pill">Supabase 自動更新</span>
                 <button type="button" class="btn ghost small" data-page="recordsPage">查看完整推薦紀錄 →</button>
               </div>
             </div>
@@ -802,7 +803,7 @@
       <div class="wrap page-space">
         <div class="page-head">
           <div><div class="kicker">PUBLIC TRACK RECORD</div><h1 id="recordsTitle">推薦紀錄</h1><p>完整保留每一筆推薦內容與賽後結果，避免只展示獲勝場次。</p></div>
-          <span class="micro-pill demo-pill">介面展示資料</span>
+          <span class="micro-pill" id="recordsApiStatus" aria-live="polite">真實資料連線中</span>
         </div>
 
         <div class="record-top-grid">
@@ -817,8 +818,8 @@
             <h3>全部推薦單</h3>
             <div class="filters" id="recordFilters">
               <button type="button" class="filter-btn active" data-record-filter="all">全部</button>
-              <button type="button" class="filter-btn" data-record-filter="win">命中</button>
-              <button type="button" class="filter-btn" data-record-filter="loss">未中</button>
+              <button type="button" class="filter-btn" data-record-filter="won">命中</button>
+              <button type="button" class="filter-btn" data-record-filter="lost">未中</button>
               <button type="button" class="filter-btn" data-record-filter="pending">未結算</button>
             </div>
           </div>
@@ -935,7 +936,10 @@
   <script>
     const API_BASE=(window.DIAMONDMIND_API_BASE||"https://diamondmind-api.onrender.com/api/v1").replace(/\/$/,"");
     const pages = ["homePage","gamesPage","predictionPage","recordsPage","morePage"];
-    const state = { games:[], gameFilter:"all", recordFilter:"all", gamesLoaded:false, predictionDate:"" };
+    const state = {
+      games:[],gameFilter:"all",gamesLoaded:false,predictionDate:"",
+      records:[],recordStats:null,recordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:""
+    };
 
     const teamZh = {
       "Arizona Diamondbacks":"亞利桑那響尾蛇","Atlanta Braves":"亞特蘭大勇士","Baltimore Orioles":"巴爾的摩金鶯",
@@ -961,16 +965,6 @@
       "Toronto Blue Jays":"TOR","Washington Nationals":"WSH"
     };
 
-    // These rows are deliberately labelled as UI demo data until the recommendation backend is connected.
-    const demoRecords = [
-      {date:"07/12",league:"MLB",match:"SEA @ DET",pick:"展示：SEA +1.5",result:"win",score:"4–2"},
-      {date:"07/11",league:"MLB",match:"CHC @ MIN",pick:"展示：小分 8.5",result:"win",score:"2–3"},
-      {date:"07/10",league:"MLB",match:"TB @ BOS",pick:"展示：TB 獨贏",result:"loss",score:"3–5"},
-      {date:"07/09",league:"MLB",match:"LAD @ MIL",pick:"展示：大分 7.5",result:"win",score:"6–4"},
-      {date:"07/08",league:"MLB",match:"NYY @ CLE",pick:"展示：NYY 獨贏",result:"loss",score:"2–4"},
-      {date:"07/13",league:"MLB",match:"今日免費場",pick:"等待正式發布",result:"pending",score:"—"}
-    ];
-
     function taiwanToday(){
       const parts = new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Taipei",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
       const obj = Object.fromEntries(parts.map(p=>[p.type,p.value]));
@@ -985,6 +979,7 @@
       window.scrollTo({top:0,behavior:"smooth"});
       if(pageId==="gamesPage"&&!state.gamesLoaded) loadMlbGames();
       if(pageId==="predictionPage") loadTopPrediction();
+      if(pageId==="recordsPage"&&!state.recordsLoaded) loadRecords();
     }
 
     document.querySelectorAll("[data-page]").forEach(btn=>btn.addEventListener("click",()=>showPage(btn.dataset.page)));
@@ -1025,33 +1020,81 @@
       showToast("會員後端尚未串接，目前未傳送任何資料");
     }));
 
-    function resultLabel(result){return result==="win"?"命中":result==="loss"?"未中":"未結算"}
+    function escapeHtml(value){
+      return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+    }
+    function resultLabel(result){
+      return ({won:"命中",lost:"未中",push:"走水",void:"取消",pending:"未結算"})[result]||"未結算";
+    }
+    function resultClass(result){return result==="won"?"win":result==="lost"?"loss":result==="push"?"push":result==="void"?"void":"pending"}
+    function recordDate(value){
+      const parts=String(value||"").split("-");
+      return parts.length===3?`${parts[1]}/${parts[2]}`:"—";
+    }
+    function recordScore(row){
+      return row.away_score==null||row.home_score==null?"尚未結算":`終場 ${row.away_score}–${row.home_score}`;
+    }
+    function setRecordsApiStatus(text,isError=false){
+      ["homeRecordsApiStatus","recordsApiStatus"].forEach(id=>{
+        const element=document.getElementById(id);
+        if(!element)return;
+        element.textContent=text;
+        element.classList.toggle("demo-pill",isError);
+      });
+    }
     function renderRecords(){
-      const settled=demoRecords.filter(x=>x.result!=="pending");
-      const wins=settled.filter(x=>x.result==="win").length;
-      const rate=settled.length?Math.round(wins/settled.length*1000)/10:0;
-      document.getElementById("statTotal").textContent=demoRecords.length;
-      document.getElementById("statSettled").textContent=settled.length;
-      document.getElementById("statWins").textContent=wins;
-      document.getElementById("statRate").textContent=settled.length?`${rate}%`:"—";
-      document.getElementById("homeHitRate").textContent=settled.length?`${rate}%`:"—";
-      document.getElementById("homeRateBar").style.width=`${rate}%`;
-      document.getElementById("homeRecordCount").textContent=`${wins} 命中 / ${settled.length} 場已結算（展示）`;
+      const rows=state.records;
+      const stats=state.recordStats||{total:0,settled:0,won:0,lost:0,push:0,void:0,pending:0,hit_rate:null};
+      const hasRate=stats.hit_rate!=null;
+      const rate=hasRate?Number(stats.hit_rate):0;
+      document.getElementById("statTotal").textContent=stats.total||0;
+      document.getElementById("statSettled").textContent=stats.settled||0;
+      document.getElementById("statWins").textContent=stats.won||0;
+      document.getElementById("statRate").textContent=hasRate?`${rate}%`:"—";
+      document.getElementById("homeHitRate").textContent=hasRate?`${rate}%`:"—";
+      document.getElementById("homeRateBar").style.width=`${Math.max(0,Math.min(100,rate))}%`;
+      document.getElementById("homeRecordCount").textContent=stats.settled?`${stats.won||0} 命中 / ${stats.settled} 場已結算`:"尚無已結算正式紀錄";
 
-      document.getElementById("homePickList").innerHTML=demoRecords.slice(0,4).map(row=>`
+      const homeList=document.getElementById("homePickList");
+      homeList.innerHTML=rows.length?rows.slice(0,4).map(row=>`
         <div class="pick-row">
-          <div class="pick-main"><b>⚾ ${row.match} · ${row.pick}</b><small>${row.date} · ${row.league}${row.score!=="—"?` · 終場 ${row.score}`:""}</small></div>
-          <span class="result ${row.result}">${resultLabel(row.result)}</span>
-        </div>`).join("");
+          <div class="pick-main"><b>⚾ ${escapeHtml(row.matchup)} · ${escapeHtml(row.pick_label)}</b><small>${recordDate(row.recommendation_date)} · MLB · ${recordScore(row)}</small></div>
+          <span class="result ${resultClass(row.status)}">${resultLabel(row.status)}</span>
+        </div>`).join(""):`<div class="empty"><b>${state.recordsLoading?"正式紀錄載入中":"尚無正式推薦紀錄"}</b>${state.recordsLoading?"正在連接 DiamondMind 紀錄資料庫。":"每日精選正式發布後會自動保留在這裡。"}</div>`;
 
-      const filtered=demoRecords.filter(x=>state.recordFilter==="all"||x.result===state.recordFilter);
+      const filtered=rows.filter(x=>state.recordFilter==="all"||x.status===state.recordFilter);
       document.getElementById("recordsList").innerHTML=filtered.length?filtered.map(row=>`
         <div class="record-row">
-          <div class="record-date">${row.date}<br>${row.league}</div>
-          <div class="record-pick"><b>${row.match}</b><small>${row.pick}</small></div>
-          <div class="record-score">${row.score==="—"?"尚未結算":`終場 ${row.score}`}</div>
-          <span class="result ${row.result}">${resultLabel(row.result)}</span>
-        </div>`).join(""):`<div class="empty">沒有符合條件的紀錄</div>`;
+          <div class="record-date">${recordDate(row.recommendation_date)}<br>MLB</div>
+          <div class="record-pick"><b>${escapeHtml(row.matchup)}</b><small>${escapeHtml(row.pick_label)} · 信心 ${Number(row.confidence||0).toFixed(1)}%</small></div>
+          <div class="record-score">${recordScore(row)}</div>
+          <span class="result ${resultClass(row.status)}">${resultLabel(row.status)}</span>
+        </div>`).join(""):`<div class="empty"><b>${state.recordsError?"紀錄服務暫時無法連線":state.recordsLoading?"正式紀錄載入中":rows.length?"沒有符合條件的紀錄":"尚無正式推薦紀錄"}</b>${state.recordsError?"請稍後重新進入紀錄頁。":state.recordsLoading?"正在讀取 Supabase 真實資料。":"尚未發布的日期不會建立空白或展示紀錄。"}</div>`;
+    }
+
+    async function loadRecords(force=false){
+      if(state.recordsLoading||(!force&&state.recordsLoaded))return;
+      state.recordsLoading=true;
+      state.recordsError="";
+      setRecordsApiStatus("真實資料連線中");
+      renderRecords();
+      try{
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/records`,12000);
+        if(payload.is_demo||payload.database!=="connected")throw new Error("Records database unavailable");
+        state.records=Array.isArray(payload.items)?payload.items:[];
+        state.recordStats=payload.stats||null;
+        state.recordsLoaded=true;
+        setRecordsApiStatus("真實紀錄已連線");
+      }catch(error){
+        state.records=[];
+        state.recordStats=null;
+        state.recordsLoaded=false;
+        state.recordsError="紀錄 API 暫時無法連線";
+        setRecordsApiStatus("紀錄 API 暫時離線",true);
+      }finally{
+        state.recordsLoading=false;
+        renderRecords();
+      }
     }
 
     document.querySelectorAll("[data-record-filter]").forEach(btn=>btn.addEventListener("click",()=>{
@@ -1267,6 +1310,7 @@
             pick:selection.pick?.label||"—",
             factors:selection.factors||[]
           });
+          loadRecords(true);
         }else{
           title.textContent="今日暫不發布 AI 精選";
           text.textContent=payload.message||"目前沒有場次達到最低信心門檻。";
@@ -1295,6 +1339,7 @@
     const initialHash=location.hash.replace("#","");
     document.getElementById("scheduleDate").value=taiwanToday();
     renderRecords();
+    loadRecords();
     if(initialHash&&pages.includes(`${initialHash}Page`))showPage(`${initialHash}Page`);
   </script>
 </body>
