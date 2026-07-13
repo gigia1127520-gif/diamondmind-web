@@ -458,6 +458,8 @@
     .pro-access-card h3{margin:0 0 7px;font-size:16px}.pro-access-card p{margin:0;color:var(--muted);font-size:11px;line-height:1.5}.pro-lock-icon{position:absolute;right:14px;bottom:12px;color:rgba(255,215,106,.5);font-size:18px}.pro-build-note{margin-top:11px;padding:12px 15px;border:1px solid rgba(255,215,106,.16);border-radius:14px;color:#aebbc1;font-size:11px;line-height:1.55;background:rgba(255,215,106,.025)}
     .prediction-market-meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:-10px;margin-bottom:18px}.prediction-market-meta span,.pro-metrics span{padding:5px 7px;border:1px solid var(--line);border-radius:999px;color:#b9c8ce;font-size:9px;background:rgba(255,255,255,.025)}
     .pro-prediction-body{display:grid;gap:8px}.pro-pick{display:block;color:var(--green);font-size:18px;line-height:1.25}.pro-matchup{color:#c4d0d5!important}.pro-metrics{display:flex;flex-wrap:wrap;gap:5px}.pro-summary{padding-top:7px;border-top:1px solid rgba(255,255,255,.055)}.parlay-legs{display:grid;gap:6px;margin:2px 0 0;padding:0;list-style:none}.parlay-legs li{display:flex;justify-content:space-between;gap:8px;padding:7px 8px;border:1px solid rgba(255,255,255,.055);border-radius:9px;color:#c7d3d7;font-size:10px;background:rgba(255,255,255,.02)}.parlay-legs b{color:var(--green)}
+    .founder-console{margin-top:18px;padding:24px;background:linear-gradient(145deg,rgba(8,27,31,.98),rgba(5,15,21,.98));border-color:rgba(255,209,92,.32)}
+    .founder-console-head,.founder-toolbar,.founder-candidate-top,.founder-candidate-actions{display:flex;align-items:center;justify-content:space-between;gap:12px}.founder-console-head h2{margin:4px 0 5px;font-size:23px}.founder-console-head p,.founder-status{margin:0;color:var(--muted);line-height:1.55}.founder-toolbar{justify-content:flex-start;flex-wrap:wrap;margin:18px 0}.founder-toolbar input{min-height:45px;padding:0 13px;border:1px solid var(--line);border-radius:12px;color:var(--text);background:rgba(0,0,0,.18);font:inherit;color-scheme:dark}.founder-candidates{display:grid;gap:10px;margin-top:14px}.founder-candidate{padding:16px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.022)}.founder-candidate.blocked{opacity:.65}.founder-candidate-top b{font-size:17px}.founder-tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.founder-tags span{padding:5px 8px;border:1px solid var(--line);border-radius:999px;color:#bdcbd0;font-size:10px}.founder-tags .special{border-color:rgba(255,209,92,.36);color:var(--gold)}.founder-warning{margin:7px 0 0;color:#d8c583;font-size:11px;line-height:1.55}.founder-blocker{color:#ee9292}.founder-lock{padding:17px;border:1px solid var(--line-strong);border-radius:14px;color:var(--green);background:rgba(55,244,164,.04)}
 
     .record-top-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
     .stat-card{padding:18px}.stat-card small{color:var(--muted)}.stat-card b{display:block;margin-top:8px;font-size:28px}.stat-card b.green{color:var(--green)}
@@ -497,8 +499,37 @@
     .benefit-table{margin-top:28px;overflow:hidden}.benefit-table-head,.benefit-row{display:grid;grid-template-columns:minmax(180px,1fr) 145px 145px;align-items:center}.benefit-table-head{padding:16px 20px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.025)}.benefit-table-head b:nth-child(n+2){text-align:center}.benefit-table-head b:last-child{color:var(--gold)}.benefit-row{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.05);color:#b8c6cd;font-size:12px}.benefit-row:last-child{border-bottom:0}.benefit-row span:nth-child(n+2){text-align:center}.benefit-yes{color:var(--green);font-weight:900}.benefit-pro{color:var(--gold);font-weight:900}.benefit-no{color:#53656e}.membership-disclaimer{margin-top:18px;padding:17px;border:1px solid rgba(255,215,106,.15);border-radius:16px;color:var(--muted);font-size:11px;line-height:1.65;background:rgba(255,215,106,.025)}
     .checkout-summary{padding:18px;border:1px solid rgba(255,215,106,.25);border-radius:18px;background:linear-gradient(145deg,rgba(255,215,106,.07),rgba(55,244,164,.03))}.checkout-summary small{display:block;color:var(--muted)}.checkout-summary h3{margin:6px 0 8px;font-size:22px}.checkout-summary b{display:block;color:var(--gold);font-size:31px}.checkout-summary p{margin:12px 0 0;color:var(--muted);font-size:12px;line-height:1.6}.checkout-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
 
-    .footer{padding:30px 0 118px;border-top:1px solid rgba(255,255,255,.05);color:var(--muted);font-size:11px;line-height:1.6}
-    .footer-inner{display:flex;justify-content:space-between;gap:20px}.footer b{color:var(--text)}
+    .footer{
+      position:relative;
+      overflow:hidden;
+      padding:58px 0 132px;
+      border-top:1px solid rgba(55,244,164,.12);
+      color:var(--muted);
+      background:
+        radial-gradient(circle at 10% 12%,rgba(55,244,164,.075),transparent 24rem),
+        radial-gradient(circle at 88% 78%,rgba(102,220,255,.045),transparent 22rem),
+        linear-gradient(180deg,rgba(4,13,18,.76),rgba(2,7,10,.98));
+    }
+    .footer::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:.35}
+    .footer-grid{display:grid;grid-template-columns:minmax(250px,1.65fr) repeat(4,minmax(116px,1fr));gap:34px 30px}
+    .footer-brand{max-width:330px}
+    .footer-logo-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+    .footer-logo-row .logo{width:48px;height:48px;flex:0 0 48px}
+    .footer-wordmark b{display:block;color:var(--white);font-size:18px;font-style:italic;letter-spacing:.25px}.footer-wordmark b span{color:var(--green)}
+    .footer-wordmark small{display:block;margin-top:3px;color:#768b95;font-size:9px;letter-spacing:2px}
+    .footer-description{margin:0;color:#91a4ad;font-size:12px;line-height:1.75}
+    .footer-status{display:inline-flex;align-items:center;gap:8px;margin-top:17px;padding:7px 10px;border:1px solid var(--line);border-radius:999px;color:var(--green);font-size:9px;font-weight:900;letter-spacing:1.1px;background:rgba(55,244,164,.045)}
+    .footer-status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px rgba(55,244,164,.7)}
+    .footer-column h3{margin:3px 0 15px;color:#d7e3e8;font-size:12px;letter-spacing:.7px}
+    .footer-links{display:grid;gap:11px}
+    .footer-link{width:max-content;max-width:100%;padding:0;border:0;color:#8498a2;background:transparent;cursor:pointer;text-align:left;font-size:11px;line-height:1.5;transition:.18s}
+    .footer-link:hover,.footer-link:focus-visible{color:var(--green);transform:translateX(2px);outline:none}
+    .footer-divider{height:1px;margin:40px 0 25px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1) 12%,rgba(255,255,255,.1) 88%,transparent)}
+    .footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:18px;color:#657983;font-size:10px;line-height:1.6}
+    .footer-bottom-links{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}.footer-bottom-links .footer-link{color:#72858e;font-size:10px}.footer-dot{color:#344852}
+    .footer-disclaimer{margin-top:22px;padding:20px 22px;border:1px solid rgba(255,215,106,.15);border-radius:17px;color:#788c95;font-size:10px;line-height:1.8;text-align:center;background:linear-gradient(135deg,rgba(255,215,106,.03),rgba(55,244,164,.018))}
+    .footer-disclaimer b{display:block;margin-bottom:6px;color:#aebdc4;font-size:11px;letter-spacing:.6px}
+    .legal-copy{display:grid;gap:13px;color:#a0b0b7;font-size:12px;line-height:1.75}.legal-copy p{margin:0}.legal-copy strong{color:var(--white)}.legal-callout{padding:14px;border:1px solid rgba(255,215,106,.17);border-radius:14px;color:#a9b7bd;background:rgba(255,215,106,.03)}
 
     .bottom-nav{
       display:none;
@@ -564,6 +595,7 @@
       .record-top-grid{grid-template-columns:repeat(2,1fr)}
       .bottom-nav{display:grid}
       body{padding-bottom:94px}
+      .footer-grid{grid-template-columns:repeat(4,1fr)}.footer-brand{grid-column:1/-1;max-width:570px}
     }
     @media (max-width:640px){
       .wrap{width:min(100% - 24px,1180px)}
@@ -600,11 +632,12 @@
       .toolbar{align-items:stretch}.date-control{width:100%;min-width:0;flex-basis:100%}.date-actions{width:100%;min-width:0}.date-actions input{flex:1 1 0;width:0;min-width:0;max-width:calc(100% - 48px)}#refreshGames{position:static;flex:0 0 38px}
       .prediction-main{padding:20px;min-height:390px}.confidence-preview{grid-template-columns:1fr;text-align:center}.confidence-ring{margin:auto}.pick-highlight{text-align:left}
       .prediction-access-gate{padding:28px 18px}.access-level-head{align-items:flex-start;flex-direction:column}.pro-access-grid{grid-template-columns:1fr}.pro-access-card{min-height:142px}.membership-hero{grid-template-columns:1fr;padding:21px}.current-plan-box{min-width:0}.benefit-table{overflow-x:auto}.benefit-table-head,.benefit-row{min-width:570px}.checkout-actions{flex-direction:column}.checkout-actions .btn{width:100%}
+      .founder-console{padding:18px}.founder-console-head,.founder-candidate-top,.founder-candidate-actions{align-items:flex-start;flex-direction:column}.founder-toolbar input,.founder-toolbar .btn,.founder-candidate-actions .btn{width:100%}
       .record-top-grid{grid-template-columns:repeat(2,1fr)}.record-row{grid-template-columns:76px minmax(0,1fr) 52px;padding:14px}.record-score{display:none}
       .records-toolbar{align-items:flex-start;flex-direction:column}
       .market-package-head{align-items:flex-start}.market-result-row{grid-template-columns:68px minmax(0,1fr) 48px;padding:13px 14px}.market-result-score{display:none}
       .more-hero{grid-template-columns:1fr}.more-actions{justify-content:flex-start}
-      .footer-inner{flex-direction:column}
+      .footer{padding-top:46px}.footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:31px 24px}.footer-brand{grid-column:1/-1}.footer-column h3{font-size:12px}.footer-link{font-size:11px}.footer-divider{margin:32px 0 22px}.footer-bottom{align-items:flex-start;flex-direction:column}.footer-bottom-links{justify-content:flex-start}.footer-disclaimer{padding:17px 15px;text-align:left}
       .detail-score{padding:15px}.detail-team b{font-size:22px}.detail-info{grid-template-columns:1fr}
     }
   </style>
@@ -848,6 +881,19 @@
             </aside>
           </div>
 
+          <section class="card founder-console" data-auth-admin hidden aria-labelledby="founderConsoleTitle">
+            <div class="founder-console-head">
+              <div><div class="kicker">FOUNDER CONTROL</div><h2 id="founderConsoleTitle">創辦人指定場次</h2><p>預設仍由 AI 自動挑選；只有正式發布前可以手動指定，發布後即永久鎖定。</p></div>
+              <span class="micro-pill">僅創辦人可見</span>
+            </div>
+            <div class="founder-toolbar">
+              <input type="date" id="founderPredictionDate" aria-label="指定推薦日期">
+              <button type="button" class="btn ghost small" id="founderLoadCandidates">載入候選場次</button>
+            </div>
+            <p class="founder-status" id="founderCandidateStatus">選擇日期後載入所有尚未開賽的候選場次。</p>
+            <div class="founder-candidates" id="founderCandidates"></div>
+          </section>
+
           <section class="access-levels" aria-labelledby="accessLevelTitle">
             <div class="access-level-head"><div><h2 id="accessLevelTitle">會員預測權限</h2><p>免費方案保留每日一場獨贏；Pro 方案開放三種玩法與二、三關串關。</p></div><button type="button" class="btn pro small" id="predictionUpgradeButton" data-page="membershipPage">升級 DiamondMind Pro</button></div>
             <div class="pro-access-grid">
@@ -999,7 +1045,72 @@
   </main>
 
   <footer class="footer">
-    <div class="wrap footer-inner"><div><b>DiamondMind · Grand Slam AI</b><br>Smarter Baseball Decisions.</div><div>MLB 智慧分析平台 · 資料僅供資訊參考</div></div>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo-row">
+            <div class="logo" aria-hidden="true">DM</div>
+            <div class="footer-wordmark"><b>DIAMOND<span>MIND</span></b><small>GRAND SLAM AI</small></div>
+          </div>
+          <p class="footer-description">以 MLB 賽事資料、盤口資訊與機率模型，整理出更容易理解的賽前分析與公開推薦紀錄。</p>
+          <span class="footer-status">AI DATA SYSTEM · ONLINE</span>
+        </div>
+
+        <div class="footer-column">
+          <h3>產品功能</h3>
+          <div class="footer-links">
+            <button type="button" class="footer-link" data-page="gamesPage">完整賽事</button>
+            <button type="button" class="footer-link" data-page="predictionPage">AI 精選</button>
+            <button type="button" class="footer-link" data-page="recordsPage">公開紀錄</button>
+            <button type="button" class="footer-link" data-modal="tutorialModal">新手教學</button>
+          </div>
+        </div>
+
+        <div class="footer-column">
+          <h3>會員方案</h3>
+          <div class="footer-links">
+            <button type="button" class="footer-link" data-modal="registerModal">免費會員</button>
+            <button type="button" class="footer-link" data-page="membershipPage">Pro 月繳</button>
+            <button type="button" class="footer-link" data-page="membershipPage">Pro 季繳</button>
+            <button type="button" class="footer-link" data-page="membershipPage">Pro 年繳</button>
+          </div>
+        </div>
+
+        <div class="footer-column">
+          <h3>支援與關於</h3>
+          <div class="footer-links">
+            <button type="button" class="footer-link" data-modal="faqModal">常見問題</button>
+            <button type="button" class="footer-link" data-modal="aboutModal">關於我們</button>
+            <button type="button" class="footer-link" data-modal="contactModal">聯絡我們</button>
+            <button type="button" class="footer-link" data-modal="loginModal">會員登入</button>
+          </div>
+        </div>
+
+        <div class="footer-column">
+          <h3>安全與規範</h3>
+          <div class="footer-links">
+            <button type="button" class="footer-link" data-modal="termsModal">服務條款</button>
+            <button type="button" class="footer-link" data-modal="privacyModal">隱私政策</button>
+            <button type="button" class="footer-link" data-modal="disclaimerModal">免責聲明</button>
+            <button type="button" class="footer-link" data-modal="disclaimerModal">理性使用提醒</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-divider"></div>
+      <div class="footer-bottom">
+        <span>© 2026 DiamondMind. All rights reserved.</span>
+        <div class="footer-bottom-links">
+          <button type="button" class="footer-link" data-modal="termsModal">用戶協議</button><span class="footer-dot">·</span>
+          <button type="button" class="footer-link" data-modal="privacyModal">隱私政策</button><span class="footer-dot">·</span>
+          <button type="button" class="footer-link" data-modal="disclaimerModal">免責聲明</button>
+        </div>
+      </div>
+      <div class="footer-disclaimer">
+        <b>重要免責聲明</b>
+        DiamondMind 為賽事資訊與數據分析平台，不接受投注、不代客下注，也不保證任何預測或推薦結果。所有內容僅供資訊與研究參考，不構成投資、財務或投注建議。使用者應遵守所在地法律並自行評估風險；未達所在地法定年齡者請勿使用任何投注相關服務。
+      </div>
+    </div>
   </footer>
 
   <nav class="bottom-nav" aria-label="手機主選單">
@@ -1077,6 +1188,52 @@
     </div>
   </section>
 
+  <section class="modal" id="aboutModal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+    <div class="modal-head"><div><h2 id="aboutTitle">關於 DiamondMind</h2><p>Grand Slam AI · Smarter Baseball Decisions.</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
+    <div class="legal-copy">
+      <p><strong>DiamondMind</strong> 專注於 MLB 賽事資料整理、盤口觀察與機率模型分析，目標是把複雜的賽前資訊轉換成清楚、可追蹤的判斷依據。</p>
+      <p>我們保留每一筆正式推薦與賽後結果；若資料不足或未達模型門檻，系統可以選擇不發布，而不是為了每天出單而勉強推薦。</p>
+      <div class="legal-callout">資料透明、紀錄可追蹤、風險說明清楚，是 DiamondMind 的核心原則。</div>
+    </div>
+  </section>
+
+  <section class="modal" id="contactModal" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+    <div class="modal-head"><div><h2 id="contactTitle">聯絡我們</h2><p>客服與商務合作</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
+    <div class="legal-copy">
+      <p>DiamondMind 的正式客服信箱與 LINE 客服正在設定中，會在付款功能正式開放前於本頁公布。</p>
+      <div class="legal-callout">目前網站不會向你收取任何款項。請勿將密碼、驗證碼、信用卡資料或 API 金鑰傳送給任何自稱客服的人員。</div>
+    </div>
+  </section>
+
+  <section class="modal" id="termsModal" role="dialog" aria-modal="true" aria-labelledby="termsTitle">
+    <div class="modal-head"><div><h2 id="termsTitle">服務條款</h2><p>最後更新：2026 年 7 月</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
+    <div class="legal-copy">
+      <p><strong>1. 服務用途</strong><br>DiamondMind 提供賽事資訊、數據整理與模型分析，僅供個人資訊及研究參考，不提供任何形式的下注或代操服務。</p>
+      <p><strong>2. 帳號使用</strong><br>使用者應妥善保管帳號，並對帳號內的活動負責；不得冒用他人身分、破壞服務、批次擷取或未經授權散布本站內容。</p>
+      <p><strong>3. 服務與資料</strong><br>賽事、盤口與模型結果可能因資料來源、延遲或系統維護而變動。DiamondMind 不保證服務永不中斷，也不保證任何分析結果。</p>
+      <p><strong>4. 會員方案</strong><br>付費功能上線後，價格、週期、續訂與取消方式會在付款前清楚顯示；使用者確認後才會產生費用。</p>
+    </div>
+  </section>
+
+  <section class="modal" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
+    <div class="modal-head"><div><h2 id="privacyTitle">隱私政策</h2><p>我們如何處理會員資料</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
+    <div class="legal-copy">
+      <p><strong>蒐集範圍</strong><br>使用會員功能時，系統可能處理電子信箱、暱稱、登入狀態、會員權限與訂閱狀態。</p>
+      <p><strong>使用目的</strong><br>資料僅用於身分驗證、提供會員功能、維護服務安全及必要的客服處理，不會用於出售個人資料。</p>
+      <p><strong>密碼與安全</strong><br>密碼由專業身分驗證服務安全處理，DiamondMind 不會讀取或保存你的明碼密碼。請勿與任何人分享密碼或驗證碼。</p>
+      <p><strong>第三方服務</strong><br>網站目前使用 GitHub Pages、Render 與 Supabase 提供網站託管、後端服務及會員驗證；各服務亦可能依其政策處理必要的技術資料。</p>
+    </div>
+  </section>
+
+  <section class="modal" id="disclaimerModal" role="dialog" aria-modal="true" aria-labelledby="disclaimerTitle">
+    <div class="modal-head"><div><h2 id="disclaimerTitle">免責聲明</h2><p>請在使用分析內容前詳閱</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
+    <div class="legal-copy">
+      <p>DiamondMind 所提供的勝率、盤口分析、推薦與串關組合均為模型計算結果，可能發生錯誤，亦不代表未來賽果。</p>
+      <p>本站不接受投注、不保管投注資金、不代客操作，也不與任何博彩公司合作或代表其立場。MLB、球隊及其他商標均屬各自權利人所有；除非另有明確說明，本站與其無官方隸屬或背書關係。</p>
+      <div class="legal-callout">請理性使用資訊、遵守所在地法律並自行承擔決策風險。若分析內容造成任何直接或間接損失，DiamondMind 在法律允許範圍內不負賠償責任。</div>
+    </div>
+  </section>
+
   <section class="modal" id="gameModal" role="dialog" aria-modal="true" aria-labelledby="gameModalTitle">
     <div class="modal-head"><div><h2 id="gameModalTitle">賽事詳情</h2><p id="gameModalMeta">—</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
     <div class="detail-score">
@@ -1103,7 +1260,8 @@
     const pages = ["homePage","gamesPage","predictionPage","recordsPage","membershipPage","morePage"];
     const state = {
       games:[],gameFilter:"all",gamesLoaded:false,predictionDate:"",predictionRole:"",
-      records:[],marketRecords:[],recordStats:null,recordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:""
+      records:[],marketRecords:[],recordStats:null,recordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:"",
+      founderCandidateDate:"",founderCandidatesLoading:false
     };
     const authState={session:null,user:null,ready:false,role:"free"};
 
@@ -1146,7 +1304,10 @@
       if(pageId==="gamesPage"&&!state.gamesLoaded) loadMlbGames();
       if(pageId==="predictionPage"){
         renderPredictionAccess();
-        if(isSignedIn())loadTopPrediction();
+        if(isSignedIn()){
+          loadTopPrediction();
+          if(isAdminMember())loadFounderCandidates();
+        }
       }
       if(pageId==="recordsPage"&&!state.recordsLoaded) loadRecords();
     }
@@ -1351,6 +1512,7 @@
       authState.role=signedIn?memberRole(authState.user):"free";
       document.querySelectorAll("[data-auth-guest]").forEach(element=>element.hidden=signedIn);
       document.querySelectorAll("[data-auth-user]").forEach(element=>element.hidden=!signedIn);
+      document.querySelectorAll("[data-auth-admin]").forEach(element=>element.hidden=!isAdminMember());
       if(signedIn){
         const name=memberDisplayName(authState.user);
         document.getElementById("headerMemberName").textContent=name;
@@ -1360,7 +1522,10 @@
       }else clearTimeout(authRefreshTimer);
       renderMembershipState();
       renderPredictionAccess();
-      if(signedIn&&document.getElementById("predictionPage")?.classList.contains("active"))loadTopPrediction();
+      if(signedIn&&document.getElementById("predictionPage")?.classList.contains("active")){
+        loadTopPrediction();
+        if(isAdminMember())loadFounderCandidates();
+      }
     }
     function clearAuthSession(){
       authState.session=null;
@@ -1368,6 +1533,7 @@
       authState.role="free";
       state.predictionDate="";
       state.predictionRole="";
+      state.founderCandidateDate="";
       saveAuthSession(null);
       renderAuthState();
     }
@@ -1939,6 +2105,115 @@
         :"今日尚無完整玩法通過固定門檻；DiamondMind 不會使用示範單或低信心場次湊單。";
     }
 
+    function founderDetailMessage(payload,fallback){
+      const detail=payload?.detail;
+      if(typeof detail==="string")return detail;
+      if(detail&&typeof detail==="object"){
+        return [detail.message,...(detail.blockers||[]),...(detail.warnings||[])].filter(Boolean).join("\n");
+      }
+      return fallback;
+    }
+
+    function renderFounderCandidates(payload){
+      const status=document.getElementById("founderCandidateStatus");
+      const list=document.getElementById("founderCandidates");
+      if(!status||!list)return;
+      status.textContent=payload.message||"候選場次已載入。";
+      if(payload.locked){
+        const selection=payload.selection||{};
+        list.innerHTML=`<div class="founder-lock"><b>今日推薦已鎖定</b><br>${escapeHtml(selection.matchup||"")} ${escapeHtml(selection.pick?.label||"")}</div>`;
+        return;
+      }
+      const items=payload.items||[];
+      if(!items.length){
+        list.innerHTML=`<div class="founder-lock">目前沒有尚未開賽的候選場次。</div>`;
+        return;
+      }
+      list.innerHTML=items.map(item=>{
+        const notices=[
+          ...(item.warnings||[]).map(message=>`<p class="founder-warning">提醒：${escapeHtml(message)}</p>`),
+          ...(item.blockers||[]).map(message=>`<p class="founder-warning founder-blocker">阻擋：${escapeHtml(message)}</p>`)
+        ].join("");
+        const buttonText=item.can_publish?(item.requires_confirmation?"確認後指定":"指定為每日推薦"):"目前不可發布";
+        return `<article class="founder-candidate ${item.can_publish?"":"blocked"}">
+          <div class="founder-candidate-top"><b>${escapeHtml(item.matchup||"MLB")}</b><span>${escapeHtml(item.time_taiwan||"時間待定")}</span></div>
+          <div class="founder-tags">
+            <span class="${item.event?.special?"special":""}">${escapeHtml(item.event?.label||"例行賽")}</span>
+            <span>信心 ${Number(item.confidence||0).toFixed(1)}%</span>
+            <span>資料完整度 ${Math.round(Number(item.data_quality||0)*100)}%</span>
+            <span>${escapeHtml(item.pick?.label||"尚無推薦方向")}</span>
+          </div>
+          ${notices}
+          <div class="founder-candidate-actions"><small>發布後即寫入公開紀錄，不能更換。</small><button type="button" class="btn ${item.can_publish?"primary":"ghost"} small" data-founder-publish="${Number(item.game_pk)}" ${item.can_publish?"":"disabled"}>${buttonText}</button></div>
+        </article>`;
+      }).join("");
+      list.querySelectorAll("[data-founder-publish]").forEach(button=>button.addEventListener("click",()=>{
+        const item=items.find(candidate=>Number(candidate.game_pk)===Number(button.dataset.founderPublish));
+        if(item)publishFounderCandidate(item);
+      }));
+    }
+
+    async function loadFounderCandidates(force=false){
+      if(!isAdminMember()||state.founderCandidatesLoading)return;
+      const input=document.getElementById("founderPredictionDate");
+      const status=document.getElementById("founderCandidateStatus");
+      const list=document.getElementById("founderCandidates");
+      if(!input||!status||!list)return;
+      if(!input.value)input.value=document.getElementById("scheduleDate")?.value||taiwanToday();
+      const date=input.value;
+      if(!force&&state.founderCandidateDate===date)return;
+      state.founderCandidatesLoading=true;
+      status.textContent="正在比較所有候選場次與特殊賽事類型…";
+      list.replaceChildren();
+      try{
+        const payload=await fetchJsonWithTimeout(
+          `${API_BASE}/admin/predictions/candidates?date=${encodeURIComponent(date)}`,
+          20000,
+          {headers:{Authorization:`Bearer ${authState.session.access_token}`}}
+        );
+        state.founderCandidateDate=date;
+        renderFounderCandidates(payload);
+      }catch(error){
+        state.founderCandidateDate="";
+        status.textContent=error.status===404?"找不到候選場次。":"創辦人候選場次暫時無法載入，請稍後再試。";
+      }finally{
+        state.founderCandidatesLoading=false;
+      }
+    }
+
+    async function publishFounderCandidate(item){
+      const input=document.getElementById("founderPredictionDate");
+      const date=input?.value||taiwanToday();
+      const warning=(item.warnings||[]).join("\n");
+      const confirmation=`確定將 ${item.matchup} · ${item.pick?.label||"此場"} 設為 ${date} 的正式每日推薦嗎？\n\n發布後永久鎖定，不能更換。${warning?`\n\n${warning}`:""}`;
+      if(!window.confirm(confirmation))return;
+      const status=document.getElementById("founderCandidateStatus");
+      status.textContent="正在發布並寫入不可更換的公開紀錄…";
+      try{
+        const response=await fetch(`${API_BASE}/admin/predictions/publish`,{
+          method:"POST",
+          headers:{Authorization:`Bearer ${authState.session.access_token}`,"Content-Type":"application/json",Accept:"application/json"},
+          body:JSON.stringify({date,game_pk:Number(item.game_pk),confirm_warning:Boolean(item.requires_confirmation)})
+        });
+        const payload=await response.json().catch(()=>({}));
+        if(!response.ok)throw Object.assign(new Error(founderDetailMessage(payload,`HTTP ${response.status}`)),{status:response.status});
+        showToast("創辦人指定場次已發布並鎖定");
+        state.predictionDate="";
+        state.founderCandidateDate="";
+        await loadTopPrediction();
+        await loadFounderCandidates(true);
+      }catch(error){
+        status.textContent=error.message||"發布失敗，請稍後再試。";
+        showToast("指定場次未發布");
+      }
+    }
+
+    document.getElementById("founderLoadCandidates")?.addEventListener("click",()=>loadFounderCandidates(true));
+    document.getElementById("founderPredictionDate")?.addEventListener("change",()=>{
+      state.founderCandidateDate="";
+      loadFounderCandidates(true);
+    });
+
     async function loadTopPrediction(){
       if(!isSignedIn()){
         renderPredictionAccess();
@@ -1979,7 +2254,9 @@
             factors:selection.factors||[],
             price:selection.price,
             edge:selection.edge,
-            impliedProbability:selection.implied_probability
+            impliedProbability:selection.implied_probability,
+            eventLabel:selection.publication?.event_label||selection.game?.event_label,
+            founderSelected:selection.publication?.mode==="founder_selected"
           });
           loadRecords(true);
         }else{
@@ -1998,7 +2275,7 @@
           }else renderLockedProPredictions();
           if(fallback.published&&fallback.selection){
             const selection=fallback.selection;
-            window.setDiamondMindPrediction({confidence:selection.confidence,matchup:selection.matchup,time:selection.time_taiwan,pick:selection.pick?.label||"—",factors:selection.factors||[]});
+            window.setDiamondMindPrediction({confidence:selection.confidence,matchup:selection.matchup,time:selection.time_taiwan,pick:selection.pick?.label||"—",factors:selection.factors||[],eventLabel:selection.publication?.event_label||selection.game?.event_label,founderSelected:selection.publication?.mode==="founder_selected"});
           }else{
             title.textContent="今日暫不發布 AI 精選";
             text.textContent=fallback.message||"目前沒有場次達到最低信心門檻。";
@@ -2028,7 +2305,9 @@
       [
         prediction.price!=null?`盤口 ${formatAmericanOdds(prediction.price)}`:null,
         prediction.edge!=null?`市場優勢 ${Number(prediction.edge)>0?"+":""}${prediction.edge}%`:null,
-        prediction.impliedProbability!=null?`市場機率 ${prediction.impliedProbability}%`:null
+        prediction.impliedProbability!=null?`市場機率 ${prediction.impliedProbability}%`:null,
+        prediction.eventLabel&&prediction.eventLabel!=="例行賽"?prediction.eventLabel:null,
+        prediction.founderSelected?"創辦人指定":null
       ].filter(Boolean).forEach(value=>{
         const chip=document.createElement("span");
         chip.textContent=value;
@@ -2040,6 +2319,7 @@
     const authCallback=consumeAuthCallback();
     const initialHash=authCallback.handled?"more":location.hash.replace("#","");
     document.getElementById("scheduleDate").value=taiwanToday();
+    document.getElementById("founderPredictionDate").value=taiwanToday();
     renderRecords();
     renderAuthState();
     loadRecords();
