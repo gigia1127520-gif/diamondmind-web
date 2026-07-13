@@ -757,8 +757,8 @@
             <div class="prediction-empty" id="predictionEmpty">
               <div>
                 <div class="prediction-empty-icon">AI</div>
-                <h2>今日精選等待模型發布</h2>
-                <p>前端頁面已完成。接上 V9 後端模型後，這裡會自動顯示今日勝率最高的一場，不會用假勝率填充。</p>
+                <h2 id="predictionEmptyTitle">今日精選等待模型發布</h2>
+                <p id="predictionEmptyText">正在等待 DiamondMind API 完成今日全部場次比較。</p>
                 <button type="button" class="btn primary" data-page="gamesPage">先查看完整賽事</button>
               </div>
             </div>
@@ -921,15 +921,16 @@
       <div class="detail-box"><small>客隊預計先發</small><b id="detailAwayPitcher">—</b></div>
       <div class="detail-box"><small>主隊預計先發</small><b id="detailHomePitcher">—</b></div>
       <div class="detail-box"><small>比賽狀態</small><b id="detailStatus">—</b></div>
-      <div class="detail-box"><small>AI 分析</small><b>等待 V9 模型 API</b></div>
+      <div class="detail-box"><small>AI 分析</small><b id="detailAiStatus">等待 V10 模型 API</b></div>
     </div>
   </section>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
+    const API_BASE=(window.DIAMONDMIND_API_BASE||"https://diamondmind-api.onrender.com/api/v1").replace(/\/$/,"");
     const pages = ["homePage","gamesPage","predictionPage","recordsPage","morePage"];
-    const state = { games:[], gameFilter:"all", recordFilter:"all", gamesLoaded:false };
+    const state = { games:[], gameFilter:"all", recordFilter:"all", gamesLoaded:false, predictionDate:"" };
 
     const teamZh = {
       "Arizona Diamondbacks":"亞利桑那響尾蛇","Atlanta Braves":"亞特蘭大勇士","Baltimore Orioles":"巴爾的摩金鶯",
@@ -978,6 +979,7 @@
       history.replaceState(null,"",`#${pageId.replace("Page","")}`);
       window.scrollTo({top:0,behavior:"smooth"});
       if(pageId==="gamesPage"&&!state.gamesLoaded) loadMlbGames();
+      if(pageId==="predictionPage") loadTopPrediction();
     }
 
     document.querySelectorAll("[data-page]").forEach(btn=>btn.addEventListener("click",()=>showPage(btn.dataset.page)));
@@ -1098,6 +1100,42 @@
       };
     }
 
+    function normalizeBackendGame(game){
+      const away=game.away?.name||"Away";
+      const home=game.home?.name||"Home";
+      return {
+        id:Number(game.game_pk),gameDate:game.game_date,time:game.time_taiwan||gameTime(game.game_date),status:game.status||"upcoming",
+        detailedState:game.detailed_status||"",inning:game.inning||null,inningState:game.inning_state||"",
+        away,home,awayZh:teamZh[away]||away,homeZh:teamZh[home]||home,
+        awayAbbr:game.away?.abbr||teamAbbr[away]||"AWY",homeAbbr:game.home?.abbr||teamAbbr[home]||"HME",
+        awayScore:game.away?.score,homeScore:game.home?.score,
+        awayPitcher:game.away?.probable_pitcher?.name||"尚未公布",homePitcher:game.home?.probable_pitcher?.name||"尚未公布",
+        venue:game.venue||""
+      };
+    }
+
+    async function fetchJsonWithTimeout(url,timeout=6500){
+      const controller=new AbortController();
+      const timer=setTimeout(()=>controller.abort(),timeout);
+      try{
+        const response=await fetch(url,{cache:"no-store",signal:controller.signal});
+        if(!response.ok)throw new Error(`HTTP ${response.status}`);
+        return await response.json();
+      }finally{
+        clearTimeout(timer);
+      }
+    }
+
+    async function loadMlbDirect(date){
+      const dates=[shiftDate(date,-1),date,shiftDate(date,1)];
+      const responses=await Promise.all(dates.map(d=>fetch(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${encodeURIComponent(d)}&hydrate=probablePitcher,linescore,venue`,{cache:"no-store"})));
+      if(responses.some(res=>!res.ok))throw new Error("MLB API response error");
+      const payloads=await Promise.all(responses.map(res=>res.json()));
+      const raw=payloads.flatMap(payload=>(payload.dates||[]).flatMap(day=>day.games||[]));
+      const unique=[...new Map(raw.map(game=>[game.gamePk,game])).values()];
+      return unique.filter(game=>gameTaiwanDate(game.gameDate)===date).sort((a,b)=>new Date(a.gameDate)-new Date(b.gameDate)).map(normalizeGame);
+    }
+
     async function loadMlbGames(){
       const date=document.getElementById("scheduleDate").value||taiwanToday();
       const statusEl=document.getElementById("liveDataStatus");
@@ -1105,21 +1143,24 @@
       statusEl.textContent=`正在載入 ${date} 的 MLB 賽事…`;
       list.innerHTML=`<div class="card empty"><b>資料同步中</b>正在依台灣日期整理完整賽程。</div>`;
       try{
-        const dates=[shiftDate(date,-1),date,shiftDate(date,1)];
-        const responses=await Promise.all(dates.map(d=>fetch(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${encodeURIComponent(d)}&hydrate=probablePitcher,linescore,venue`,{cache:"no-store"})));
-        if(responses.some(res=>!res.ok))throw new Error("MLB API response error");
-        const payloads=await Promise.all(responses.map(res=>res.json()));
-        const raw=payloads.flatMap(payload=>(payload.dates||[]).flatMap(day=>day.games||[]));
-        const unique=[...new Map(raw.map(game=>[game.gamePk,game])).values()];
-        state.games=unique.filter(game=>gameTaiwanDate(game.gameDate)===date).sort((a,b)=>new Date(a.gameDate)-new Date(b.gameDate)).map(normalizeGame);
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/mlb/games?date=${encodeURIComponent(date)}`);
+        state.games=(payload.items||[]).map(normalizeBackendGame);
         state.gamesLoaded=true;
-        statusEl.textContent=`已載入 ${state.games.length} 場 · 台灣日期 ${date} · ${new Date().toLocaleTimeString("zh-TW",{hour:"2-digit",minute:"2-digit"})} 更新`;
+        const cacheLabel=payload.meta?.cache==="stale"?"舊資料備援":"後端資料";
+        statusEl.textContent=`已載入 ${state.games.length} 場 · ${cacheLabel} · 台灣日期 ${date}`;
         renderGames();
-      }catch(error){
-        state.games=[];
-        state.gamesLoaded=false;
-        statusEl.textContent="MLB 資料暫時無法載入，請稍後再試";
-        list.innerHTML=`<div class="card empty"><b>賽程連線失敗</b>請確認網路後按「重新整理」。</div>`;
+      }catch(backendError){
+        try{
+          state.games=await loadMlbDirect(date);
+          state.gamesLoaded=true;
+          statusEl.textContent=`已載入 ${state.games.length} 場 · MLB 直連備援 · 台灣日期 ${date}`;
+          renderGames();
+        }catch(directError){
+          state.games=[];
+          state.gamesLoaded=false;
+          statusEl.textContent="DiamondMind API 與 MLB 資料目前皆無法連線";
+          list.innerHTML=`<div class="card empty"><b>賽程連線失敗</b>請確認網路後按「重新整理」。</div>`;
+        }
       }
     }
 
@@ -1161,7 +1202,25 @@
       document.getElementById("detailAwayPitcher").textContent=game.awayPitcher;
       document.getElementById("detailHomePitcher").textContent=game.homePitcher;
       document.getElementById("detailStatus").textContent=statusText(game);
+      document.getElementById("detailAiStatus").textContent="正在讀取球隊數據…";
       openModal("gameModal");
+      loadGameDetail(id);
+    }
+
+    async function loadGameDetail(id){
+      const aiStatus=document.getElementById("detailAiStatus");
+      try{
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/mlb/games/${id}`,8000);
+        const away=payload.teams?.away?.standing;
+        const home=payload.teams?.home?.standing;
+        if(away?.pythagorean_pct!=null&&home?.pythagorean_pct!=null){
+          aiStatus.textContent=`畢氏勝率 ${Math.round(away.pythagorean_pct*1000)/10}% : ${Math.round(home.pythagorean_pct*1000)/10}%`;
+        }else{
+          aiStatus.textContent="完整模型資料整理中";
+        }
+      }catch(error){
+        aiStatus.textContent="後端尚未上線，顯示基本賽事資料";
+      }
     }
 
     document.querySelectorAll("[data-game-filter]").forEach(btn=>btn.addEventListener("click",()=>{
@@ -1170,9 +1229,45 @@
       renderGames();
     }));
     document.getElementById("refreshGames").addEventListener("click",loadMlbGames);
-    document.getElementById("scheduleDate").addEventListener("change",loadMlbGames);
+    document.getElementById("scheduleDate").addEventListener("change",()=>{
+      state.predictionDate="";
+      loadMlbGames();
+    });
 
-    // When the backend is ready, it can call this function with the top prediction payload.
+    async function loadTopPrediction(){
+      const date=document.getElementById("scheduleDate").value||taiwanToday();
+      if(state.predictionDate===date)return;
+      const empty=document.getElementById("predictionEmpty");
+      const preview=document.getElementById("predictionPreview");
+      const title=document.getElementById("predictionEmptyTitle");
+      const text=document.getElementById("predictionEmptyText");
+      empty.hidden=false;
+      preview.hidden=true;
+      title.textContent="AI 正在比較今日全部賽事";
+      text.textContent="正在讀取畢氏勝率、實際戰績、近期狀態與先發投手資料。";
+      try{
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/predictions/top?date=${encodeURIComponent(date)}`,12000);
+        state.predictionDate=date;
+        if(payload.published&&payload.selection){
+          const selection=payload.selection;
+          window.setDiamondMindPrediction({
+            confidence:selection.confidence,
+            matchup:selection.matchup,
+            time:selection.time_taiwan,
+            pick:selection.pick?.label||"—",
+            factors:selection.factors||[]
+          });
+        }else{
+          title.textContent="今日暫不發布 AI 精選";
+          text.textContent=payload.message||"目前沒有場次達到最低信心門檻。";
+        }
+      }catch(error){
+        state.predictionDate="";
+        title.textContent="AI 後端尚未上線";
+        text.textContent="賽事頁仍可使用 MLB 直連備援；完成 Render 部署後，這裡就會顯示今日最高信心一場。";
+      }
+    }
+
     window.setDiamondMindPrediction=function(prediction){
       if(!prediction)return;
       document.getElementById("predictionEmpty").hidden=true;
