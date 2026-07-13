@@ -102,6 +102,9 @@
     }
     .nav-link:hover,.nav-link.active{color:var(--green);background:rgba(55,244,164,.07)}
     .top-actions{display:flex;align-items:center;gap:8px}
+    .auth-member-chip{max-width:150px;display:flex;align-items:center;gap:7px;overflow:hidden}
+    .auth-member-chip span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .auth-member-dot{width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px rgba(55,244,164,.7)}
     .icon-btn,.btn{
       border:1px solid var(--line);
       border-radius:13px;
@@ -457,6 +460,11 @@
 
     .more-hero{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;padding:25px;margin-bottom:18px;background:radial-gradient(circle at 84% 38%,rgba(55,244,164,.14),transparent 28%),linear-gradient(140deg,rgba(12,29,37,.96),rgba(6,16,22,.92))}
     .more-hero h2{margin:0 0 8px;font-size:30px}.more-hero p{max-width:650px;margin:0;color:var(--muted);line-height:1.6}.more-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+    .auth-profile-main{display:flex;align-items:center;gap:16px;min-width:0}
+    .auth-avatar{width:58px;height:58px;flex:0 0 58px;display:grid;place-items:center;border:1px solid var(--line-strong);border-radius:18px;color:var(--green);font-size:18px;font-weight:950;font-style:italic;background:rgba(55,244,164,.08);box-shadow:inset 0 0 24px rgba(55,244,164,.08)}
+    .auth-profile-copy{min-width:0}.auth-profile-copy h2{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.auth-profile-copy p{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .auth-status{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid var(--line-strong);border-radius:999px;color:var(--green);font-size:11px;white-space:nowrap;background:rgba(55,244,164,.05)}
+    .auth-status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 9px rgba(55,244,164,.7)}
     .menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
     .menu-card{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:14px;padding:19px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,rgba(12,27,35,.88),rgba(7,17,23,.82));cursor:pointer;text-align:left;transition:.2s}
     .menu-card:hover{transform:translateY(-2px);border-color:var(--line-strong)}
@@ -511,7 +519,9 @@
     }
     .modal.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
     .modal-head{display:flex;align-items:start;justify-content:space-between;gap:15px;margin-bottom:18px}.modal-head h2{margin:0}.modal-head p{margin:6px 0 0;color:var(--muted);font-size:12px}.modal-close{width:38px;height:38px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025);cursor:pointer}
-    .form-grid{display:grid;gap:12px}.form-grid label{display:grid;gap:6px;color:#c5d2d8;font-size:12px}.form-grid input{width:100%}.form-note{color:var(--muted);font-size:11px;line-height:1.55}
+    .form-grid{display:grid;gap:12px}.form-grid label{display:grid;gap:6px;color:#c5d2d8;font-size:12px}.form-grid input{width:100%}.form-note{min-height:17px;color:var(--muted);font-size:11px;line-height:1.55}.form-note.error{color:var(--red)}.form-note.success{color:var(--green)}
+    .form-grid .btn:disabled{cursor:wait;opacity:.65;transform:none}
+    .auth-switch{margin:0;color:var(--muted);font-size:11px;text-align:center}.auth-switch button{padding:0;border:0;color:var(--green);background:transparent;cursor:pointer;font:inherit;font-weight:800}
     .tutorial-list{display:grid;gap:11px}.tutorial-step{padding:15px;border:1px solid rgba(255,255,255,.06);border-radius:15px;background:rgba(255,255,255,.02)}.tutorial-step b{color:var(--green)}.tutorial-step p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.55}
     .detail-score{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;padding:20px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.02);text-align:center}.detail-team b{display:block;font-size:28px}.detail-team span{display:block;margin-top:5px;color:var(--muted);font-size:11px}.detail-vs{color:var(--green);font-weight:900}.detail-info{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}.detail-box{padding:13px;border:1px solid rgba(255,255,255,.06);border-radius:14px;background:rgba(255,255,255,.02)}.detail-box small{display:block;color:var(--muted);margin-bottom:5px}.detail-box b{font-size:13px}
 
@@ -535,6 +545,7 @@
       .logo{width:40px;height:40px}
       .top-actions .login-label{display:none}
       .top-actions .btn{padding:10px 12px;font-size:12px}
+      .auth-member-chip{max-width:86px}
       .hero{gap:30px;padding:32px 0 28px}
       .hero h1{font-size:49px;letter-spacing:-2.8px}
       .hero h2{font-size:28px}
@@ -589,8 +600,9 @@
 
       <div class="top-actions">
         <button type="button" class="icon-btn" id="themeInfo" aria-label="系統狀態" title="系統狀態">●</button>
-        <button type="button" class="btn ghost small" data-modal="loginModal"><span class="login-label">會員</span>登入</button>
-        <button type="button" class="btn primary small" data-modal="registerModal">免費註冊</button>
+        <button type="button" class="btn ghost small" data-auth-guest data-modal="loginModal"><span class="login-label">會員</span>登入</button>
+        <button type="button" class="btn primary small" data-auth-guest data-modal="registerModal">免費註冊</button>
+        <button type="button" class="btn ghost small auth-member-chip" data-auth-user data-page="morePage" hidden aria-label="前往會員中心"><span class="auth-member-dot" aria-hidden="true"></span><span id="headerMemberName">會員</span></button>
       </div>
     </div>
   </header>
@@ -834,14 +846,22 @@
           <div><div class="kicker">ACCOUNT &amp; HELP</div><h1 id="moreTitle">更多功能</h1><p>會員登入、免費註冊、使用教學與常見問題集中放在這裡。</p></div>
         </div>
 
-        <div class="card more-hero">
-          <div><h2>免費開始使用 DiamondMind</h2><p>免費會員可查看每日賽程、公開場次與推薦紀錄；完整 AI 分析會在會員系統完成後開放。</p></div>
+        <div class="card more-hero" data-auth-guest>
+          <div><h2>免費開始使用 DiamondMind</h2><p>建立免費會員，登入後即可保留你的會員狀態；每日賽程、AI 精選與真實推薦紀錄持續公開更新。</p></div>
           <div class="more-actions"><button type="button" class="btn ghost" data-modal="loginModal">會員登入</button><button type="button" class="btn primary" data-modal="registerModal">免費註冊</button></div>
         </div>
 
+        <div class="card more-hero" data-auth-user hidden>
+          <div class="auth-profile-main">
+            <div class="auth-avatar" aria-hidden="true">DM</div>
+            <div class="auth-profile-copy"><div class="kicker">MEMBER ACCOUNT</div><h2 id="memberNickname">DiamondMind 會員</h2><p id="memberEmail">—</p></div>
+          </div>
+          <div class="more-actions"><span class="auth-status">會員已登入</span><button type="button" class="btn ghost" data-auth-logout>登出</button></div>
+        </div>
+
         <div class="menu-grid">
-          <button type="button" class="menu-card" data-modal="loginModal"><span class="menu-icon">↪</span><span><b>會員登入</b><small>登入後查看個人功能</small></span><span class="chevron">›</span></button>
-          <button type="button" class="menu-card" data-modal="registerModal"><span class="menu-icon">＋</span><span><b>免費註冊</b><small>建立你的 DiamondMind 帳號</small></span><span class="chevron">›</span></button>
+          <button type="button" class="menu-card" data-auth-guest data-modal="loginModal"><span class="menu-icon">↪</span><span><b>會員登入</b><small>登入後查看個人功能</small></span><span class="chevron">›</span></button>
+          <button type="button" class="menu-card" data-auth-guest data-modal="registerModal"><span class="menu-icon">＋</span><span><b>免費註冊</b><small>建立你的 DiamondMind 帳號</small></span><span class="chevron">›</span></button>
           <button type="button" class="menu-card" data-modal="tutorialModal"><span class="menu-icon">?</span><span><b>新手教學</b><small>了解五個主要功能怎麼使用</small></span><span class="chevron">›</span></button>
           <button type="button" class="menu-card" data-modal="faqModal"><span class="menu-icon">i</span><span><b>常見問題</b><small>資料、模型與會員相關說明</small></span><span class="chevron">›</span></button>
         </div>
@@ -877,22 +897,24 @@
 
   <section class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
     <div class="modal-head"><div><h2 id="loginTitle">會員登入</h2><p>登入你的 DiamondMind 帳號</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
-    <form class="form-grid demo-form">
-      <label>電子信箱<input type="email" placeholder="name@example.com" required></label>
-      <label>密碼<input type="password" placeholder="輸入密碼" minlength="6" required></label>
-      <button class="btn primary" type="submit">登入</button>
-      <div class="form-note">會員後端尚未串接，目前按鈕用來確認頁面操作流程。</div>
+    <form class="form-grid" id="loginForm">
+      <label>電子信箱<input id="loginEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com" required></label>
+      <label>密碼<input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="輸入密碼" minlength="6" required></label>
+      <button class="btn primary" id="loginSubmit" type="submit">登入</button>
+      <div class="form-note" id="loginNote" role="status" aria-live="polite">使用你註冊時的電子信箱與密碼登入。</div>
+      <p class="auth-switch">還沒有帳號？ <button type="button" data-switch-modal="registerModal">免費註冊</button></p>
     </form>
   </section>
 
   <section class="modal" id="registerModal" role="dialog" aria-modal="true" aria-labelledby="registerTitle">
     <div class="modal-head"><div><h2 id="registerTitle">免費註冊</h2><p>建立 DiamondMind 免費會員</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
-    <form class="form-grid demo-form">
-      <label>暱稱<input type="text" placeholder="你的暱稱" required></label>
-      <label>電子信箱<input type="email" placeholder="name@example.com" required></label>
-      <label>設定密碼<input type="password" placeholder="至少 6 個字元" minlength="6" required></label>
-      <button class="btn primary" type="submit">建立免費帳號</button>
-      <div class="form-note">目前為介面展示，不會傳送或儲存你輸入的帳號資料。</div>
+    <form class="form-grid" id="registerForm">
+      <label>暱稱<input id="registerNickname" name="nickname" type="text" autocomplete="nickname" placeholder="你的暱稱" minlength="2" maxlength="30" required></label>
+      <label>電子信箱<input id="registerEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com" required></label>
+      <label>設定密碼<input id="registerPassword" name="password" type="password" autocomplete="new-password" placeholder="至少 6 個字元" minlength="6" required></label>
+      <button class="btn primary" id="registerSubmit" type="submit">建立免費帳號</button>
+      <div class="form-note" id="registerNote" role="status" aria-live="polite">送出後可能需要到信箱完成驗證。</div>
+      <p class="auth-switch">已經有帳號？ <button type="button" data-switch-modal="loginModal">直接登入</button></p>
     </form>
   </section>
 
@@ -935,11 +957,16 @@
 
   <script>
     const API_BASE=(window.DIAMONDMIND_API_BASE||"https://diamondmind-api.onrender.com/api/v1").replace(/\/$/,"");
+    const SUPABASE_URL=(window.DIAMONDMIND_SUPABASE_URL||"https://ywttcnxulfyhdfzzrnwt.supabase.co").replace(/\/$/,"");
+    const SUPABASE_PUBLISHABLE_KEY=window.DIAMONDMIND_SUPABASE_PUBLISHABLE_KEY||"sb_publishable__JivOxRrvBQdYHTlVWmJug_Uh0Cc79g";
+    const AUTH_STORAGE_KEY="diamondmind.auth.session.v1";
+    const AUTH_REDIRECT_URL=/^https?:$/.test(location.protocol)?`${location.origin}${location.pathname}`:"https://gigia1127520-gif.github.io/diamondmind-web/";
     const pages = ["homePage","gamesPage","predictionPage","recordsPage","morePage"];
     const state = {
       games:[],gameFilter:"all",gamesLoaded:false,predictionDate:"",
       records:[],recordStats:null,recordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:""
     };
+    const authState={session:null,user:null,ready:false};
 
     const teamZh = {
       "Arizona Diamondbacks":"亞利桑那響尾蛇","Atlanta Braves":"亞特蘭大勇士","Baltimore Orioles":"巴爾的摩金鶯",
@@ -1000,6 +1027,7 @@
       document.body.style.overflow="";
     }
     document.querySelectorAll("[data-modal]").forEach(btn=>btn.addEventListener("click",()=>openModal(btn.dataset.modal)));
+    document.querySelectorAll("[data-switch-modal]").forEach(btn=>btn.addEventListener("click",()=>openModal(btn.dataset.switchModal)));
     document.querySelectorAll("[data-close-modal]").forEach(btn=>btn.addEventListener("click",closeModals));
     backdrop.addEventListener("click",closeModals);
     document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModals()});
@@ -1013,12 +1041,237 @@
       toastTimer=setTimeout(()=>toast.classList.remove("show"),2600);
     }
     document.getElementById("themeInfo").addEventListener("click",()=>showToast("DiamondMind 前端運作正常 · MLB 賽程按需求載入"));
-    document.querySelectorAll(".demo-form").forEach(form=>form.addEventListener("submit",e=>{
-      e.preventDefault();
-      form.reset();
-      closeModals();
-      showToast("會員後端尚未串接，目前未傳送任何資料");
+
+    let authRefreshTimer;
+    async function authRequest(path,{method="GET",body,accessToken,timeout=12000}={}){
+      const controller=new AbortController();
+      const timer=setTimeout(()=>controller.abort(),timeout);
+      const headers={apikey:SUPABASE_PUBLISHABLE_KEY,Accept:"application/json"};
+      if(body!==undefined)headers["Content-Type"]="application/json";
+      if(accessToken)headers.Authorization=`Bearer ${accessToken}`;
+      try{
+        const response=await fetch(`${SUPABASE_URL}/auth/v1${path}`,{
+          method,headers,body:body===undefined?undefined:JSON.stringify(body),signal:controller.signal
+        });
+        const raw=await response.text();
+        let payload={};
+        if(raw){try{payload=JSON.parse(raw)}catch{payload={message:raw}}}
+        if(!response.ok){
+          const error=new Error(payload.msg||payload.message||payload.error_description||payload.error||`HTTP ${response.status}`);
+          error.status=response.status;
+          error.code=payload.error_code||payload.code||payload.error||"";
+          throw error;
+        }
+        return payload;
+      }catch(error){
+        if(error.name==="AbortError"){
+          const timeoutError=new Error("request_timeout");
+          timeoutError.code="request_timeout";
+          throw timeoutError;
+        }
+        throw error;
+      }finally{clearTimeout(timer)}
+    }
+
+    function normalizeSession(payload){
+      if(!payload?.access_token)return null;
+      const expiresIn=Number(payload.expires_in||3600);
+      return {
+        access_token:payload.access_token,
+        refresh_token:payload.refresh_token||"",
+        token_type:payload.token_type||"bearer",
+        expires_in:expiresIn,
+        expires_at:Number(payload.expires_at)||Math.floor(Date.now()/1000)+expiresIn,
+        user:payload.user||null
+      };
+    }
+    function saveAuthSession(session){
+      try{
+        if(session)localStorage.setItem(AUTH_STORAGE_KEY,JSON.stringify(session));
+        else localStorage.removeItem(AUTH_STORAGE_KEY);
+      }catch{}
+    }
+    function loadAuthSession(){
+      try{
+        const parsed=JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY)||"null");
+        return parsed?.access_token?parsed:null;
+      }catch{
+        saveAuthSession(null);
+        return null;
+      }
+    }
+    function memberDisplayName(user){
+      const metadata=user?.user_metadata||{};
+      return String(metadata.nickname||metadata.full_name||user?.email?.split("@")[0]||"DiamondMind 會員").trim()||"DiamondMind 會員";
+    }
+    function scheduleAuthRefresh(){
+      clearTimeout(authRefreshTimer);
+      const session=authState.session;
+      if(!session?.refresh_token||!session.expires_at)return;
+      const delay=Math.max(5000,(Number(session.expires_at)-Math.floor(Date.now()/1000)-90)*1000);
+      authRefreshTimer=setTimeout(async()=>{
+        try{await refreshAuthSession(session.refresh_token)}catch{clearAuthSession()}
+      },Math.min(delay,2147483647));
+    }
+    function renderAuthState(){
+      const signedIn=Boolean(authState.session?.access_token&&authState.user);
+      document.querySelectorAll("[data-auth-guest]").forEach(element=>element.hidden=signedIn);
+      document.querySelectorAll("[data-auth-user]").forEach(element=>element.hidden=!signedIn);
+      if(signedIn){
+        const name=memberDisplayName(authState.user);
+        document.getElementById("headerMemberName").textContent=name;
+        document.getElementById("memberNickname").textContent=name;
+        document.getElementById("memberEmail").textContent=authState.user.email||"會員帳號";
+        scheduleAuthRefresh();
+      }else clearTimeout(authRefreshTimer);
+    }
+    function clearAuthSession(){
+      authState.session=null;
+      authState.user=null;
+      saveAuthSession(null);
+      renderAuthState();
+    }
+    async function fetchAuthUser(session){
+      const payload=await authRequest("/user",{accessToken:session.access_token});
+      return payload.user||payload;
+    }
+    async function acceptAuthSession(payload){
+      const session=normalizeSession(payload);
+      if(!session)throw new Error("missing_session");
+      session.user=session.user||await fetchAuthUser(session);
+      authState.session=session;
+      authState.user=session.user;
+      saveAuthSession(session);
+      renderAuthState();
+      return session;
+    }
+    async function refreshAuthSession(refreshToken){
+      const payload=await authRequest("/token?grant_type=refresh_token",{method:"POST",body:{refresh_token:refreshToken}});
+      return acceptAuthSession(payload);
+    }
+    function setAuthNote(id,message,type=""){
+      const note=document.getElementById(id);
+      note.textContent=message;
+      note.classList.toggle("error",type==="error");
+      note.classList.toggle("success",type==="success");
+    }
+    function setAuthFormBusy(form,busy,busyText){
+      const button=form.querySelector('button[type="submit"]');
+      if(!button)return;
+      if(!button.dataset.defaultText)button.dataset.defaultText=button.textContent;
+      button.disabled=busy;
+      button.textContent=busy?busyText:button.dataset.defaultText;
+    }
+    function authErrorMessage(error){
+      const value=`${error?.code||""} ${error?.message||""}`.toLowerCase();
+      if(value.includes("invalid_credentials")||value.includes("invalid login credentials"))return "電子信箱或密碼不正確。";
+      if(value.includes("email_not_confirmed")||value.includes("email not confirmed"))return "請先到信箱完成帳號驗證，再回來登入。";
+      if(value.includes("user_already_exists")||value.includes("already registered"))return "此電子信箱已經註冊，請直接登入。";
+      if(value.includes("weak_password")||value.includes("password should"))return "密碼強度不足，請至少輸入 6 個字元。";
+      if(value.includes("signup_disabled"))return "目前暫停新會員註冊。";
+      if(value.includes("rate")||error?.status===429)return "操作過於頻繁，請稍後再試。";
+      if(value.includes("request_timeout"))return "會員服務回應逾時，請稍後再試。";
+      if(error instanceof TypeError)return "會員服務暫時無法連線，請檢查網路後重試。";
+      return "操作未完成，請確認資料後再試。";
+    }
+
+    document.getElementById("loginForm").addEventListener("submit",async event=>{
+      event.preventDefault();
+      const form=event.currentTarget;
+      const email=document.getElementById("loginEmail").value.trim();
+      const password=document.getElementById("loginPassword").value;
+      setAuthNote("loginNote","正在安全登入…");
+      setAuthFormBusy(form,true,"登入中…");
+      try{
+        const payload=await authRequest("/token?grant_type=password",{method:"POST",body:{email,password}});
+        await acceptAuthSession(payload);
+        form.reset();
+        closeModals();
+        showPage("morePage");
+        showToast(`歡迎回來，${memberDisplayName(authState.user)}`);
+        setAuthNote("loginNote","使用你註冊時的電子信箱與密碼登入。");
+      }catch(error){setAuthNote("loginNote",authErrorMessage(error),"error")}
+      finally{setAuthFormBusy(form,false,"登入中…")}
+    });
+
+    document.getElementById("registerForm").addEventListener("submit",async event=>{
+      event.preventDefault();
+      const form=event.currentTarget;
+      const nickname=document.getElementById("registerNickname").value.trim();
+      const email=document.getElementById("registerEmail").value.trim();
+      const password=document.getElementById("registerPassword").value;
+      setAuthNote("registerNote","正在建立安全帳號…");
+      setAuthFormBusy(form,true,"建立中…");
+      try{
+        const redirect=`/signup?redirect_to=${encodeURIComponent(AUTH_REDIRECT_URL)}`;
+        const payload=await authRequest(redirect,{method:"POST",body:{email,password,data:{nickname}}});
+        if(payload.access_token){
+          await acceptAuthSession(payload);
+          form.reset();
+          closeModals();
+          showPage("morePage");
+          showToast(`帳號建立完成，歡迎 ${memberDisplayName(authState.user)}`);
+        }else{
+          form.reset();
+          setAuthNote("registerNote","註冊資料已送出，請到信箱點擊驗證連結後再登入。","success");
+          showToast("註冊成功，請到信箱完成驗證");
+        }
+      }catch(error){setAuthNote("registerNote",authErrorMessage(error),"error")}
+      finally{setAuthFormBusy(form,false,"建立中…")}
+    });
+
+    document.querySelectorAll("[data-auth-logout]").forEach(button=>button.addEventListener("click",async()=>{
+      const session=authState.session;
+      button.disabled=true;
+      try{
+        if(session?.access_token)await authRequest("/logout?scope=local",{method:"POST",accessToken:session.access_token});
+      }catch{}finally{
+        clearAuthSession();
+        button.disabled=false;
+        showToast("已安全登出");
+      }
     }));
+
+    function consumeAuthCallback(){
+      const params=new URLSearchParams(location.hash.replace(/^#/,""));
+      const hasSession=params.has("access_token");
+      const hasError=params.has("error")||params.has("error_description");
+      if(!hasSession&&!hasError)return {handled:false};
+      const result={handled:true,error:"",session:null};
+      if(hasSession){
+        result.session=normalizeSession({
+          access_token:params.get("access_token"),refresh_token:params.get("refresh_token"),
+          token_type:params.get("token_type"),expires_in:params.get("expires_in"),expires_at:params.get("expires_at")
+        });
+        if(result.session)saveAuthSession(result.session);
+      }else result.error=params.get("error_description")||params.get("error")||"帳號驗證未完成";
+      history.replaceState(null,"",`${location.pathname}${location.search}#more`);
+      return result;
+    }
+    async function initializeAuth(callback){
+      try{
+        let session=callback?.session||loadAuthSession();
+        if(!session){
+          authState.ready=true;
+          renderAuthState();
+          if(callback?.error)showToast("驗證連結無效或已過期，請重新登入");
+          return;
+        }
+        if(Number(session.expires_at||0)<=Math.floor(Date.now()/1000)+60&&session.refresh_token){
+          await refreshAuthSession(session.refresh_token);
+        }else{
+          session.user=session.user||await fetchAuthUser(session);
+          authState.session=session;
+          authState.user=session.user;
+          saveAuthSession(session);
+          renderAuthState();
+        }
+        if(callback?.session)showToast(`信箱驗證完成，歡迎 ${memberDisplayName(authState.user)}`);
+      }catch(error){
+        clearAuthSession();
+        if(callback?.handled)showToast(authErrorMessage(error));
+      }finally{authState.ready=true}
+    }
 
     function escapeHtml(value){
       return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
@@ -1336,11 +1589,14 @@
       document.getElementById("predictionFactors").innerHTML=(prediction.factors||[]).map(f=>`<div><div class="factor-head"><span>${f.label}</span><b>${f.value}%</b></div><div class="factor-bar"><i style="width:${f.value}%"></i></div></div>`).join("");
     };
 
-    const initialHash=location.hash.replace("#","");
+    const authCallback=consumeAuthCallback();
+    const initialHash=authCallback.handled?"more":location.hash.replace("#","");
     document.getElementById("scheduleDate").value=taiwanToday();
     renderRecords();
+    renderAuthState();
     loadRecords();
     if(initialHash&&pages.includes(`${initialHash}Page`))showPage(`${initialHash}Page`);
+    initializeAuth(authCallback);
   </script>
 </body>
 </html>
