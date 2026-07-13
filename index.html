@@ -753,7 +753,7 @@
       <div class="wrap page-space">
         <div class="page-head">
           <div><div class="kicker">AI TOP PICK</div><h1 id="predictionTitle">今日最高信心</h1><p>只顯示模型今天最有把握的一場，並列出選擇原因與風險。</p></div>
-          <span class="micro-pill demo-pill">模型 API 待串接</span>
+          <span class="micro-pill" id="predictionApiStatus" aria-live="polite">模型 API 連線中</span>
         </div>
 
         <div class="prediction-shell">
@@ -926,7 +926,7 @@
       <div class="detail-box"><small>客隊預計先發</small><b id="detailAwayPitcher">—</b></div>
       <div class="detail-box"><small>主隊預計先發</small><b id="detailHomePitcher">—</b></div>
       <div class="detail-box"><small>比賽狀態</small><b id="detailStatus">—</b></div>
-      <div class="detail-box"><small>AI 分析</small><b id="detailAiStatus">等待 V10 模型 API</b></div>
+      <div class="detail-box"><small>AI 分析</small><b id="detailAiStatus">等待模型分析</b></div>
     </div>
   </section>
 
@@ -1224,7 +1224,7 @@
           aiStatus.textContent="完整模型資料整理中";
         }
       }catch(error){
-        aiStatus.textContent="後端尚未上線，顯示基本賽事資料";
+        aiStatus.textContent="後端暫時無法連線，顯示基本賽事資料";
       }
     }
 
@@ -1246,13 +1246,18 @@
       const preview=document.getElementById("predictionPreview");
       const title=document.getElementById("predictionEmptyTitle");
       const text=document.getElementById("predictionEmptyText");
+      const apiStatus=document.getElementById("predictionApiStatus");
       empty.hidden=false;
       preview.hidden=true;
+      apiStatus.textContent="模型 API 連線中";
+      apiStatus.classList.remove("demo-pill");
       title.textContent="AI 正在比較今日全部賽事";
       text.textContent="正在讀取畢氏勝率、實際戰績、近期狀態與先發投手資料。";
       try{
         const payload=await fetchJsonWithTimeout(`${API_BASE}/predictions/top?date=${encodeURIComponent(date)}`,12000);
         state.predictionDate=date;
+        apiStatus.textContent="模型 API 已連線";
+        apiStatus.classList.remove("demo-pill");
         if(payload.published&&payload.selection){
           const selection=payload.selection;
           window.setDiamondMindPrediction({
@@ -1268,8 +1273,10 @@
         }
       }catch(error){
         state.predictionDate="";
-        title.textContent="AI 後端尚未上線";
-        text.textContent="賽事頁仍可使用 MLB 直連備援；完成 Render 部署後，這裡就會顯示今日最高信心一場。";
+        apiStatus.textContent="模型 API 暫時離線";
+        apiStatus.classList.add("demo-pill");
+        title.textContent="AI 服務暫時無法連線";
+        text.textContent="賽事頁仍可使用 MLB 直連備援，請稍後再試。";
       }
     }
 
