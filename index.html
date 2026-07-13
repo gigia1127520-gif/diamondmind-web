@@ -918,7 +918,7 @@
             <div class="access-level-head"><div><h2 id="accessLevelTitle">會員預測權限</h2><p>免費方案保留每日一場獨贏；Pro 方案依當日門檻提供多場獨贏、讓分、大小分與二、三關串關。</p></div><button type="button" class="btn pro small" id="predictionUpgradeButton" data-page="membershipPage">升級 DiamondMind Pro</button></div>
             <div class="pro-access-grid">
               <article class="pro-access-card open"><div class="pro-access-top"><span class="market-tag">FREE PICK</span><span class="access-chip">已開放</span></div><h3>每日免費精選</h3><p>免費會員每日最多一場，只發布通過信心門檻的獨贏推薦。</p></article>
-              <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">MONEYLINE+</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>Pro 獨贏加碼</h3><div class="pro-prediction-body" data-pro-body="moneylines"><p>依當日合格場次提供最多 3 場額外獨贏推薦。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
+              <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">MONEYLINE+</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>獨贏精選</h3><div class="pro-prediction-body" data-pro-body="moneylines"><p>依當日合格場次提供最多 3 場獨贏精選。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
               <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">RUN LINE</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>讓分精選</h3><div class="pro-prediction-body" data-pro-body="run_lines"><p>依當日合格場次提供最多 3 場讓分推薦。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
               <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">TOTALS</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>大小分精選</h3><div class="pro-prediction-body" data-pro-body="totals"><p>依當日合格場次提供最多 3 場大小分推薦。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
               <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">2-LEG</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>二關串關</h3><div class="pro-prediction-body" data-pro-body="two_leg"><p>最多 2 組，由不同場次的合格單場推薦組成。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
@@ -2084,7 +2084,7 @@
     }
 
     function renderLockedProPredictions(){
-      setProBodyMessage("moneylines","依當日合格場次提供最多 3 場額外獨贏推薦。");
+      setProBodyMessage("moneylines","依當日合格場次提供最多 3 場獨贏精選。");
       setProBodyMessage("run_lines","依當日合格場次提供最多 3 場讓分推薦。");
       setProBodyMessage("totals","依當日合格場次提供最多 3 場大小分推薦。");
       setProBodyMessage("two_leg","最多 2 組，由已通過門檻的不同場次組成。");
@@ -2321,7 +2321,7 @@
       const parlays=candidates.parlays||{};
       const limits=bundle?.limits||{};
       return [
-        {key:"moneylines",title:"Pro 獨贏加碼",items:asSelectionArray(candidates.moneylines),max:Number(limits.moneylines||3)},
+        {key:"moneylines",title:"獨贏精選",items:asSelectionArray(candidates.moneylines),max:Number(limits.moneylines||3)},
         {key:"run_lines",title:"讓分推薦",items:asSelectionArray(candidates.run_lines),max:Number(limits.run_lines||3)},
         {key:"totals",title:"大小分推薦",items:asSelectionArray(candidates.totals),max:Number(limits.totals||3)},
         {key:"two_leg",title:"二關串關",items:asSelectionArray(parlays.two_leg),max:Number(limits.two_leg||2),parlay:true},
