@@ -381,8 +381,10 @@
     .how-card p{margin:0;color:var(--muted);line-height:1.6;font-size:13px}
 
     .toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding:15px;margin-bottom:18px}
-    .date-control{display:flex;align-items:center;gap:9px}
+    .date-control{display:grid;gap:7px;flex:1 1 420px;min-width:0}
     .date-control label{color:var(--muted);font-size:12px}
+    .date-actions{display:flex;align-items:center;gap:10px;width:100%;min-width:0}
+    .date-actions input{flex:1 1 0;width:0;min-width:0;max-width:calc(100% - 48px)}
     input{
       min-height:42px;
       border:1px solid var(--line);
@@ -555,7 +557,7 @@
       .feature-grid,.how-grid,.record-summary,.menu-grid{grid-template-columns:1fr}
       .record-card-head{padding:20px 18px 15px}.pick-list{padding:0 18px 18px}.record-summary{padding:0 18px 20px}
       .game-card{grid-template-columns:1fr 42px;padding:15px}.game-time{grid-column:1/2;display:flex;align-items:center;gap:9px}.game-time small{margin:0}.game-teams{grid-column:1/2}.pitchers{grid-column:1/2}.status-label{grid-column:2;grid-row:1}.chevron{grid-column:2;grid-row:2/4;align-self:center;justify-self:center}
-      .toolbar{align-items:stretch}.date-control{width:100%;display:grid;grid-template-columns:minmax(0,1fr) 38px;grid-template-areas:"date-label refresh" "date-input date-input";align-items:center;column-gap:12px;row-gap:8px}.date-control label{grid-area:date-label}.date-control input{grid-area:date-input;display:block;width:100%;min-width:0;max-width:100%;overflow:hidden}#refreshGames{grid-area:refresh;position:static;justify-self:end}
+      .toolbar{align-items:stretch}.date-control{width:100%;min-width:0;flex-basis:100%}.date-actions{width:100%;min-width:0}.date-actions input{flex:1 1 0;width:0;min-width:0;max-width:calc(100% - 48px)}#refreshGames{position:static;flex:0 0 38px}
       .prediction-main{padding:20px;min-height:390px}.confidence-preview{grid-template-columns:1fr;text-align:center}.confidence-ring{margin:auto}.pick-highlight{text-align:left}
       .record-top-grid{grid-template-columns:repeat(2,1fr)}.record-row{grid-template-columns:76px minmax(0,1fr) 52px;padding:14px}.record-score{display:none}
       .records-toolbar{align-items:flex-start;flex-direction:column}
@@ -730,8 +732,10 @@
         <div class="card toolbar">
           <div class="date-control">
             <label for="scheduleDate">比賽日期</label>
-            <input id="scheduleDate" type="date">
-            <button type="button" class="btn ghost small" id="refreshGames" aria-label="重新整理賽事" title="重新整理賽事">↻</button>
+            <div class="date-actions">
+              <input id="scheduleDate" type="date">
+              <button type="button" class="btn ghost small" id="refreshGames" aria-label="重新整理賽事" title="重新整理賽事">↻</button>
+            </div>
           </div>
           <div class="filters" id="gameFilters">
             <button type="button" class="filter-btn active" data-game-filter="all">全部</button>
