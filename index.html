@@ -1298,7 +1298,11 @@
       "Philadelphia Phillies":"費城費城人","Pittsburgh Pirates":"匹茲堡海盜","San Diego Padres":"聖地牙哥教士",
       "San Francisco Giants":"舊金山巨人","Seattle Mariners":"西雅圖水手","St. Louis Cardinals":"聖路易紅雀",
       "Tampa Bay Rays":"坦帕灣光芒","Texas Rangers":"德州遊騎兵","Toronto Blue Jays":"多倫多藍鳥",
-      "Washington Nationals":"華盛頓國民"
+      "Washington Nationals":"華盛頓國民",
+      "American League All-Stars":"美聯明星隊","National League All-Stars":"國聯明星隊",
+      "AL All-Stars":"美聯明星隊","NL All-Stars":"國聯明星隊",
+      "American League":"美聯明星隊","National League":"國聯明星隊",
+      "AL":"美聯明星隊","NL":"國聯明星隊"
     };
     const teamAbbr = {
       "Arizona Diamondbacks":"ARI","Atlanta Braves":"ATL","Baltimore Orioles":"BAL","Boston Red Sox":"BOS",
@@ -1308,8 +1312,36 @@
       "Minnesota Twins":"MIN","New York Mets":"NYM","New York Yankees":"NYY","Athletics":"ATH","Oakland Athletics":"OAK",
       "Philadelphia Phillies":"PHI","Pittsburgh Pirates":"PIT","San Diego Padres":"SD","San Francisco Giants":"SF",
       "Seattle Mariners":"SEA","St. Louis Cardinals":"STL","Tampa Bay Rays":"TB","Texas Rangers":"TEX",
-      "Toronto Blue Jays":"TOR","Washington Nationals":"WSH"
+      "Toronto Blue Jays":"TOR","Washington Nationals":"WSH",
+      "American League All-Stars":"AL","National League All-Stars":"NL",
+      "AL All-Stars":"AL","NL All-Stars":"NL",
+      "American League":"AL","National League":"NL","AL":"AL","NL":"NL"
     };
+    const allStarTeamById={
+      159:{abbr:"AL",zh:"美聯明星隊",name:"American League All-Stars"},
+      160:{abbr:"NL",zh:"國聯明星隊",name:"National League All-Stars"}
+    };
+    function allStarLeague(name,teamId){
+      const byId=allStarTeamById[Number(teamId)];
+      if(byId)return byId.abbr;
+      const value=String(name||"").trim().toLowerCase().replace(/[._-]+/g," ");
+      if((value.includes("american league")||/^(al)(\s|$)/.test(value))&&(value.includes("all star")||value==="american league"||value==="al"))return "AL";
+      if((value.includes("national league")||/^(nl)(\s|$)/.test(value))&&(value.includes("all star")||value==="national league"||value==="nl"))return "NL";
+      return "";
+    }
+    function displayTeamName(name,teamId){
+      const special=allStarLeague(name,teamId);
+      if(special==="AL")return "美聯明星隊";
+      if(special==="NL")return "國聯明星隊";
+      return teamZh[name]||name;
+    }
+    function resolvedTeamAbbr(name,provided,teamId,fallback){
+      const special=allStarLeague(name,teamId);
+      if(special)return special;
+      const supplied=String(provided||"").trim().toUpperCase();
+      if(supplied&&supplied!=="ALL")return supplied;
+      return teamAbbr[name]||(String(name||"").split(" ").pop()||fallback).slice(0,3).toUpperCase();
+    }
 
     function taiwanToday(){
       const parts = new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Taipei",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
@@ -1875,33 +1907,39 @@
       return "未開賽";
     }
     function normalizeGame(game){
-      const away=game.teams?.away?.team?.name||"Away";
-      const home=game.teams?.home?.team?.name||"Home";
+      const awayTeam=game.teams?.away?.team||{};
+      const homeTeam=game.teams?.home?.team||{};
+      const awayId=Number(awayTeam.id)||null;
+      const homeId=Number(homeTeam.id)||null;
+      const away=allStarTeamById[awayId]?.name||awayTeam.name||"Away";
+      const home=allStarTeamById[homeId]?.name||homeTeam.name||"Home";
       return {
         id:Number(game.gamePk),gameDate:game.gameDate,time:gameTime(game.gameDate),status:gameStatus(game),
         detailedState:game.status?.detailedState||"",
         inning:game.linescore?.currentInning||null,inningState:game.linescore?.inningState||"",
-        away,home,awayZh:teamZh[away]||away,homeZh:teamZh[home]||home,
-        awayAbbr:teamAbbr[away]||(away.split(" ").pop()||"AWY").slice(0,3).toUpperCase(),
-        homeAbbr:teamAbbr[home]||(home.split(" ").pop()||"HME").slice(0,3).toUpperCase(),
+        away,home,awayZh:displayTeamName(away,awayId),homeZh:displayTeamName(home,homeId),
+        awayAbbr:resolvedTeamAbbr(away,awayTeam.abbreviation,awayId,"AWY"),
+        homeAbbr:resolvedTeamAbbr(home,homeTeam.abbreviation,homeId,"HME"),
         awayScore:game.teams?.away?.score,homeScore:game.teams?.home?.score,
         awayPitcher:game.teams?.away?.probablePitcher?.fullName||"尚未公布",
         homePitcher:game.teams?.home?.probablePitcher?.fullName||"尚未公布",
-        venue:game.venue?.name||""
+        venue:game.venue?.name||"",eventLabel:game.gameType==="A"?"明星賽":""
       };
     }
 
     function normalizeBackendGame(game){
-      const away=game.away?.name||"Away";
-      const home=game.home?.name||"Home";
+      const awayId=Number(game.away?.id)||null;
+      const homeId=Number(game.home?.id)||null;
+      const away=allStarTeamById[awayId]?.name||game.away?.name||"Away";
+      const home=allStarTeamById[homeId]?.name||game.home?.name||"Home";
       return {
         id:Number(game.game_pk),gameDate:game.game_date,time:game.time_taiwan||gameTime(game.game_date),status:game.status||"upcoming",
         detailedState:game.detailed_status||"",inning:game.inning||null,inningState:game.inning_state||"",
-        away,home,awayZh:teamZh[away]||away,homeZh:teamZh[home]||home,
-        awayAbbr:game.away?.abbr||teamAbbr[away]||"AWY",homeAbbr:game.home?.abbr||teamAbbr[home]||"HME",
+        away,home,awayZh:displayTeamName(away,awayId),homeZh:displayTeamName(home,homeId),
+        awayAbbr:resolvedTeamAbbr(away,game.away?.abbr,awayId,"AWY"),homeAbbr:resolvedTeamAbbr(home,game.home?.abbr,homeId,"HME"),
         awayScore:game.away?.score,homeScore:game.home?.score,
         awayPitcher:game.away?.probable_pitcher?.name||"尚未公布",homePitcher:game.home?.probable_pitcher?.name||"尚未公布",
-        venue:game.venue||""
+        venue:game.venue||"",eventLabel:game.event_label||""
       };
     }
 
@@ -1973,7 +2011,7 @@
             <div class="team-line"><span class="abbr">${game.awayAbbr}</span><span>${game.awayZh}</span><span class="score">${game.awayScore??""}</span></div>
             <div class="team-line"><span class="abbr">${game.homeAbbr}</span><span>${game.homeZh}</span><span class="score">${game.homeScore??""}</span></div>
           </div>
-          <div class="pitchers">客：${game.awayPitcher}<br>主：${game.homePitcher}</div>
+          <div class="pitchers">${game.eventLabel?`${escapeHtml(game.eventLabel)} · `:""}客：${game.awayPitcher}<br>主：${game.homePitcher}</div>
           <span class="status-label ${game.status}">${statusText(game)}</span>
           <span class="chevron">›</span>
         </article>`).join("");
