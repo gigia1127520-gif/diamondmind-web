@@ -115,7 +115,7 @@
     .btn.primary{border-color:transparent;color:#02140c;background:linear-gradient(135deg,var(--green),var(--green-2));box-shadow:0 0 26px rgba(55,244,164,.18)}
     .btn.ghost{color:var(--text)}
     .btn.small{padding:9px 12px;font-size:13px}
-    #refreshGames{align-self:center;min-height:38px;padding:7px 10px;border-radius:11px;font-size:12px;line-height:1;white-space:nowrap}
+    #refreshGames{align-self:center;display:grid;place-items:center;width:38px;height:38px;min-height:38px;padding:0;border-radius:11px;font-size:19px;line-height:1;white-space:nowrap}
 
     main{min-height:calc(100vh - 72px)}
     .page{display:none;animation:pageIn .32s ease both}
@@ -731,7 +731,7 @@
           <div class="date-control">
             <label for="scheduleDate">比賽日期</label>
             <input id="scheduleDate" type="date">
-            <button type="button" class="btn ghost small" id="refreshGames" aria-label="重新整理賽事">↻ 更新</button>
+            <button type="button" class="btn ghost small" id="refreshGames" aria-label="重新整理賽事" title="重新整理賽事">↻</button>
           </div>
           <div class="filters" id="gameFilters">
             <button type="button" class="filter-btn active" data-game-filter="all">全部</button>
