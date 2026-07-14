@@ -3033,7 +3033,7 @@
       try{
         const [performance,snapshots]=await Promise.all([
           billingRequest(`/admin/model/performance?${params}`,{timeout:30000}),
-          billingRequest(`/admin/model/snapshots?${params}&limit=250`,{timeout:30000})
+          billingRequest(`/admin/model/snapshots?${params}&include_test=true&limit=250`,{timeout:30000})
         ]);
         renderModelPerformance(performance,snapshots);
       }catch(error){
@@ -3063,7 +3063,7 @@
       const resultBox=document.getElementById("modelTestResult");const button=document.getElementById("modelRunTest");if(resultBox){resultBox.className="model-test-result";resultBox.textContent="正在建立 TEST 快照並執行結算…"}if(button)button.disabled=true;
       const market=document.getElementById("modelTestMarket")?.value||"moneyline";const lineRaw=document.getElementById("modelTestLine")?.value;
       const body={recommendation_date:document.getElementById("modelTestDate")?.value||taiwanToday(),market,pick_side:document.getElementById("modelTestSide")?.value||"home",line:lineRaw===""?null:Number(lineRaw),away_score:Number(document.getElementById("modelTestAwayScore")?.value||0),home_score:Number(document.getElementById("modelTestHomeScore")?.value||0),confidence:Number(document.getElementById("modelTestConfidence")?.value||65),data_quality:Number(document.getElementById("modelTestQuality")?.value||0.75),module_edges:{starter:0.08,lineup:0.05,bullpen:0.03,team_strength:0.02,advanced:0.04,environment:0.01}};
-      try{const payload=await billingRequest("/admin/model/test-settlement",{method:"POST",body,timeout:30000});if(resultBox){resultBox.className="model-test-result success";resultBox.textContent=`測試完成：${settlementStatusLabel(payload.result?.status)}。TEST 快照已保存，但不計入真實績效。`}showToast("測試結算完成")}
+      try{const payload=await billingRequest("/admin/model/test-settlement",{method:"POST",body,timeout:30000});if(resultBox){resultBox.className="model-test-result success";resultBox.textContent=`測試完成：${settlementStatusLabel(payload.result?.status)}。TEST 快照已保存，但不計入真實績效。`}showToast("測試結算完成");state.modelPerformance=null;state.modelSnapshots=null;await loadModelPerformance(true);document.getElementById("modelSnapshotList")?.scrollIntoView({behavior:"smooth",block:"center"})}
       catch(error){if(resultBox){resultBox.className="model-test-result error";resultBox.textContent=error.message||"測試結算失敗"}}
       finally{if(button)button.disabled=false}
     }
@@ -3766,7 +3766,7 @@
         const sourceMeta=`<div class="engine-source-meta">${meta.updated_at?`<span>最後更新 ${escapeHtml(formatAnalysisUpdatedAt(meta.updated_at))}</span>`:""}${sources?`<span>來源 ${escapeHtml(sources)}</span>`:""}${meta.roster_date?`<span>名單日期 ${escapeHtml(meta.roster_date)}</span>`:""}</div>`;
         return `<section class="engine-module"><div class="engine-module-top"><b>${escapeHtml(group.label||fallback)}</b><span class="engine-quality ${quality<60?"low":""}">完整度 ${quality}%</span></div><p class="engine-note">${escapeHtml(group.note||"依可取得資料動態評分")}</p><div class="engine-metrics"><div class="engine-metric"><span>比較指標</span><span>客隊</span><span>主隊</span></div>${rows}</div>${engineExtraHtml(key,context)}${sourceMeta}</section>`;
       }).join("");
-      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V17.8 · 模型快照與校正 · 自動結算監控 · 公告中心 · Pro 自動開通 · 開賽前自動重算</span></div><div class="engine-module-grid">${cards}</div>`;
+      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V17.8.1 · TEST 快照即時顯示 · 模型快照與校正 · 自動結算監控 · 公告中心 · Pro 自動開通 · 開賽前自動重算</span></div><div class="engine-module-grid">${cards}</div>`;
     }
 
     window.setDiamondMindPrediction=function(prediction){
