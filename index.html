@@ -2624,7 +2624,8 @@
           const stats=pitcher.stats||{};
           const name=pitcher.name&&pitcher.name!=="尚未公布"?pitcher.name:"尚未公布";
           const hand=stats.pitch_hand?` · ${stats.pitch_hand==="L"?"左投":"右投"}`:"";
-          return `${name}${hand}`;
+          const quality=stats.data_quality!=null?` · 資料 ${Math.round(Number(stats.data_quality)*100)}%`:"";
+          return `${name}${hand}${quality}`;
         };
         return `<div class="engine-extra"><div><b>客隊預計先發</b><p>${escapeHtml(sideText("away"))}</p></div><div><b>主隊預計先發</b><p>${escapeHtml(sideText("home"))}</p></div></div>`;
       }
@@ -2642,7 +2643,9 @@
           const availability=data.availability||{};
           const closer=availability.closer||{};
           const workload=availability.workload_games==null?"近期場次資料不足":`近三日 ${availability.workload_games} 場 · ${recent.innings_pitched??"0.0"} 局 · ${recent.pitches??0} 球`;
-          const closerText=closer.name?`${closer.name}（${availability.closer_status||"狀態未定"}）`:availability.closer_status||"終結者尚未辨識";
+          const role=availability.closer_role_confidence==="confirmed"?"角色明確":availability.closer_role_confidence==="probable"?"可能終結者":"角色未確認";
+          const evidence=closer.name?` · ${closer.saves??0} SV${closer.games_finished!=null?` · ${closer.games_finished} GF`:""}`:"";
+          const closerText=closer.name?`${closer.name}（${role}；${availability.closer_status||"狀態未定"}${evidence}）`:availability.closer_status||"終結者尚未辨識";
           return `<div><b>${label}</b><p>${escapeHtml(`${availability.freshness_status||"近期負荷未確認"} · ${workload} · 終結者：${closerText}`)}</p></div>`;
         };
         return `<div class="engine-extra">${sideHtml("客隊牛棚",bullpen.away)}${sideHtml("主隊牛棚",bullpen.home)}</div>`;
@@ -2667,7 +2670,10 @@
         const away=((((context.lineups||{}).away||{}).official_lineup||{}).advanced)||{};
         const home=((((context.lineups||{}).home||{}).official_lineup||{}).advanced)||{};
         const basis=value=>value.basis==="official_lineup"?"正式打線":value.basis==="projected_core"?"預計核心打者":"資料未確認";
-        const text=(label,value)=>`${label}：${basis(value)} · 覆蓋 ${value.coverage_players??value.players??0} 人`;
+        const text=(label,value)=>{
+          const sources=(value.sources||[]).map(source=>source.replaceAll("_"," ")).join(" + ");
+          return `${label}：${basis(value)} · 覆蓋 ${value.coverage_players??value.players??0} 人${sources?` · ${sources}`:""}`;
+        };
         if(!away.available&&!home.available)return "";
         return `<div class="engine-extra"><div><b>Statcast 覆蓋</b><p>${escapeHtml(text("客隊",away))}</p></div><div><b>Statcast 覆蓋</b><p>${escapeHtml(text("主隊",home))}</p></div></div>`;
       }
@@ -2691,7 +2697,7 @@
       }
       const cards=available.map(([key,fallback])=>{
         const group=groups[key]||{};
-        const metrics=(group.metrics||[]).filter(metric=>metric.available!==false);
+        const metrics=(group.metrics||[]).filter(metric=>metric.available!==false||metric.away!=null||metric.home!=null);
         const rows=metrics.map(metric=>{
           const away=formatEngineMetric(metric.label,metric.away);
           const home=formatEngineMetric(metric.label,metric.home);
@@ -2703,7 +2709,7 @@
         const quality=Math.round(Number(group.quality||0)*100);
         return `<section class="engine-module"><div class="engine-module-top"><b>${escapeHtml(group.label||fallback)}</b><span class="engine-quality ${quality<60?"low":""}">完整度 ${quality}%</span></div><p class="engine-note">${escapeHtml(group.note||"依可取得資料動態評分")}</p><div class="engine-metrics"><div class="engine-metric"><span>比較指標</span><span>客隊</span><span>主隊</span></div>${rows}</div>${engineExtraHtml(key,context)}</section>`;
       }).join("");
-      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>不產生模擬比分 · 缺值自動降權 · 不使用固定預設值</span></div><div class="engine-module-grid">${cards}</div>`;
+      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V16.2 · 不產生模擬比分 · 缺值自動降權 · 先發不足禁止發布</span></div><div class="engine-module-grid">${cards}</div>`;
     }
 
     window.setDiamondMindPrediction=function(prediction){
