@@ -341,7 +341,7 @@
       background:linear-gradient(180deg,rgba(12,27,35,.9),rgba(7,17,23,.84));
       box-shadow:var(--shadow);
     }
-    .feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
     .feature-card{padding:21px}
     .feature-icon{width:44px;height:44px;display:grid;place-items:center;margin-bottom:15px;border:1px solid var(--line-strong);border-radius:13px;color:var(--green);font-weight:900;background:rgba(55,244,164,.07)}
     .feature-card h3{margin:0 0 9px;font-size:17px}
@@ -457,6 +457,15 @@
     .pro-access-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:26px}.market-tag{font-size:9px;font-weight:950;letter-spacing:1.4px;color:var(--green)}.market-tag.pro{color:var(--gold)}.access-chip{padding:5px 7px;border:1px solid var(--line);border-radius:999px;color:var(--green);font-size:9px;background:rgba(55,244,164,.05)}.access-chip.lock{border-color:rgba(255,215,106,.22);color:var(--gold);background:rgba(255,215,106,.04)}
     .pro-access-card h3{margin:0 0 7px;font-size:16px}.pro-access-card p{margin:0;color:var(--muted);font-size:11px;line-height:1.5}.pro-lock-icon{position:absolute;right:14px;bottom:12px;color:rgba(255,215,106,.5);font-size:18px}.pro-build-note{margin-top:11px;padding:12px 15px;border:1px solid rgba(255,215,106,.16);border-radius:14px;color:#aebbc1;font-size:11px;line-height:1.55;background:rgba(255,215,106,.025)}
     .prediction-market-meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:-10px;margin-bottom:18px}.prediction-market-meta span,.pro-metrics span{padding:5px 7px;border:1px solid var(--line);border-radius:999px;color:#b9c8ce;font-size:9px;background:rgba(255,255,255,.025)}
+    .engine-breakdown{display:grid;gap:12px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.06)}
+    .engine-breakdown-head{display:flex;align-items:end;justify-content:space-between;gap:12px}.engine-breakdown-head h3{margin:0;font-size:18px}.engine-breakdown-head span{color:var(--muted);font-size:10px}
+    .engine-module-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .engine-module{min-width:0;padding:14px;border:1px solid rgba(255,255,255,.065);border-radius:15px;background:rgba(255,255,255,.022)}
+    .engine-module-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.engine-module-top b{font-size:13px}.engine-quality{padding:4px 7px;border:1px solid var(--line);border-radius:999px;color:var(--green);font-size:9px;white-space:nowrap}.engine-quality.low{border-color:rgba(255,215,106,.25);color:var(--gold)}
+    .engine-note{min-height:30px;margin:0 0 10px;color:var(--muted);font-size:10px;line-height:1.5}
+    .engine-metrics{display:grid;gap:6px}.engine-metric{display:grid;grid-template-columns:minmax(0,1fr) 55px 55px;gap:7px;align-items:center;padding-top:6px;border-top:1px solid rgba(255,255,255,.045);font-size:10px}.engine-metric span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#b9c7cd}.engine-metric span:nth-child(n+2){text-align:right;font-variant-numeric:tabular-nums}.engine-metric .better{color:var(--green);font-weight:900}
+    .engine-extra{display:grid;gap:8px;margin-top:9px;padding-top:9px;border-top:1px solid rgba(255,255,255,.045)}.engine-extra b{font-size:10px;color:#c7d3d8}.engine-extra p{margin:0;color:var(--muted);font-size:9px;line-height:1.55}
+    .engine-unavailable{padding:15px;border:1px dashed rgba(255,255,255,.1);border-radius:14px;color:var(--muted);font-size:11px;line-height:1.55;text-align:center}
     .pro-prediction-body{display:grid;gap:8px}.pro-pick{display:block;color:var(--green);font-size:18px;line-height:1.25}.pro-matchup{color:#c4d0d5!important}.pro-metrics{display:flex;flex-wrap:wrap;gap:5px}.pro-summary{padding-top:7px;border-top:1px solid rgba(255,255,255,.055)}.parlay-legs{display:grid;gap:6px;margin:2px 0 0;padding:0;list-style:none}.parlay-legs li{display:flex;justify-content:space-between;gap:8px;padding:7px 8px;border:1px solid rgba(255,255,255,.055);border-radius:9px;color:#c7d3d7;font-size:10px;background:rgba(255,255,255,.02)}.parlay-legs b{color:var(--green)}
     .pro-selection-list{display:grid;gap:9px}.pro-selection-item{padding:11px;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(255,255,255,.022)}.pro-selection-no{display:inline-grid;place-items:center;min-width:22px;height:22px;margin-bottom:7px;border:1px solid var(--line-strong);border-radius:7px;color:var(--green);font-size:10px;font-weight:950}.pro-selection-item .pro-pick{font-size:15px}.pro-selection-item .pro-matchup{margin:4px 0 7px;font-size:10px}.pro-selection-item .pro-summary{margin:7px 0 0;font-size:10px;line-height:1.45}.pro-selection-item .parlay-legs{margin-top:8px}
     .founder-console{margin-top:18px;padding:24px;background:linear-gradient(145deg,rgba(8,27,31,.98),rgba(5,15,21,.98));border-color:rgba(255,209,92,.32)}
@@ -632,7 +641,7 @@
       .record-card-head{padding:20px 18px 15px}.pick-list{padding:0 18px 18px}.record-summary{padding:0 18px 20px}
       .game-card{grid-template-columns:1fr 42px;padding:15px}.game-time{grid-column:1/2;display:flex;align-items:center;gap:9px}.game-time small{margin:0}.game-teams{grid-column:1/2}.pitchers{grid-column:1/2}.status-label{grid-column:2;grid-row:1}.chevron{grid-column:2;grid-row:2/4;align-self:center;justify-self:center}
       .toolbar{align-items:stretch}.date-control{width:100%;min-width:0;flex-basis:100%}.date-actions{width:100%;min-width:0}.date-actions input{flex:1 1 0;width:0;min-width:0;max-width:calc(100% - 48px)}#refreshGames{position:static;flex:0 0 38px}
-      .prediction-main{padding:20px;min-height:390px}.confidence-preview{grid-template-columns:1fr;text-align:center}.confidence-ring{margin:auto}.pick-highlight{text-align:left}
+      .prediction-main{padding:20px;min-height:390px}.confidence-preview{grid-template-columns:1fr;text-align:center}.confidence-ring{margin:auto}.pick-highlight{text-align:left}.engine-module-grid{grid-template-columns:1fr}.engine-breakdown-head{align-items:flex-start;flex-direction:column}.engine-module{text-align:left}
       .prediction-access-gate{padding:28px 18px}.access-level-head{align-items:flex-start;flex-direction:column}.pro-access-grid{grid-template-columns:1fr}.pro-access-card{min-height:142px}.membership-hero{grid-template-columns:1fr;padding:21px}.current-plan-box{min-width:0}.benefit-table{overflow-x:auto}.benefit-table-head,.benefit-row{min-width:570px}.checkout-actions{flex-direction:column}.checkout-actions .btn{width:100%}
       .founder-console{padding:18px}.founder-console-head,.founder-candidate-top,.founder-candidate-actions{align-items:flex-start;flex-direction:column}.founder-toolbar input,.founder-toolbar .btn,.founder-candidate-actions .btn,.founder-market-actions .btn{width:100%}.founder-market-options{grid-template-columns:1fr}.founder-market-actions{align-items:stretch;flex-direction:column}
       .record-top-grid{grid-template-columns:repeat(2,1fr)}.record-row{grid-template-columns:76px minmax(0,1fr) 52px;padding:14px}.record-score{display:none}
@@ -791,10 +800,12 @@
             <div><div class="kicker">核心功能</div><h2>從資料到決策</h2></div>
           </div>
           <div class="feature-grid">
-            <article class="card feature-card"><div class="feature-icon">SP</div><h3>先發投手</h3><p>投手近況、ERA、WHIP、三振與對戰條件。</p></article>
-            <article class="card feature-card"><div class="feature-icon">PY</div><h3>畢氏勝率</h3><p>比較實際戰績與得失分推算出的真實強度。</p></article>
-            <article class="card feature-card"><div class="feature-icon">BP</div><h3>牛棚狀態</h3><p>近期用量、休息天數與後段局數穩定度。</p></article>
-            <article class="card feature-card"><div class="feature-icon">AI</div><h3>模型信心</h3><p>把關鍵因素轉成可解釋的機率與風險提示。</p></article>
+            <article class="card feature-card"><div class="feature-icon">SP</div><h3>先發投手引擎</h3><p>ERA、WHIP、K/BB、被打擊率、近三場與主客場差異。</p></article>
+            <article class="card feature-card"><div class="feature-icon">LU</div><h3>打線引擎</h3><p>球季與近七日 OPS、左右投對戰、正式打線及主力缺席。</p></article>
+            <article class="card feature-card"><div class="feature-icon">BP</div><h3>牛棚引擎</h3><p>牛棚 ERA、WHIP、近三日負荷、連續出賽與終結者可用性。</p></article>
+            <article class="card feature-card"><div class="feature-icon">WX</div><h3>環境引擎</h3><p>天氣、溫度、風向、屋頂狀態、球場得分與全壘打因子。</p></article>
+            <article class="card feature-card"><div class="feature-icon">ST</div><h3>進階數據引擎</h3><p>xERA、xwOBA、Hard Hit% 與 Barrel% 交叉比較。</p></article>
+            <article class="card feature-card"><div class="feature-icon">AI</div><h3>可解釋權重</h3><p>缺少資料時自動降低該模組權重，不用模擬精確比分。</p></article>
           </div>
         </div>
       </div>
@@ -862,6 +873,7 @@
                   <div class="pick-highlight"><small>AI 獨贏推薦</small><b id="predictionPick">—</b></div>
                   <div class="prediction-market-meta" id="predictionMarketMeta"></div>
                   <div class="factor-list" id="predictionFactors"></div>
+                  <div class="engine-breakdown" id="predictionEngineBreakdown"></div>
                 </div>
               </div>
             </article>
@@ -1268,6 +1280,7 @@
       <div class="detail-box"><small>比賽狀態</small><b id="detailStatus">—</b></div>
       <div class="detail-box"><small>AI 分析</small><b id="detailAiStatus">等待模型分析</b></div>
     </div>
+    <div class="engine-breakdown" id="detailEngineBreakdown"><div class="engine-unavailable">點開賽事後，系統會載入五大完整分析引擎。</div></div>
   </section>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -2035,7 +2048,8 @@
       document.getElementById("detailAwayPitcher").textContent=game.awayPitcher;
       document.getElementById("detailHomePitcher").textContent=game.homePitcher;
       document.getElementById("detailStatus").textContent=statusText(game);
-      document.getElementById("detailAiStatus").textContent="正在讀取球隊數據…";
+      document.getElementById("detailAiStatus").textContent="正在載入五大引擎…";
+      document.getElementById("detailEngineBreakdown").innerHTML=`<div class="engine-unavailable">正在整理先發、打線、牛棚、環境與進階數據…</div>`;
       openModal("gameModal");
       loadGameDetail(id);
     }
@@ -2043,16 +2057,18 @@
     async function loadGameDetail(id){
       const aiStatus=document.getElementById("detailAiStatus");
       try{
-        const payload=await fetchJsonWithTimeout(`${API_BASE}/mlb/games/${id}`,8000);
-        const away=payload.teams?.away?.standing;
-        const home=payload.teams?.home?.standing;
-        if(away?.pythagorean_pct!=null&&home?.pythagorean_pct!=null){
-          aiStatus.textContent=`畢氏勝率 ${Math.round(away.pythagorean_pct*1000)/10}% : ${Math.round(home.pythagorean_pct*1000)/10}%`;
-        }else{
-          aiStatus.textContent="完整模型資料整理中";
-        }
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/mlb/games/${id}`,45000);
+        const analysis=payload.analysis||{};
+        const quality=Math.round(Number(analysis.data_quality||0)*100);
+        aiStatus.textContent=analysis.pick?.label?`${analysis.pick.label} · 信心 ${analysis.confidence}% · 資料 ${quality}%`:"五大引擎已完成";
+        renderEngineBreakdown(analysis.analysis_groups||{},"detailEngineBreakdown",{
+          lineups:payload.lineups||analysis.lineups||{},
+          environment:payload.environment||analysis.environment||{},
+          startingPitchers:payload.starting_pitchers||analysis.starting_pitchers||{}
+        });
       }catch(error){
         aiStatus.textContent="後端暫時無法連線，顯示基本賽事資料";
+        document.getElementById("detailEngineBreakdown").innerHTML=`<div class="engine-unavailable">完整引擎資料目前無法載入，請稍後重新開啟。</div>`;
       }
     }
 
@@ -2528,11 +2544,11 @@
       apiStatus.textContent="模型 API 連線中";
       apiStatus.classList.remove("demo-pill");
       title.textContent="AI 正在比較今日全部賽事";
-      text.textContent="正在讀取畢氏勝率、實際戰績、近期狀態與先發投手資料。";
+      text.textContent="正在讀取先發投手、正式打線、牛棚負荷、天氣球場與 Statcast 進階數據。";
       try{
         const payload=await fetchJsonWithTimeout(
           `${API_BASE}/predictions/daily?date=${encodeURIComponent(date)}`,
-          12000,
+          75000,
           {headers:{Authorization:`Bearer ${authState.session.access_token}`}}
         );
         state.predictionDate=date;
@@ -2548,6 +2564,8 @@
             time:selection.time_taiwan,
             pick:selection.pick?.label||"—",
             factors:selection.factors||[],
+            analysisGroups:selection.analysis_groups||{},
+            engine:selection.engine||{},
             price:selection.price,
             edge:selection.edge,
             impliedProbability:selection.implied_probability,
@@ -2561,7 +2579,7 @@
         }
       }catch(error){
         try{
-          const fallback=await fetchJsonWithTimeout(`${API_BASE}/predictions/top?date=${encodeURIComponent(date)}`,12000);
+          const fallback=await fetchJsonWithTimeout(`${API_BASE}/predictions/top?date=${encodeURIComponent(date)}`,75000);
           state.predictionDate=date;
           state.predictionRole=accessKey;
           apiStatus.textContent="免費模型已連線 · 會員玩法稍後重試";
@@ -2571,7 +2589,7 @@
           }else renderLockedProPredictions();
           if(fallback.published&&fallback.selection){
             const selection=fallback.selection;
-            window.setDiamondMindPrediction({confidence:selection.confidence,matchup:selection.matchup,time:selection.time_taiwan,pick:selection.pick?.label||"—",factors:selection.factors||[],eventLabel:selection.publication?.event_label||selection.game?.event_label,founderSelected:selection.publication?.mode==="founder_selected"});
+            window.setDiamondMindPrediction({confidence:selection.confidence,matchup:selection.matchup,time:selection.time_taiwan,pick:selection.pick?.label||"—",factors:selection.factors||[],analysisGroups:selection.analysis_groups||{},engine:selection.engine||{},eventLabel:selection.publication?.event_label||selection.game?.event_label,founderSelected:selection.publication?.mode==="founder_selected"});
           }else{
             title.textContent="今日暫不發布 AI 精選";
             text.textContent=fallback.message||"目前沒有場次達到最低信心門檻。";
@@ -2585,6 +2603,73 @@
           text.textContent="賽事頁仍可使用 MLB 直連備援，請稍後再試。";
         }
       }
+    }
+
+    function formatEngineMetric(label,value){
+      const number=Number(value);
+      if(value==null||value===""||!Number.isFinite(number))return "—";
+      if(/勝率|近期負荷|可用性/.test(label)&&Math.abs(number)<=1.5)return `${(number*100).toFixed(1)}%`;
+      if(/Hard Hit|Barrel/.test(label))return `${number.toFixed(1)}%`;
+      if(/OPS|OBP|SLG|xwOBA|被打擊率/.test(label))return number.toFixed(3).replace(/^0/,"");
+      if(/ERA|WHIP|K\/BB/.test(label))return number.toFixed(2);
+      return Math.abs(number)>=100?number.toFixed(0):number.toFixed(2);
+    }
+
+    function engineExtraHtml(key,context){
+      if(key==="lineup"){
+        const away=((context.lineups||{}).away||{}).official_lineup||{};
+        const home=((context.lineups||{}).home||{}).official_lineup||{};
+        const names=side=>(side.players||[]).map(player=>player.name).filter(Boolean).join("、");
+        if(!away.players?.length&&!home.players?.length)return "";
+        return `<div class="engine-extra"><div><b>客隊${away.confirmed?"正式":"預計"}打線</b><p>${escapeHtml(names(away)||"尚未公布")}</p></div><div><b>主隊${home.confirmed?"正式":"預計"}打線</b><p>${escapeHtml(names(home)||"尚未公布")}</p></div></div>`;
+      }
+      if(key==="environment"){
+        const environment=context.environment||{};
+        const weather=environment.weather||{};
+        const park=environment.park_factors||{};
+        const venue=environment.venue||{};
+        const parts=[
+          venue.name,
+          weather.available?`${weather.condition||"天氣"} ${weather.temperature_f??"—"}°F`:null,
+          weather.available?`風速 ${weather.wind_speed_mph??"—"} mph`:null,
+          park.available?`得分因子 ${park.run_factor}`:null,
+          environment.roof_closed?"屋頂關閉":null
+        ].filter(Boolean);
+        return parts.length?`<div class="engine-extra"><p>${escapeHtml(parts.join(" · "))}</p></div>`:"";
+      }
+      return "";
+    }
+
+    function renderEngineBreakdown(groups,targetId,context={}){
+      const target=document.getElementById(targetId);
+      if(!target)return;
+      const order=[
+        ["starter","先發投手"],
+        ["lineup","打線強度"],
+        ["bullpen","牛棚狀態"],
+        ["environment","環境條件"],
+        ["advanced","進階數據"]
+      ];
+      const available=order.filter(([key])=>groups&&groups[key]);
+      if(!available.length){
+        target.innerHTML=`<div class="engine-unavailable">這筆推薦尚未保存完整引擎快照；新版本發布後的新推薦會顯示五大分析。</div>`;
+        return;
+      }
+      const cards=available.map(([key,fallback])=>{
+        const group=groups[key]||{};
+        const metrics=(group.metrics||[]).filter(metric=>metric.available!==false);
+        const rows=metrics.map(metric=>{
+          const away=formatEngineMetric(metric.label,metric.away);
+          const home=formatEngineMetric(metric.label,metric.home);
+          const edge=Number(metric.edge_home);
+          const awayClass=Number.isFinite(edge)&&edge<0?"better":"";
+          const homeClass=Number.isFinite(edge)&&edge>0?"better":"";
+          return `<div class="engine-metric"><span>${escapeHtml(metric.label||"指標")}</span><span class="${awayClass}">${away}</span><span class="${homeClass}">${home}</span></div>`;
+        }).join("")||`<div class="engine-unavailable">此模組目前資料不足，權重已自動降低。</div>`;
+        const quality=Math.round(Number(group.quality||0)*100);
+        return `<section class="engine-module"><div class="engine-module-top"><b>${escapeHtml(group.label||fallback)}</b><span class="engine-quality ${quality<60?"low":""}">完整度 ${quality}%</span></div><p class="engine-note">${escapeHtml(group.note||"依可取得資料動態評分")}</p><div class="engine-metrics"><div class="engine-metric"><span>比較指標</span><span>客隊</span><span>主隊</span></div>${rows}</div>${engineExtraHtml(key,context)}</section>`;
+      }).join("");
+      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>不產生模擬比分 · 缺值自動降權</span></div><div class="engine-module-grid">${cards}</div>`;
     }
 
     window.setDiamondMindPrediction=function(prediction){
@@ -2610,6 +2695,7 @@
         meta.append(chip);
       });
       document.getElementById("predictionFactors").innerHTML=(prediction.factors||[]).map(f=>`<div><div class="factor-head"><span>${f.label}</span><b>${f.value}%</b></div><div class="factor-bar"><i style="width:${f.value}%"></i></div></div>`).join("");
+      renderEngineBreakdown(prediction.analysisGroups||{},"predictionEngineBreakdown");
     };
 
     const authCallback=consumeAuthCallback();
