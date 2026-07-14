@@ -802,7 +802,7 @@
           <div class="feature-grid">
             <article class="card feature-card"><div class="feature-icon">SP</div><h3>先發投手引擎</h3><p>ERA、WHIP、K/BB、被打擊率、近三場與主客場差異。</p></article>
             <article class="card feature-card"><div class="feature-icon">LU</div><h3>打線引擎</h3><p>球季與近七日 OPS、左右投對戰、正式打線及主力缺席。</p></article>
-            <article class="card feature-card"><div class="feature-icon">BP</div><h3>牛棚引擎</h3><p>牛棚 ERA、WHIP、近三日負荷、連續出賽與終結者可用性。</p></article>
+            <article class="card feature-card"><div class="feature-icon">BP</div><h3>牛棚引擎</h3><p>牛棚 ERA、WHIP、牛棚體力、連續出賽與終結者可用度。</p></article>
             <article class="card feature-card"><div class="feature-icon">WX</div><h3>環境引擎</h3><p>天氣、溫度、風向、屋頂狀態、球場得分與全壘打因子。</p></article>
             <article class="card feature-card"><div class="feature-icon">ST</div><h3>進階數據引擎</h3><p>xERA、xwOBA、Hard Hit% 與 Barrel% 交叉比較。</p></article>
             <article class="card feature-card"><div class="feature-icon">AI</div><h3>可解釋權重</h3><p>缺少資料時自動降低該模組權重，不用模擬精確比分。</p></article>
@@ -2609,7 +2609,7 @@
     function formatEngineMetric(label,value){
       const number=Number(value);
       if(value==null||value===""||!Number.isFinite(number))return "—";
-      if(/勝率|近期負荷|可用性/.test(label)&&Math.abs(number)<=1.5)return `${(number*100).toFixed(1)}%`;
+      if(/勝率|牛棚體力|可用度|近期負荷|可用性/.test(label)&&Math.abs(number)<=1.5)return `${(number*100).toFixed(1)}%`;
       if(/Hard Hit|Barrel/.test(label))return `${number.toFixed(1)}%`;
       if(/OPS|OBP|SLG|xwOBA|被打擊率/.test(label))return number.toFixed(3).replace(/^0/,"");
       if(/ERA|WHIP|K\/BB/.test(label))return number.toFixed(2);
@@ -2646,7 +2646,7 @@
           const role=availability.closer_role_confidence==="confirmed"?"角色明確":availability.closer_role_confidence==="probable"?"可能終結者":"角色未確認";
           const evidence=closer.name?` · ${closer.saves??0} SV${closer.games_finished!=null?` · ${closer.games_finished} GF`:""}`:"";
           const closerText=closer.name?`${closer.name}（${role}；${availability.closer_status||"狀態未定"}${evidence}）`:availability.closer_status||"終結者尚未辨識";
-          return `<div><b>${label}</b><p>${escapeHtml(`${availability.freshness_status||"近期負荷未確認"} · ${workload} · 終結者：${closerText}`)}</p></div>`;
+          return `<div><b>${label}</b><p>${escapeHtml(`${availability.freshness_status||"牛棚體力未確認"} · ${workload} · 終結者：${closerText}`)}</p></div>`;
         };
         return `<div class="engine-extra">${sideHtml("客隊牛棚",bullpen.away)}${sideHtml("主隊牛棚",bullpen.home)}</div>`;
       }
@@ -2671,7 +2671,7 @@
         const home=((((context.lineups||{}).home||{}).official_lineup||{}).advanced)||{};
         const basis=value=>value.basis==="official_lineup"?"正式打線":value.basis==="projected_core"?"預計核心打者":"資料未確認";
         const text=(label,value)=>{
-          const sources=(value.sources||[]).map(source=>source.replaceAll("_"," ")).join(" + ");
+          const sources=(value.sources||[]).map(source=>source.replaceAll("mlb_expected_statistics","MLB Expected Statistics").replaceAll("mlb_season_advanced","MLB Advanced Stats").replaceAll("savant_","Savant ").replaceAll("_"," ")).join(" + ");
           return `${label}：${basis(value)} · 覆蓋 ${value.coverage_players??value.players??0} 人${sources?` · ${sources}`:""}`;
         };
         if(!away.available&&!home.available)return "";
@@ -2709,7 +2709,7 @@
         const quality=Math.round(Number(group.quality||0)*100);
         return `<section class="engine-module"><div class="engine-module-top"><b>${escapeHtml(group.label||fallback)}</b><span class="engine-quality ${quality<60?"low":""}">完整度 ${quality}%</span></div><p class="engine-note">${escapeHtml(group.note||"依可取得資料動態評分")}</p><div class="engine-metrics"><div class="engine-metric"><span>比較指標</span><span>客隊</span><span>主隊</span></div>${rows}</div>${engineExtraHtml(key,context)}</section>`;
       }).join("");
-      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V16.2 · 不產生模擬比分 · 缺值自動降權 · 先發不足禁止發布</span></div><div class="engine-module-grid">${cards}</div>`;
+      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V16.3 · 不產生模擬比分 · 缺值自動降權 · 先發不足禁止發布</span></div><div class="engine-module-grid">${cards}</div>`;
     }
 
     window.setDiamondMindPrediction=function(prediction){
