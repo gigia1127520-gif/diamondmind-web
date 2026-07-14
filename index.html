@@ -526,6 +526,14 @@
     .checkout-confirm input{width:18px;height:18px;min-height:0;margin:1px 0 0;padding:0;accent-color:var(--green)}
     .checkout-note{margin-top:13px;color:var(--muted);font-size:11px;line-height:1.6}.checkout-note.error{color:var(--red)}.checkout-note.success{color:var(--green)}
     .billing-status-line{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.billing-status-line span{padding:5px 8px;border:1px solid var(--line);border-radius:999px;color:#aebdc4;font-size:9px;background:rgba(255,255,255,.02)}
+    .payment-success-modal{width:min(560px,calc(100% - 24px));text-align:center;background:radial-gradient(circle at 50% 0,rgba(55,244,164,.17),transparent 42%),linear-gradient(155deg,#0b1d25,#061117 78%)}
+    .payment-success-icon{width:84px;height:84px;display:grid;place-items:center;margin:4px auto 18px;border:1px solid var(--line-strong);border-radius:50%;color:#02140c;font-size:38px;font-weight:950;background:linear-gradient(135deg,var(--green),var(--green-2));box-shadow:0 0 44px rgba(55,244,164,.24)}
+    .payment-success-kicker{color:var(--green);font-size:10px;font-weight:950;letter-spacing:2.2px;text-transform:uppercase}
+    .payment-success-modal h2{margin:8px 0 9px;font-size:30px;letter-spacing:-1px}.payment-success-copy{max-width:430px;margin:0 auto;color:var(--muted);font-size:13px;line-height:1.65}
+    .payment-success-summary{display:grid;gap:0;margin:22px 0 17px;overflow:hidden;border:1px solid var(--line);border-radius:17px;background:rgba(255,255,255,.022);text-align:left}
+    .payment-success-row{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;padding:13px 15px;border-bottom:1px solid rgba(255,255,255,.055)}.payment-success-row:last-child{border-bottom:0}.payment-success-row span{color:var(--muted);font-size:11px}.payment-success-row b{overflow-wrap:anywhere;color:#dce8ed;font-size:12px;text-align:right}.payment-success-row b.gold{color:var(--gold)}
+    .payment-success-progress{height:7px;overflow:hidden;border-radius:999px;background:#102028}.payment-success-progress i{display:block;width:100%;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--green-2),var(--green));transform-origin:left center;animation:paymentSuccessCountdown 5s linear forwards}@keyframes paymentSuccessCountdown{to{transform:scaleX(0)}}
+    .payment-success-countdown{margin:10px 0 0;color:#91a4ad;font-size:11px}.payment-success-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:20px}.payment-success-actions .btn{min-width:150px}
 
 
     .footer{
@@ -663,6 +671,7 @@
       .toolbar{align-items:stretch}.date-control{width:100%;min-width:0;flex-basis:100%}.date-actions{width:100%;min-width:0}.date-actions input{flex:1 1 0;width:0;min-width:0;max-width:calc(100% - 48px)}#refreshGames{position:static;flex:0 0 38px}
       .prediction-main{padding:20px;min-height:390px}.confidence-preview{grid-template-columns:1fr;text-align:center}.confidence-ring{margin:auto}.pick-highlight{text-align:left}.engine-module-grid{grid-template-columns:1fr}.engine-breakdown-head{align-items:flex-start;flex-direction:column}.engine-module{text-align:left}.locked-engine-list{grid-template-columns:1fr}.locked-engine-item:last-child{grid-column:auto}
       .prediction-access-gate{padding:28px 18px}.access-level-head{align-items:flex-start;flex-direction:column}.pro-access-grid{grid-template-columns:1fr}.pro-access-card{min-height:142px}.membership-hero{grid-template-columns:1fr;padding:21px}.current-plan-box{min-width:0}.benefit-table{overflow-x:auto}.benefit-table-head,.benefit-row{min-width:570px}.checkout-actions{flex-direction:column}.checkout-actions .btn{width:100%}
+      .payment-success-modal{padding:22px 18px}.payment-success-modal h2{font-size:26px}.payment-success-row{grid-template-columns:88px minmax(0,1fr);padding:12px}.payment-success-actions{flex-direction:column}.payment-success-actions .btn{width:100%}
       .founder-console{padding:18px}.founder-console-head,.founder-candidate-top,.founder-candidate-actions{align-items:flex-start;flex-direction:column}.founder-toolbar input,.founder-toolbar .btn,.founder-candidate-actions .btn,.founder-market-actions .btn{width:100%}.founder-market-options{grid-template-columns:1fr}.founder-market-actions{align-items:stretch;flex-direction:column}
       .record-top-grid{grid-template-columns:repeat(2,1fr)}.record-row{grid-template-columns:76px minmax(0,1fr) 52px;padding:14px}.record-score{display:none}
       .records-toolbar{align-items:flex-start;flex-direction:column}
@@ -1224,6 +1233,25 @@
     <div class="checkout-actions"><button type="button" class="btn ghost" data-close-modal>返回比較方案</button><button type="button" class="btn pro" id="checkoutPayButton">前往綠界安全付款</button></div>
   </section>
 
+  <section class="modal payment-success-modal" id="paymentSuccessModal" role="dialog" aria-modal="true" aria-labelledby="paymentSuccessTitle">
+    <div class="payment-success-icon" aria-hidden="true">✓</div>
+    <div class="payment-success-kicker">PAYMENT VERIFIED</div>
+    <h2 id="paymentSuccessTitle">付款成功，Pro 已開通</h2>
+    <p class="payment-success-copy">交易已由綠界與 DiamondMind 後端完成驗證。你的 Pro 權限已立即生效。</p>
+    <div class="payment-success-summary">
+      <div class="payment-success-row"><span>會員方案</span><b id="paymentSuccessPlan">DiamondMind Pro</b></div>
+      <div class="payment-success-row"><span>付款金額</span><b class="gold" id="paymentSuccessAmount">—</b></div>
+      <div class="payment-success-row"><span>有效期限</span><b id="paymentSuccessExpiry">—</b></div>
+      <div class="payment-success-row"><span>交易編號</span><b id="paymentSuccessTradeNo">—</b></div>
+    </div>
+    <div class="payment-success-progress" aria-hidden="true"><i id="paymentSuccessProgress"></i></div>
+    <p class="payment-success-countdown" id="paymentSuccessCountdown">5 秒後返回會員中心</p>
+    <div class="payment-success-actions">
+      <button type="button" class="btn ghost" id="paymentSuccessMemberButton">返回會員中心</button>
+      <button type="button" class="btn pro" id="paymentSuccessContinueButton">立即查看 Pro 內容</button>
+    </div>
+  </section>
+
   <section class="modal" id="tutorialModal" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
     <div class="modal-head"><div><h2 id="tutorialTitle">使用教學</h2><p>五個主功能快速上手</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
     <div class="tutorial-list">
@@ -1321,7 +1349,8 @@
       records:[],marketRecords:[],recordStats:null,recordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:"",recordsAccessRole:"",
       founderCandidateDate:"",founderCandidatesLoading:false,
       founderMarketDate:"",founderMarketsLoading:false,founderMarketBundle:null,
-      upgradeReturnGame:null,billingConfig:null,billingStatus:null,selectedPlan:null,paymentHandled:false
+      upgradeReturnGame:null,billingConfig:null,billingStatus:null,selectedPlan:null,paymentHandled:false,
+      paymentSuccessTimer:null,paymentSuccessInterval:null
     };
     const authState={session:null,user:null,ready:false,role:"free"};
 
@@ -1430,7 +1459,14 @@
       modal.classList.add("open");
       document.body.style.overflow="hidden";
     }
+    function clearPaymentSuccessTimers(){
+      clearTimeout(state.paymentSuccessTimer);
+      clearInterval(state.paymentSuccessInterval);
+      state.paymentSuccessTimer=null;
+      state.paymentSuccessInterval=null;
+    }
     function closeModals(){
+      clearPaymentSuccessTimers();
       backdrop.classList.remove("open");
       document.querySelectorAll(".modal.open").forEach(m=>m.classList.remove("open"));
       document.body.style.overflow="";
@@ -1547,6 +1583,49 @@
       }else if(status?.status==="pending")target.innerHTML="<span>付款確認中</span>";
       else target.innerHTML="<span>免費方案</span><span>可選月／季／年</span>";
     }
+    const billingPlanPresentation={
+      monthly:{label:"月方案",amount:"NT$399"},
+      quarterly:{label:"季方案",amount:"NT$999"},
+      annual:{label:"年方案",amount:"NT$2,999"}
+    };
+    function paymentPlanPresentation(status){
+      const fallback=billingPlanPresentation[status?.plan]||{label:"Pro 方案",amount:"—"};
+      const configured=(state.billingConfig?.plans||[]).find(plan=>plan.code===status?.plan);
+      const amount=Number(configured?.amount);
+      return {
+        label:configured?.display_name||configured?.name_zh||fallback.label,
+        amount:Number.isFinite(amount)?`NT$${amount.toLocaleString("zh-TW")}`:fallback.amount
+      };
+    }
+    function finishPaymentSuccess(destination="membership"){
+      closeModals();
+      if(destination==="content"){
+        if(state.upgradeReturnGame){const game=state.upgradeReturnGame;state.upgradeReturnGame=null;openGame(game)}
+        else showPage("predictionPage");
+      }else showPage("membershipPage");
+    }
+    function showPaymentSuccess(status,tradeNo=""){
+      clearPaymentSuccessTimers();
+      const presentation=paymentPlanPresentation(status);
+      document.getElementById("paymentSuccessPlan").textContent=`DiamondMind Pro ${presentation.label}`;
+      document.getElementById("paymentSuccessAmount").textContent=presentation.amount;
+      document.getElementById("paymentSuccessExpiry").textContent=formatMembershipDate(status?.current_period_end);
+      document.getElementById("paymentSuccessTradeNo").textContent=tradeNo||status?.merchant_trade_no||"已完成後端驗證";
+      const progress=document.getElementById("paymentSuccessProgress");
+      if(progress){progress.style.animation="none";void progress.offsetWidth;progress.style.animation="paymentSuccessCountdown 5s linear forwards"}
+      let seconds=5;
+      const countdown=document.getElementById("paymentSuccessCountdown");
+      if(countdown)countdown.textContent=`${seconds} 秒後返回會員中心`;
+      openModal("paymentSuccessModal");
+      state.paymentSuccessInterval=setInterval(()=>{
+        seconds=Math.max(0,seconds-1);
+        if(countdown)countdown.textContent=seconds?`${seconds} 秒後返回會員中心`:"正在返回會員中心…";
+      },1000);
+      state.paymentSuccessTimer=setTimeout(()=>finishPaymentSuccess("membership"),5000);
+    }
+    document.getElementById("paymentSuccessMemberButton").addEventListener("click",()=>finishPaymentSuccess("membership"));
+    document.getElementById("paymentSuccessContinueButton").addEventListener("click",()=>finishPaymentSuccess("content"));
+
     async function handlePaymentReturn(){
       if(state.paymentHandled||!authState.ready)return;
       const params=new URLSearchParams(location.search);const result=params.get("payment");
@@ -1563,13 +1642,18 @@
           if(status?.active){
             activated=true;
             if(authState.session?.refresh_token){try{await refreshAuthSession(authState.session.refresh_token)}catch{}}
-            await loadBillingStatus();renderAuthState();showToast("付款成功，Pro 權限已開通");
-            if(state.upgradeReturnGame){setTimeout(()=>openGame(state.upgradeReturnGame),500)}
+            const finalStatus=await loadBillingStatus()||status;
+            await loadBillingConfig();
+            renderAuthState();
+            cleanPaymentQuery();
+            showPaymentSuccess(finalStatus,params.get("trade_no")||"");
             break;
           }
         }
-        if(!activated)showToast("付款結果仍在同步，請稍後重新整理會員方案");
-        cleanPaymentQuery();
+        if(!activated){
+          showToast("付款結果仍在同步，請稍後重新整理會員方案");
+          cleanPaymentQuery();
+        }
       }
     }
     function cleanPaymentQuery(){
@@ -2957,7 +3041,7 @@
         const sourceMeta=`<div class="engine-source-meta">${meta.updated_at?`<span>最後更新 ${escapeHtml(formatAnalysisUpdatedAt(meta.updated_at))}</span>`:""}${sources?`<span>來源 ${escapeHtml(sources)}</span>`:""}${meta.roster_date?`<span>名單日期 ${escapeHtml(meta.roster_date)}</span>`:""}</div>`;
         return `<section class="engine-module"><div class="engine-module-top"><b>${escapeHtml(group.label||fallback)}</b><span class="engine-quality ${quality<60?"low":""}">完整度 ${quality}%</span></div><p class="engine-note">${escapeHtml(group.note||"依可取得資料動態評分")}</p><div class="engine-metrics"><div class="engine-metric"><span>比較指標</span><span>客隊</span><span>主隊</span></div>${rows}</div>${engineExtraHtml(key,context)}${sourceMeta}</section>`;
       }).join("");
-      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V17.0 · 綠界付款 · Pro 自動開通 · 開賽前自動重算</span></div><div class="engine-module-grid">${cards}</div>`;
+      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V17.1 · 付款成功確認 · Pro 自動開通 · 開賽前自動重算</span></div><div class="engine-module-grid">${cards}</div>`;
     }
 
     window.setDiamondMindPrediction=function(prediction){
