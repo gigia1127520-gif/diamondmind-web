@@ -524,7 +524,7 @@
     .payment-mode.stage{border-color:rgba(255,215,106,.28);color:var(--gold);background:rgba(255,215,106,.05)}
     .checkout-confirm{display:grid;grid-template-columns:20px 1fr;gap:9px;align-items:start;margin-top:16px;padding:13px;border:1px solid rgba(255,255,255,.07);border-radius:14px;color:#b9c7cd;font-size:11px;line-height:1.55;background:rgba(255,255,255,.02)}
     .checkout-confirm input{width:18px;height:18px;min-height:0;margin:1px 0 0;padding:0;accent-color:var(--green)}
-    .checkout-note{margin-top:13px;color:var(--muted);font-size:11px;line-height:1.6}.checkout-note.error{color:var(--red)}.checkout-note.success{color:var(--green)}
+    .checkout-note{margin-top:13px;color:var(--muted);font-size:11px;line-height:1.6}.checkout-note.error{color:var(--red)}.checkout-note.success{color:var(--green)}.payment-preview-action{display:grid;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.07)}.payment-preview-action small{color:var(--muted);font-size:10px;line-height:1.5}.payment-preview-action .btn{width:100%}
     .billing-status-line{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.billing-status-line span{padding:5px 8px;border:1px solid var(--line);border-radius:999px;color:#aebdc4;font-size:9px;background:rgba(255,255,255,.02)}
     .payment-success-modal{width:min(560px,calc(100% - 24px));text-align:center;background:radial-gradient(circle at 50% 0,rgba(55,244,164,.17),transparent 42%),linear-gradient(155deg,#0b1d25,#061117 78%)}
     .payment-success-icon{width:84px;height:84px;display:grid;place-items:center;margin:4px auto 18px;border:1px solid var(--line-strong);border-radius:50%;color:#02140c;font-size:38px;font-weight:950;background:linear-gradient(135deg,var(--green),var(--green-2));box-shadow:0 0 44px rgba(55,244,164,.24)}
@@ -1017,7 +1017,7 @@
 
         <div class="card membership-hero">
           <div><h2>解鎖五大完整分析與全部 Pro 玩法</h2><p>月、季、年方案的功能完全相同。付款成功後會依方案期間自動開通 Pro；目前採固定期間、不會自動續扣。</p></div>
-          <div class="current-plan-box"><small>目前方案</small><b id="membershipCurrentPlan">尚未登入</b><span id="membershipCurrentCopy">登入後即可查看會員狀態</span><div class="billing-status-line" id="membershipBillingMeta"></div></div>
+          <div class="current-plan-box"><small>目前方案</small><b id="membershipCurrentPlan">尚未登入</b><span id="membershipCurrentCopy">登入後即可查看會員狀態</span><div class="billing-status-line" id="membershipBillingMeta"></div><div class="payment-preview-action" data-auth-admin hidden><button type="button" class="btn ghost small" id="paymentSuccessPreviewButton">預覽付款成功畫面</button><small>僅供創辦人測試介面，不會呼叫綠界、不會建立交易，也不會修改會員期限。</small></div></div>
         </div>
 
         <div class="pricing-grid" id="pricingPlans" role="group" aria-label="DiamondMind Pro 價格方案">
@@ -1235,9 +1235,9 @@
 
   <section class="modal payment-success-modal" id="paymentSuccessModal" role="dialog" aria-modal="true" aria-labelledby="paymentSuccessTitle">
     <div class="payment-success-icon" aria-hidden="true">✓</div>
-    <div class="payment-success-kicker">PAYMENT VERIFIED</div>
+    <div class="payment-success-kicker" id="paymentSuccessKicker">PAYMENT VERIFIED</div>
     <h2 id="paymentSuccessTitle">付款成功，Pro 已開通</h2>
-    <p class="payment-success-copy">交易已由綠界與 DiamondMind 後端完成驗證。你的 Pro 權限已立即生效。</p>
+    <p class="payment-success-copy" id="paymentSuccessCopy">交易已由綠界與 DiamondMind 後端完成驗證。你的 Pro 權限已立即生效。</p>
     <div class="payment-success-summary">
       <div class="payment-success-row"><span>會員方案</span><b id="paymentSuccessPlan">DiamondMind Pro</b></div>
       <div class="payment-success-row"><span>付款金額</span><b class="gold" id="paymentSuccessAmount">—</b></div>
@@ -1604,9 +1604,13 @@
         else showPage("predictionPage");
       }else showPage("membershipPage");
     }
-    function showPaymentSuccess(status,tradeNo=""){
+    function showPaymentSuccess(status,tradeNo="",options={}){
       clearPaymentSuccessTimers();
+      const preview=Boolean(options.preview);
       const presentation=paymentPlanPresentation(status);
+      document.getElementById("paymentSuccessKicker").textContent=preview?"FOUNDER PREVIEW":"PAYMENT VERIFIED";
+      document.getElementById("paymentSuccessTitle").textContent=preview?"付款成功畫面預覽":"付款成功，Pro 已開通";
+      document.getElementById("paymentSuccessCopy").textContent=preview?"這是創辦人介面預覽，不會呼叫綠界、不會新增付款紀錄，也不會變更會員期限。":"交易已由綠界與 DiamondMind 後端完成驗證。你的 Pro 權限已立即生效。";
       document.getElementById("paymentSuccessPlan").textContent=`DiamondMind Pro ${presentation.label}`;
       document.getElementById("paymentSuccessAmount").textContent=presentation.amount;
       document.getElementById("paymentSuccessExpiry").textContent=formatMembershipDate(status?.current_period_end);
@@ -1625,6 +1629,14 @@
     }
     document.getElementById("paymentSuccessMemberButton").addEventListener("click",()=>finishPaymentSuccess("membership"));
     document.getElementById("paymentSuccessContinueButton").addEventListener("click",()=>finishPaymentSuccess("content"));
+    document.getElementById("paymentSuccessPreviewButton")?.addEventListener("click",()=>{
+      if(!isAdminMember()){showToast("只有創辦人可以使用付款成功畫面預覽");return}
+      const plan=state.billingStatus?.plan||"annual";
+      const expiry=state.billingStatus?.current_period_end||authState.user?.app_metadata?.pro_expires_at||new Date(Date.now()+365*24*60*60*1000).toISOString();
+      state.upgradeReturnGame=null;
+      showToast("正在顯示預覽；不會產生交易或修改會員期限");
+      showPaymentSuccess({plan,current_period_end:expiry,active:true},"PREVIEW · NO CHARGE",{preview:true});
+    });
 
     async function handlePaymentReturn(){
       if(state.paymentHandled||!authState.ready)return;
@@ -3041,7 +3053,7 @@
         const sourceMeta=`<div class="engine-source-meta">${meta.updated_at?`<span>最後更新 ${escapeHtml(formatAnalysisUpdatedAt(meta.updated_at))}</span>`:""}${sources?`<span>來源 ${escapeHtml(sources)}</span>`:""}${meta.roster_date?`<span>名單日期 ${escapeHtml(meta.roster_date)}</span>`:""}</div>`;
         return `<section class="engine-module"><div class="engine-module-top"><b>${escapeHtml(group.label||fallback)}</b><span class="engine-quality ${quality<60?"low":""}">完整度 ${quality}%</span></div><p class="engine-note">${escapeHtml(group.note||"依可取得資料動態評分")}</p><div class="engine-metrics"><div class="engine-metric"><span>比較指標</span><span>客隊</span><span>主隊</span></div>${rows}</div>${engineExtraHtml(key,context)}${sourceMeta}</section>`;
       }).join("");
-      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V17.1 · 付款成功確認 · Pro 自動開通 · 開賽前自動重算</span></div><div class="engine-module-grid">${cards}</div>`;
+      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V17.2 · 付款成功預覽 · Pro 自動開通 · 開賽前自動重算</span></div><div class="engine-module-grid">${cards}</div>`;
     }
 
     window.setDiamondMindPrediction=function(prediction){
