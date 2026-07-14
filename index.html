@@ -542,6 +542,8 @@
     .footer-disclaimer b{display:block;margin-bottom:6px;color:#aebdc4;font-size:11px;letter-spacing:.6px}
     .legal-copy{display:grid;gap:13px;color:#a0b0b7;font-size:12px;line-height:1.75}.legal-copy p{margin:0}.legal-copy strong{color:var(--white)}.legal-callout{padding:14px;border:1px solid rgba(255,215,106,.17);border-radius:14px;color:#a9b7bd;background:rgba(255,215,106,.03)}
 
+    .engine-source-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.engine-source-meta span{padding:5px 8px;border:1px solid rgba(255,255,255,.07);border-radius:999px;color:#82969f;font-size:9px;background:rgba(255,255,255,.02)}.validation-ok{color:var(--green)!important}.validation-pending{color:var(--gold)!important}.validation-bad{color:var(--red)!important}
+
     .bottom-nav{
       display:none;
       position:fixed;
@@ -800,7 +802,7 @@
             <div><div class="kicker">核心功能</div><h2>從資料到決策</h2></div>
           </div>
           <div class="feature-grid">
-            <article class="card feature-card"><div class="feature-icon">SP</div><h3>先發投手引擎</h3><p>ERA、WHIP、K/BB、被打擊率、近三場與主客場差異。</p></article>
+            <article class="card feature-card"><div class="feature-icon">SP</div><h3>先發投手引擎</h3><p>ERA、WHIP、K/BB、近況、主客場差異與指定比賽日球隊名單驗證。</p></article>
             <article class="card feature-card"><div class="feature-icon">LU</div><h3>打線引擎</h3><p>球季與近七日 OPS、左右投對戰、正式打線及主力缺席。</p></article>
             <article class="card feature-card"><div class="feature-icon">BP</div><h3>牛棚引擎</h3><p>牛棚 ERA、WHIP、牛棚體力、連續出賽與終結者可用度。</p></article>
             <article class="card feature-card"><div class="feature-icon">WX</div><h3>環境引擎</h3><p>天氣、溫度、風向、屋頂狀態、球場得分與全壘打因子。</p></article>
@@ -1280,7 +1282,7 @@
       <div class="detail-box"><small>比賽狀態</small><b id="detailStatus">—</b></div>
       <div class="detail-box"><small>AI 分析</small><b id="detailAiStatus">等待模型分析</b></div>
     </div>
-    <div class="engine-breakdown" id="detailEngineBreakdown"><div class="engine-unavailable">點開賽事後，系統會載入五大完整分析引擎。</div></div>
+    <div class="engine-breakdown" id="detailEngineBreakdown"><div class="engine-unavailable">點開賽事後，系統會載入五大分析、資料更新時間、球員名單驗證與發布安全狀態。</div></div>
   </section>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -2261,9 +2263,12 @@
             <span>信心 ${Number(item.confidence||0).toFixed(1)}%</span>
             <span>資料完整度 ${Math.round(Number(item.data_quality||0)*100)}%</span>
             <span>${escapeHtml(item.pick?.label||"尚無推薦方向")}</span>
+            <span>${escapeHtml(item.timing?.label||"賽前狀態待確認")}</span>
+            <span>名單驗證 ${item.roster_validation?.status==="valid"?"通過":item.roster_validation?.status==="mismatch"?"不一致":"待確認"}</span>
+            <span>打線驗證 ${Math.round(Number(item.lineup_validation_rate||0)*100)}%</span>
           </div>
           ${notices}
-          <div class="founder-candidate-actions"><small>發布後即寫入公開紀錄，不能更換。</small><button type="button" class="btn ${item.can_publish?"primary":"ghost"} small" data-founder-publish="${Number(item.game_pk)}" ${item.can_publish?"":"disabled"}>${buttonText}</button></div>
+          <div class="founder-candidate-actions"><small>${escapeHtml(item.updated_at?`分析更新 ${formatAnalysisUpdatedAt(item.updated_at)} · `:"")}發布後即寫入公開紀錄，不能更換。</small><button type="button" class="btn ${item.can_publish?"primary":"ghost"} small" data-founder-publish="${Number(item.game_pk)}" ${item.can_publish?"":"disabled"}>${buttonText}</button></div>
         </article>`;
       }).join("");
       list.querySelectorAll("[data-founder-publish]").forEach(button=>button.addEventListener("click",()=>{
@@ -2606,6 +2611,18 @@
       }
     }
 
+
+    function formatAnalysisUpdatedAt(value){
+      if(!value)return "更新時間未提供";
+      const date=new Date(value);
+      if(Number.isNaN(date.getTime()))return String(value);
+      return new Intl.DateTimeFormat("zh-TW",{timeZone:"Asia/Taipei",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).format(date);
+    }
+
+    function validationClass(status){
+      return status==="valid"?"validation-ok":status==="mismatch"?"validation-bad":"validation-pending";
+    }
+
     function formatEngineMetric(label,value){
       const number=Number(value);
       if(value==null||value===""||!Number.isFinite(number))return "—";
@@ -2625,7 +2642,9 @@
           const name=pitcher.name&&pitcher.name!=="尚未公布"?pitcher.name:"尚未公布";
           const hand=stats.pitch_hand?` · ${stats.pitch_hand==="L"?"左投":"右投"}`:"";
           const quality=stats.data_quality!=null?` · 資料 ${Math.round(Number(stats.data_quality)*100)}%`:"";
-          return `${name}${hand}${quality}`;
+          const validation=stats.roster_validation||{};
+          const validationText=validation.status?` · 名單${validation.status==="valid"?"已驗證":validation.status==="mismatch"?"不一致":"待確認"}`:"";
+          return `${name}${hand}${quality}${validationText}`;
         };
         return `<div class="engine-extra"><div><b>客隊預計先發</b><p>${escapeHtml(sideText("away"))}</p></div><div><b>主隊預計先發</b><p>${escapeHtml(sideText("home"))}</p></div></div>`;
       }
@@ -2634,7 +2653,8 @@
         const home=((context.lineups||{}).home||{}).official_lineup||{};
         const names=side=>(side.players||[]).map(player=>player.name).filter(Boolean).join("、");
         if(!away.players?.length&&!home.players?.length)return "";
-        return `<div class="engine-extra"><div><b>客隊${away.confirmed?"正式":"預計核心"}打線</b><p>${escapeHtml(names(away)||"尚未公布")}</p></div><div><b>主隊${home.confirmed?"正式":"預計核心"}打線</b><p>${escapeHtml(names(home)||"尚未公布")}</p></div></div>`;
+        const validationText=value=>{const v=value.validation||{};return v.status?` · 名單${v.status==="valid"?"已驗證":v.status==="mismatch"?"不一致":"待確認"} ${Math.round(Number(v.validation_rate||0)*100)}%`:""};
+        return `<div class="engine-extra"><div><b>客隊${away.confirmed?"正式":"預計核心"}打線</b><p>${escapeHtml((names(away)||"尚未公布")+validationText(away))}</p></div><div><b>主隊${home.confirmed?"正式":"預計核心"}打線</b><p>${escapeHtml((names(home)||"尚未公布")+validationText(home))}</p></div></div>`;
       }
       if(key==="bullpen"){
         const bullpen=context.bullpen||{};
@@ -2707,9 +2727,12 @@
           return `<div class="engine-metric"><span>${escapeHtml(metric.label||"指標")}</span><span class="${awayClass}">${away}</span><span class="${homeClass}">${home}</span></div>`;
         }).join("")||`<div class="engine-unavailable">此模組目前資料不足，權重已自動降低。</div>`;
         const quality=Math.round(Number(group.quality||0)*100);
-        return `<section class="engine-module"><div class="engine-module-top"><b>${escapeHtml(group.label||fallback)}</b><span class="engine-quality ${quality<60?"low":""}">完整度 ${quality}%</span></div><p class="engine-note">${escapeHtml(group.note||"依可取得資料動態評分")}</p><div class="engine-metrics"><div class="engine-metric"><span>比較指標</span><span>客隊</span><span>主隊</span></div>${rows}</div>${engineExtraHtml(key,context)}</section>`;
+        const meta=group.meta||{};
+        const sources=(meta.sources||[]).filter(Boolean).join(" + ");
+        const sourceMeta=`<div class="engine-source-meta">${meta.updated_at?`<span>最後更新 ${escapeHtml(formatAnalysisUpdatedAt(meta.updated_at))}</span>`:""}${sources?`<span>來源 ${escapeHtml(sources)}</span>`:""}${meta.roster_date?`<span>名單日期 ${escapeHtml(meta.roster_date)}</span>`:""}</div>`;
+        return `<section class="engine-module"><div class="engine-module-top"><b>${escapeHtml(group.label||fallback)}</b><span class="engine-quality ${quality<60?"low":""}">完整度 ${quality}%</span></div><p class="engine-note">${escapeHtml(group.note||"依可取得資料動態評分")}</p><div class="engine-metrics"><div class="engine-metric"><span>比較指標</span><span>客隊</span><span>主隊</span></div>${rows}</div>${engineExtraHtml(key,context)}${sourceMeta}</section>`;
       }).join("");
-      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V16.4 · 不產生模擬比分 · 缺值自動降權 · 先發不足禁止發布</span></div><div class="engine-module-grid">${cards}</div>`;
+      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V16.5 · 名單驗證 · 資料更新時間 · 開賽前自動重算 · 發布安全門檻</span></div><div class="engine-module-grid">${cards}</div>`;
     }
 
     window.setDiamondMindPrediction=function(prediction){
