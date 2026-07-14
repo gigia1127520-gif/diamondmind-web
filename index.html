@@ -466,6 +466,14 @@
     .engine-metrics{display:grid;gap:6px}.engine-metric{display:grid;grid-template-columns:minmax(0,1fr) 55px 55px;gap:7px;align-items:center;padding-top:6px;border-top:1px solid rgba(255,255,255,.045);font-size:10px}.engine-metric span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#b9c7cd}.engine-metric span:nth-child(n+2){text-align:right;font-variant-numeric:tabular-nums}.engine-metric .better{color:var(--green);font-weight:900}
     .engine-extra{display:grid;gap:8px;margin-top:9px;padding-top:9px;border-top:1px solid rgba(255,255,255,.045)}.engine-extra b{font-size:10px;color:#c7d3d8}.engine-extra p{margin:0;color:var(--muted);font-size:9px;line-height:1.55}
     .engine-unavailable{padding:15px;border:1px dashed rgba(255,255,255,.1);border-radius:14px;color:var(--muted);font-size:11px;line-height:1.55;text-align:center}
+.game-analysis-gate{position:relative;overflow:hidden;padding:24px;border:1px solid rgba(255,215,106,.3);border-radius:20px;background:radial-gradient(circle at 50% 0,rgba(255,215,106,.1),transparent 38%),linear-gradient(150deg,rgba(15,29,36,.98),rgba(5,14,20,.98));text-align:center;box-shadow:0 18px 46px rgba(0,0,0,.28)}
+.game-analysis-gate::after{content:"PRO";position:absolute;right:-19px;top:14px;padding:6px 28px;color:#251b00;font-size:9px;font-weight:950;letter-spacing:1.5px;background:linear-gradient(135deg,#ffe28c,#e8b842);transform:rotate(38deg)}
+.game-analysis-gate-icon{width:64px;height:64px;display:grid;place-items:center;margin:0 auto 15px;border:1px solid rgba(255,215,106,.35);border-radius:20px;color:var(--gold);font-size:27px;background:rgba(255,215,106,.055);box-shadow:0 0 32px rgba(255,215,106,.08)}
+.game-analysis-gate h3{margin:0 0 8px;font-size:22px}.game-analysis-gate>p{max-width:450px;margin:0 auto;color:var(--muted);font-size:12px;line-height:1.65}
+.locked-engine-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:19px 0;text-align:left}.locked-engine-item{display:flex;align-items:center;gap:9px;padding:11px 12px;border:1px solid rgba(255,255,255,.065);border-radius:12px;color:#c7d3d8;font-size:11px;background:rgba(255,255,255,.022)}.locked-engine-item:last-child{grid-column:1/-1}.locked-engine-lock{color:var(--gold);font-size:14px}
+.game-analysis-gate .btn{width:100%;max-width:390px}.game-analysis-gate-note{margin-top:10px!important;color:#8fa1a9!important;font-size:10px!important}
+.pricing-grid.plan-focus{animation:planFocus 1.35s ease both}.pricing-grid.plan-focus .price-card{box-shadow:0 0 0 1px rgba(255,215,106,.28),0 24px 70px rgba(0,0,0,.34),0 0 42px rgba(255,215,106,.08)}
+@keyframes planFocus{0%{transform:translateY(8px);opacity:.72}45%{transform:none;opacity:1}100%{transform:none;opacity:1}}
     .pro-prediction-body{display:grid;gap:8px}.pro-pick{display:block;color:var(--green);font-size:18px;line-height:1.25}.pro-matchup{color:#c4d0d5!important}.pro-metrics{display:flex;flex-wrap:wrap;gap:5px}.pro-summary{padding-top:7px;border-top:1px solid rgba(255,255,255,.055)}.parlay-legs{display:grid;gap:6px;margin:2px 0 0;padding:0;list-style:none}.parlay-legs li{display:flex;justify-content:space-between;gap:8px;padding:7px 8px;border:1px solid rgba(255,255,255,.055);border-radius:9px;color:#c7d3d7;font-size:10px;background:rgba(255,255,255,.02)}.parlay-legs b{color:var(--green)}
     .pro-selection-list{display:grid;gap:9px}.pro-selection-item{padding:11px;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(255,255,255,.022)}.pro-selection-no{display:inline-grid;place-items:center;min-width:22px;height:22px;margin-bottom:7px;border:1px solid var(--line-strong);border-radius:7px;color:var(--green);font-size:10px;font-weight:950}.pro-selection-item .pro-pick{font-size:15px}.pro-selection-item .pro-matchup{margin:4px 0 7px;font-size:10px}.pro-selection-item .pro-summary{margin:7px 0 0;font-size:10px;line-height:1.45}.pro-selection-item .parlay-legs{margin-top:8px}
     .founder-console{margin-top:18px;padding:24px;background:linear-gradient(145deg,rgba(8,27,31,.98),rgba(5,15,21,.98));border-color:rgba(255,209,92,.32)}
@@ -643,7 +651,7 @@
       .record-card-head{padding:20px 18px 15px}.pick-list{padding:0 18px 18px}.record-summary{padding:0 18px 20px}
       .game-card{grid-template-columns:1fr 42px;padding:15px}.game-time{grid-column:1/2;display:flex;align-items:center;gap:9px}.game-time small{margin:0}.game-teams{grid-column:1/2}.pitchers{grid-column:1/2}.status-label{grid-column:2;grid-row:1}.chevron{grid-column:2;grid-row:2/4;align-self:center;justify-self:center}
       .toolbar{align-items:stretch}.date-control{width:100%;min-width:0;flex-basis:100%}.date-actions{width:100%;min-width:0}.date-actions input{flex:1 1 0;width:0;min-width:0;max-width:calc(100% - 48px)}#refreshGames{position:static;flex:0 0 38px}
-      .prediction-main{padding:20px;min-height:390px}.confidence-preview{grid-template-columns:1fr;text-align:center}.confidence-ring{margin:auto}.pick-highlight{text-align:left}.engine-module-grid{grid-template-columns:1fr}.engine-breakdown-head{align-items:flex-start;flex-direction:column}.engine-module{text-align:left}
+      .prediction-main{padding:20px;min-height:390px}.confidence-preview{grid-template-columns:1fr;text-align:center}.confidence-ring{margin:auto}.pick-highlight{text-align:left}.engine-module-grid{grid-template-columns:1fr}.engine-breakdown-head{align-items:flex-start;flex-direction:column}.engine-module{text-align:left}.locked-engine-list{grid-template-columns:1fr}.locked-engine-item:last-child{grid-column:auto}
       .prediction-access-gate{padding:28px 18px}.access-level-head{align-items:flex-start;flex-direction:column}.pro-access-grid{grid-template-columns:1fr}.pro-access-card{min-height:142px}.membership-hero{grid-template-columns:1fr;padding:21px}.current-plan-box{min-width:0}.benefit-table{overflow-x:auto}.benefit-table-head,.benefit-row{min-width:570px}.checkout-actions{flex-direction:column}.checkout-actions .btn{width:100%}
       .founder-console{padding:18px}.founder-console-head,.founder-candidate-top,.founder-candidate-actions{align-items:flex-start;flex-direction:column}.founder-toolbar input,.founder-toolbar .btn,.founder-candidate-actions .btn,.founder-market-actions .btn{width:100%}.founder-market-options{grid-template-columns:1fr}.founder-market-actions{align-items:stretch;flex-direction:column}
       .record-top-grid{grid-template-columns:repeat(2,1fr)}.record-row{grid-template-columns:76px minmax(0,1fr) 52px;padding:14px}.record-score{display:none}
@@ -984,16 +992,16 @@
     <section class="page" id="membershipPage" aria-labelledby="membershipTitle">
       <div class="wrap page-space">
         <div class="page-head">
-          <div><div class="kicker">DIAMONDMIND PRO</div><h1 id="membershipTitle">選擇會員方案</h1><p>免費會員每日一場獨贏；Pro 會員依當日門檻解鎖多場獨贏、讓分、大小分與串關。</p></div>
+          <div><div class="kicker">DIAMONDMIND PRO</div><h1 id="membershipTitle">選擇會員方案</h1><p>免費會員每日一場獨贏；Pro 會員另解鎖每場賽事的五大完整分析，以及多場獨贏、讓分、大小分與串關。</p></div>
           <button type="button" class="btn ghost small" data-page="morePage">返回會員中心</button>
         </div>
 
         <div class="card membership-hero">
-          <div><h2>一個 Pro 權限，三種繳費週期</h2><p>月繳、季繳與年繳的功能完全相同，只有付款週期與平均月費不同。系統仍會遵守最低信心門檻，不會承諾每天每種玩法都有推薦。</p></div>
+          <div><h2>解鎖五大完整分析與全部 Pro 玩法</h2><p>月繳、季繳與年繳的功能完全相同，可查看先發、打線、牛棚、環境與 Statcast 進階數據。只有付款週期與平均月費不同。</p></div>
           <div class="current-plan-box"><small>目前方案</small><b id="membershipCurrentPlan">尚未登入</b><span id="membershipCurrentCopy">登入後即可查看會員狀態</span></div>
         </div>
 
-        <div class="pricing-grid" role="group" aria-label="DiamondMind Pro 價格方案">
+        <div class="pricing-grid" id="pricingPlans" role="group" aria-label="DiamondMind Pro 價格方案">
           <article class="price-card">
             <h3>月繳</h3>
             <div class="price-value"><small>NT$</small><b>399</b><span>／月</span></div>
@@ -1001,7 +1009,7 @@
             <div class="price-features">
               <div class="price-feature"><i>✓</i><span>獨贏、讓分、大小分完整查看</span></div>
               <div class="price-feature"><i>✓</i><span>二關、三關串關專區</span></div>
-              <div class="price-feature"><i>✓</i><span>推薦依據、信心與風險說明</span></div>
+              <div class="price-feature"><i>✓</i><span>五大完整賽事分析與資料來源</span></div>
             </div>
             <button type="button" class="btn ghost" data-plan-select="monthly" data-plan-name="Pro 月繳" data-plan-price="NT$399／月">選擇月繳</button>
           </article>
@@ -1014,7 +1022,7 @@
             <div class="price-features">
               <div class="price-feature"><i>✓</i><span>獨贏、讓分、大小分完整查看</span></div>
               <div class="price-feature"><i>✓</i><span>二關、三關串關專區</span></div>
-              <div class="price-feature"><i>✓</i><span>推薦依據、信心與風險說明</span></div>
+              <div class="price-feature"><i>✓</i><span>五大完整賽事分析與資料來源</span></div>
             </div>
             <button type="button" class="btn pro" data-plan-select="quarterly" data-plan-name="Pro 季繳" data-plan-price="NT$999／季">選擇季繳</button>
           </article>
@@ -1027,7 +1035,7 @@
             <div class="price-features">
               <div class="price-feature"><i>✓</i><span>獨贏、讓分、大小分完整查看</span></div>
               <div class="price-feature"><i>✓</i><span>二關、三關串關專區</span></div>
-              <div class="price-feature"><i>✓</i><span>推薦依據、信心與風險說明</span></div>
+              <div class="price-feature"><i>✓</i><span>五大完整賽事分析與資料來源</span></div>
             </div>
             <button type="button" class="btn ghost" data-plan-select="annual" data-plan-name="Pro 年繳" data-plan-price="NT$2,999／年">選擇年繳</button>
           </article>
@@ -1040,7 +1048,8 @@
           <div class="benefit-row"><span>讓分推薦</span><span class="benefit-no">—</span><span class="benefit-pro">完整查看</span></div>
           <div class="benefit-row"><span>大小分推薦</span><span class="benefit-no">—</span><span class="benefit-pro">完整查看</span></div>
           <div class="benefit-row"><span>二關、三關串關</span><span class="benefit-no">—</span><span class="benefit-pro">完整查看</span></div>
-          <div class="benefit-row"><span>完整賽事與公開紀錄</span><span class="benefit-yes">可查看</span><span class="benefit-pro">可查看</span></div>
+          <div class="benefit-row"><span>五大完整賽事分析</span><span class="benefit-no">鎖定</span><span class="benefit-pro">完整查看</span></div>
+          <div class="benefit-row"><span>公開推薦紀錄</span><span class="benefit-yes">可查看</span><span class="benefit-pro">可查看</span></div>
         </div>
 
         <div class="membership-disclaimer">所有方案皆為資訊與模型分析服務，不保證比賽結果。當資料不足或未達最低信心門檻時，系統可以不發布推薦；串關屬高風險組合，應獨立評估每一關風險。</div>
@@ -1298,7 +1307,8 @@
       games:[],gameFilter:"all",gamesLoaded:false,predictionDate:"",predictionRole:"",
       records:[],marketRecords:[],recordStats:null,recordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:"",
       founderCandidateDate:"",founderCandidatesLoading:false,
-      founderMarketDate:"",founderMarketsLoading:false,founderMarketBundle:null
+      founderMarketDate:"",founderMarketsLoading:false,founderMarketBundle:null,
+      upgradeReturnGame:null
     };
     const authState={session:null,user:null,ready:false,role:"free"};
 
@@ -1379,6 +1389,20 @@
         }
       }
       if(pageId==="recordsPage"&&!state.recordsLoaded) loadRecords();
+    }
+
+    function focusMembershipPlans(){
+      closeModals();
+      showPage("membershipPage");
+      window.setTimeout(()=>{
+        const plans=document.getElementById("pricingPlans");
+        if(!plans)return;
+        plans.classList.remove("plan-focus");
+        void plans.offsetWidth;
+        plans.classList.add("plan-focus");
+        plans.scrollIntoView({behavior:"smooth",block:"start"});
+        window.setTimeout(()=>plans.classList.remove("plan-focus"),1800);
+      },180);
     }
 
     document.querySelectorAll("[data-page]").forEach(btn=>btn.addEventListener("click",()=>showPage(btn.dataset.page)));
@@ -2037,9 +2061,35 @@
       });
     }
 
+    function renderGameAnalysisGate(access={}){
+      const guest=String(access.role||"guest").toLowerCase()==="guest";
+      const accountCopy=guest?"登入免費會員後可選擇月繳、季繳或年繳方案。":"你目前是免費會員，可直接選擇 Pro 方案解鎖。";
+      return `<div class="game-analysis-gate">
+        <div class="game-analysis-gate-icon" aria-hidden="true">🔒</div>
+        <h3>五大完整分析引擎</h3>
+        <p>完整數據比較為 DiamondMind Pro 會員專屬內容。</p>
+        <div class="locked-engine-list" aria-label="Pro 專屬分析模組">
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>先發投手分析</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>打線強度分析</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>牛棚狀態分析</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>環境條件分析</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>Statcast 進階數據</span></div>
+        </div>
+        <button type="button" class="btn pro" data-game-upgrade-pro>升級 Pro 解鎖完整賽事情報</button>
+        <p class="game-analysis-gate-note">${escapeHtml(accountCopy)}</p>
+      </div>`;
+    }
+
+    document.addEventListener("click",event=>{
+      const button=event.target.closest("[data-game-upgrade-pro]");
+      if(!button)return;
+      focusMembershipPlans();
+    });
+
     function openGame(id){
       const game=state.games.find(x=>x.id===id);
       if(!game)return;
+      state.upgradeReturnGame=id;
       document.getElementById("gameModalTitle").textContent=`${game.awayAbbr} @ ${game.homeAbbr}`;
       document.getElementById("gameModalMeta").textContent=`${document.getElementById("scheduleDate").value} · ${game.time} · ${game.venue||"MLB"}`;
       document.getElementById("detailAwayAbbr").textContent=game.awayAbbr;
@@ -2050,16 +2100,23 @@
       document.getElementById("detailAwayPitcher").textContent=game.awayPitcher;
       document.getElementById("detailHomePitcher").textContent=game.homePitcher;
       document.getElementById("detailStatus").textContent=statusText(game);
-      document.getElementById("detailAiStatus").textContent="正在載入五大引擎…";
-      document.getElementById("detailEngineBreakdown").innerHTML=`<div class="engine-unavailable">正在整理先發、打線、牛棚、環境與進階數據…</div>`;
+      document.getElementById("detailAiStatus").textContent=isProMember()?"正在載入五大引擎…":"Pro 會員專屬";
+      document.getElementById("detailEngineBreakdown").innerHTML=isProMember()?`<div class="engine-unavailable">正在整理先發、打線、牛棚、環境與進階數據…</div>`:renderGameAnalysisGate({role:isSignedIn()?"free":"guest"});
       openModal("gameModal");
       loadGameDetail(id);
     }
 
     async function loadGameDetail(id){
       const aiStatus=document.getElementById("detailAiStatus");
+      const headers={Accept:"application/json"};
+      if(authState.session?.access_token)headers.Authorization=`Bearer ${authState.session.access_token}`;
       try{
-        const payload=await fetchJsonWithTimeout(`${API_BASE}/mlb/games/${id}`,45000);
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/mlb/games/${id}`,45000,{headers});
+        if(payload.analysis_locked||payload.access?.has_pro_access!==true){
+          aiStatus.textContent="Pro 會員專屬";
+          document.getElementById("detailEngineBreakdown").innerHTML=renderGameAnalysisGate(payload.access||{role:isSignedIn()?"free":"guest"});
+          return;
+        }
         const analysis=payload.analysis||{};
         const quality=Math.round(Number(analysis.data_quality||0)*100);
         aiStatus.textContent=analysis.pick?.label?`${analysis.pick.label} · 信心 ${analysis.confidence}% · 資料 ${quality}%`:"五大引擎已完成";
@@ -2070,6 +2127,11 @@
           starting_pitchers:payload.starting_pitchers||analysis.starting_pitchers||{}
         });
       }catch(error){
+        if(error.status===401){
+          aiStatus.textContent="登入已過期";
+          document.getElementById("detailEngineBreakdown").innerHTML=renderGameAnalysisGate({role:"guest"});
+          return;
+        }
         aiStatus.textContent="後端暫時無法連線，顯示基本賽事資料";
         document.getElementById("detailEngineBreakdown").innerHTML=`<div class="engine-unavailable">完整引擎資料目前無法載入，請稍後重新開啟。</div>`;
       }
@@ -2732,7 +2794,7 @@
         const sourceMeta=`<div class="engine-source-meta">${meta.updated_at?`<span>最後更新 ${escapeHtml(formatAnalysisUpdatedAt(meta.updated_at))}</span>`:""}${sources?`<span>來源 ${escapeHtml(sources)}</span>`:""}${meta.roster_date?`<span>名單日期 ${escapeHtml(meta.roster_date)}</span>`:""}</div>`;
         return `<section class="engine-module"><div class="engine-module-top"><b>${escapeHtml(group.label||fallback)}</b><span class="engine-quality ${quality<60?"low":""}">完整度 ${quality}%</span></div><p class="engine-note">${escapeHtml(group.note||"依可取得資料動態評分")}</p><div class="engine-metrics"><div class="engine-metric"><span>比較指標</span><span>客隊</span><span>主隊</span></div>${rows}</div>${engineExtraHtml(key,context)}${sourceMeta}</section>`;
       }).join("");
-      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V16.5 · 名單驗證 · 資料更新時間 · 開賽前自動重算 · 發布安全門檻</span></div><div class="engine-module-grid">${cards}</div>`;
+      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V16.6 · Pro 權限保護 · 名單驗證 · 開賽前自動重算</span></div><div class="engine-module-grid">${cards}</div>`;
     }
 
     window.setDiamondMindPrediction=function(prediction){
