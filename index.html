@@ -495,6 +495,9 @@
     .market-package-head b{font-size:14px}.market-package-head span{color:var(--green);font-size:11px}
     .market-result-row{display:grid;grid-template-columns:88px minmax(0,1fr) 110px 62px;align-items:center;gap:12px;padding:14px 18px;border-top:1px solid rgba(255,255,255,.045)}
     .market-result-name{color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.7px}.market-result-pick{min-width:0}.market-result-pick b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}.market-result-pick small{display:block;margin-top:4px;color:var(--muted);font-size:10px}.market-result-score{text-align:right;color:#bdcbd1;font-size:11px}
+    .record-pro-gate{display:grid;place-items:center;min-height:270px;padding:34px 22px;text-align:center;background:radial-gradient(circle at 50% 0,rgba(255,215,106,.1),transparent 44%),linear-gradient(145deg,rgba(11,27,34,.94),rgba(5,14,19,.96))}
+    .record-pro-gate-icon{width:66px;height:66px;display:grid;place-items:center;margin:0 auto 16px;border:1px solid rgba(255,215,106,.32);border-radius:20px;color:var(--gold);font-size:27px;background:rgba(255,215,106,.055);box-shadow:0 0 32px rgba(255,215,106,.08)}
+    .record-pro-gate h3{margin:0 0 9px;font-size:23px}.record-pro-gate p{max-width:560px;margin:0 auto;color:var(--muted);font-size:12px;line-height:1.65}.record-pro-gate .btn{margin-top:20px}
 
     .more-hero{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;padding:25px;margin-bottom:18px;background:radial-gradient(circle at 84% 38%,rgba(55,244,164,.14),transparent 28%),linear-gradient(140deg,rgba(12,29,37,.96),rgba(6,16,22,.92))}
     .more-hero h2{margin:0 0 8px;font-size:30px}.more-hero p{max-width:650px;margin:0;color:var(--muted);line-height:1.6}.more-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
@@ -955,20 +958,20 @@
     <section class="page" id="recordsPage" aria-labelledby="recordsTitle">
       <div class="wrap page-space">
         <div class="page-head">
-          <div><div class="kicker">PUBLIC TRACK RECORD</div><h1 id="recordsTitle">推薦紀錄</h1><p>完整保留每一筆推薦內容與賽後結果，避免只展示獲勝場次。</p></div>
+          <div><div class="kicker">VERIFIED TRACK RECORD</div><h1 id="recordsTitle">推薦紀錄</h1><p>公開保留每日免費精選與真實賽果；Pro 會員可查看完整玩法歷史。</p></div>
           <span class="micro-pill" id="recordsApiStatus" aria-live="polite">真實資料連線中</span>
         </div>
 
         <div class="record-top-grid">
-          <div class="card stat-card"><small>總推薦</small><b id="statTotal">0</b></div>
-          <div class="card stat-card"><small>已結算</small><b id="statSettled">0</b></div>
-          <div class="card stat-card"><small>命中</small><b class="green" id="statWins">0</b></div>
-          <div class="card stat-card"><small>命中率</small><b class="green" id="statRate">—</b></div>
+          <div class="card stat-card"><small>免費精選總數</small><b id="statTotal">0</b></div>
+          <div class="card stat-card"><small>免費精選已結算</small><b id="statSettled">0</b></div>
+          <div class="card stat-card"><small>免費精選命中</small><b class="green" id="statWins">0</b></div>
+          <div class="card stat-card"><small>免費精選命中率</small><b class="green" id="statRate">—</b></div>
         </div>
 
         <div class="card records-card">
           <div class="records-toolbar">
-            <h3>每日獨贏公開紀錄</h3>
+            <div><h3>免費精選紀錄</h3><p class="market-history-note">公開展示 DiamondMind 每日免費推薦與真實賽果。</p></div>
             <div class="filters" id="recordFilters">
               <button type="button" class="filter-btn active" data-record-filter="all">全部</button>
               <button type="button" class="filter-btn" data-record-filter="won">命中</button>
@@ -981,8 +984,8 @@
 
         <div class="card market-history-card">
           <div class="records-toolbar">
-            <div><h3>完整玩法賽後紀錄</h3><p class="market-history-note">讓分、大小分與串關只會在全部賽事結算後公開，開賽前不會洩漏 Pro 內容。</p></div>
-            <span class="micro-pill" id="marketRecordCount">0 期</span>
+            <div><h3>Pro 推薦紀錄</h3><p class="market-history-note">Pro 會員可查看獨贏、讓分、大小分與串關的完整歷史表現。</p></div>
+            <span class="micro-pill" id="marketRecordCount">PRO</span>
           </div>
           <div class="records-list" id="marketRecordsList"></div>
         </div>
@@ -1305,7 +1308,7 @@
     const pages = ["homePage","gamesPage","predictionPage","recordsPage","membershipPage","morePage"];
     const state = {
       games:[],gameFilter:"all",gamesLoaded:false,predictionDate:"",predictionRole:"",
-      records:[],marketRecords:[],recordStats:null,recordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:"",
+      records:[],marketRecords:[],recordStats:null,recordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:"",recordsAccessRole:"",
       founderCandidateDate:"",founderCandidatesLoading:false,
       founderMarketDate:"",founderMarketsLoading:false,founderMarketBundle:null,
       upgradeReturnGame:null
@@ -1388,7 +1391,7 @@
           if(isAdminMember()){loadFounderCandidates();loadFounderMarkets();}
         }
       }
-      if(pageId==="recordsPage"&&!state.recordsLoaded) loadRecords();
+      if(pageId==="recordsPage"&&(!state.recordsLoaded||state.recordsAccessRole!==authState.role)) loadRecords(true);
     }
 
     function focusMembershipPlans(){
@@ -1615,6 +1618,8 @@
       }else clearTimeout(authRefreshTimer);
       renderMembershipState();
       renderPredictionAccess();
+      renderRecords();
+      if(document.getElementById("recordsPage")?.classList.contains("active")&&state.recordsAccessRole!==authState.role)loadRecords(true);
       if(signedIn&&document.getElementById("predictionPage")?.classList.contains("active")){
         loadTopPrediction();
         if(isAdminMember()){loadFounderCandidates();loadFounderMarkets();}
@@ -1626,6 +1631,9 @@
       authState.role="free";
       state.predictionDate="";
       state.predictionRole="";
+      state.marketRecords=[];
+      state.recordsLoaded=false;
+      state.recordsAccessRole="";
       state.founderCandidateDate="";
       state.founderMarketDate="";
       state.founderMarketBundle=null;
@@ -1831,11 +1839,24 @@
       const container=document.getElementById("marketRecordsList");
       const count=document.getElementById("marketRecordCount");
       if(!container||!count)return;
+      if(!isProMember()){
+        count.textContent="PRO";
+        container.innerHTML=`<div class="record-pro-gate">
+          <div>
+            <div class="record-pro-gate-icon" aria-hidden="true">🔒</div>
+            <h3>Pro 推薦完整紀錄</h3>
+            <p>升級 Pro 查看獨贏、讓分、大小分、二關與三關串關的歷史表現與賽後結果。</p>
+            <button type="button" class="btn pro" data-records-upgrade>升級 Pro 查看完整紀錄</button>
+          </div>
+        </div>`;
+        container.querySelector("[data-records-upgrade]")?.addEventListener("click",focusMembershipPlans);
+        return;
+      }
       count.textContent=`${bundles.length} 期`;
       container.innerHTML=bundles.length?bundles.map(bundle=>{
         const rows=marketHistoryRows(bundle);
         return `<section class="market-package">
-          <div class="market-package-head"><b>${recordDate(bundle.date)} 完整玩法</b><span>全部已結算</span></div>
+          <div class="market-package-head"><b>${recordDate(bundle.date)} Pro 完整玩法</b><span>全部已結算</span></div>
           ${rows.map(row=>`<div class="market-result-row">
             <div class="market-result-name">${row.name}</div>
             <div class="market-result-pick"><b>${escapeHtml(row.pickLabel)}</b><small>${escapeHtml(row.matchup)}${row.probability!=null?` · 模型 ${Number(row.probability).toFixed(1)}%`:""}${row.price!=null?` · 賠率 ${row.price>0?"+":""}${row.price}`:""}</small></div>
@@ -1843,7 +1864,7 @@
             <span class="result ${resultClass(row.status)}">${resultLabel(row.status)}</span>
           </div>`).join("")}
         </section>`;
-      }).join(""):`<div class="empty"><b>${state.recordsLoading?"完整玩法紀錄載入中":"尚無已結算完整玩法"}</b>${state.recordsLoading?"正在讀取正式玩法結算資料。":"第一期讓分、大小分或串關完成結算後，才會安全公開在這裡。"}</div>`;
+      }).join(""):`<div class="empty"><b>${state.recordsLoading?"Pro 推薦紀錄載入中":"尚無已結算 Pro 推薦"}</b>${state.recordsLoading?"正在讀取 Pro 完整玩法結算資料。":"第一期 Pro 推薦完成結算後，會保留在會員紀錄中。"}</div>`;
     }
     function setRecordsApiStatus(text,isError=false){
       ["homeRecordsApiStatus","recordsApiStatus"].forEach(id=>{
@@ -1864,14 +1885,14 @@
       document.getElementById("statRate").textContent=hasRate?`${rate}%`:"—";
       document.getElementById("homeHitRate").textContent=hasRate?`${rate}%`:"—";
       document.getElementById("homeRateBar").style.width=`${Math.max(0,Math.min(100,rate))}%`;
-      document.getElementById("homeRecordCount").textContent=stats.settled?`${stats.won||0} 命中 / ${stats.settled} 場已結算`:"尚無已結算正式紀錄";
+      document.getElementById("homeRecordCount").textContent=stats.settled?`${stats.won||0} 命中 / ${stats.settled} 場已結算`:"尚無已結算免費精選紀錄";
 
       const homeList=document.getElementById("homePickList");
       homeList.innerHTML=rows.length?rows.slice(0,4).map(row=>`
         <div class="pick-row">
           <div class="pick-main"><b>⚾ ${escapeHtml(row.matchup)} · ${escapeHtml(row.pick_label)}</b><small>${recordDate(row.recommendation_date)} · MLB · ${recordScore(row)}</small></div>
           <span class="result ${resultClass(row.status)}">${resultLabel(row.status)}</span>
-        </div>`).join(""):`<div class="empty"><b>${state.recordsLoading?"正式紀錄載入中":"尚無正式推薦紀錄"}</b>${state.recordsLoading?"正在連接 DiamondMind 紀錄資料庫。":"每日精選正式發布後會自動保留在這裡。"}</div>`;
+        </div>`).join(""):`<div class="empty"><b>${state.recordsLoading?"免費精選紀錄載入中":"尚無免費精選紀錄"}</b>${state.recordsLoading?"正在連接 DiamondMind 紀錄資料庫。":"每日免費精選正式發布後會自動保留在這裡。"}</div>`;
 
       const filtered=rows.filter(x=>state.recordFilter==="all"||x.status===state.recordFilter);
       document.getElementById("recordsList").innerHTML=filtered.length?filtered.map(row=>`
@@ -1880,7 +1901,7 @@
           <div class="record-pick"><b>${escapeHtml(row.matchup)}</b><small>${escapeHtml(row.pick_label)} · 信心 ${Number(row.confidence||0).toFixed(1)}%</small></div>
           <div class="record-score">${recordScore(row)}</div>
           <span class="result ${resultClass(row.status)}">${resultLabel(row.status)}</span>
-        </div>`).join(""):`<div class="empty"><b>${state.recordsError?"紀錄服務暫時無法連線":state.recordsLoading?"正式紀錄載入中":rows.length?"沒有符合條件的紀錄":"尚無正式推薦紀錄"}</b>${state.recordsError?"請稍後重新進入紀錄頁。":state.recordsLoading?"正在讀取 Supabase 真實資料。":"尚未發布的日期不會建立空白或展示紀錄。"}</div>`;
+        </div>`).join(""):`<div class="empty"><b>${state.recordsError?"紀錄服務暫時無法連線":state.recordsLoading?"免費精選紀錄載入中":rows.length?"沒有符合條件的紀錄":"尚無免費精選紀錄"}</b>${state.recordsError?"請稍後重新進入紀錄頁。":state.recordsLoading?"正在讀取 Supabase 真實資料。":"尚未發布的日期不會建立空白或展示紀錄。"}</div>`;
       renderMarketRecords();
     }
 
@@ -1891,11 +1912,14 @@
       setRecordsApiStatus("真實資料連線中");
       renderRecords();
       try{
-        const payload=await fetchJsonWithTimeout(`${API_BASE}/records`,12000);
+        const headers={};
+        if(authState.session?.access_token)headers.Authorization=`Bearer ${authState.session.access_token}`;
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/records`,12000,{headers});
         if(payload.is_demo||payload.database!=="connected")throw new Error("Records database unavailable");
         state.records=Array.isArray(payload.items)?payload.items:[];
-        state.marketRecords=Array.isArray(payload.market_packages)?payload.market_packages:[];
+        state.marketRecords=isProMember()&&Array.isArray(payload.market_packages)?payload.market_packages:[];
         state.recordStats=payload.stats||null;
+        state.recordsAccessRole=authState.role;
         state.recordsLoaded=true;
         setRecordsApiStatus("真實紀錄已連線");
       }catch(error){
@@ -1903,6 +1927,7 @@
         state.marketRecords=[];
         state.recordStats=null;
         state.recordsLoaded=false;
+        state.recordsAccessRole=authState.role;
         state.recordsError="紀錄 API 暫時無法連線";
         setRecordsApiStatus("紀錄 API 暫時離線",true);
       }finally{
@@ -2794,7 +2819,7 @@
         const sourceMeta=`<div class="engine-source-meta">${meta.updated_at?`<span>最後更新 ${escapeHtml(formatAnalysisUpdatedAt(meta.updated_at))}</span>`:""}${sources?`<span>來源 ${escapeHtml(sources)}</span>`:""}${meta.roster_date?`<span>名單日期 ${escapeHtml(meta.roster_date)}</span>`:""}</div>`;
         return `<section class="engine-module"><div class="engine-module-top"><b>${escapeHtml(group.label||fallback)}</b><span class="engine-quality ${quality<60?"low":""}">完整度 ${quality}%</span></div><p class="engine-note">${escapeHtml(group.note||"依可取得資料動態評分")}</p><div class="engine-metrics"><div class="engine-metric"><span>比較指標</span><span>客隊</span><span>主隊</span></div>${rows}</div>${engineExtraHtml(key,context)}${sourceMeta}</section>`;
       }).join("");
-      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V16.6 · Pro 權限保護 · 名單驗證 · 開賽前自動重算</span></div><div class="engine-module-grid">${cards}</div>`;
+      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V16.7 · Pro 權限保護 · 免費／Pro 紀錄分流 · 開賽前自動重算</span></div><div class="engine-module-grid">${cards}</div>`;
     }
 
     window.setDiamondMindPrediction=function(prediction){
