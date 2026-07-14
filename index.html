@@ -4,6 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#03080c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="DiamondMind">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="manifest" href="manifest.webmanifest">
   <meta name="description" content="DiamondMind Grand Slam AI：MLB 賽事資料、AI 預測與公開推薦紀錄。">
   <title>DiamondMind · Grand Slam AI</title>
   <style>
@@ -690,6 +697,18 @@
       .footer{padding-top:46px}.footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:31px 24px}.footer-brand{grid-column:1/-1}.footer-column h3{font-size:12px}.footer-link{font-size:11px}.footer-divider{margin:32px 0 22px}.footer-bottom{align-items:flex-start;flex-direction:column}.footer-bottom-links{justify-content:flex-start}.footer-disclaimer{padding:17px 15px;text-align:left}
       .detail-score{padding:15px}.detail-team b{font-size:22px}.detail-info{grid-template-columns:1fr}
     }
+
+    /* Announcement center + installable app shell */
+    .announcement-home{padding-top:4px}.announcement-home[hidden]{display:none!important}.announcement-home-card{overflow:hidden;border-color:rgba(55,244,164,.26);background:radial-gradient(circle at 100% 0,rgba(55,244,164,.1),transparent 42%),linear-gradient(145deg,rgba(10,29,35,.96),rgba(6,16,22,.96))}.announcement-home-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:20px 22px;border-bottom:1px solid rgba(255,255,255,.055)}.announcement-home-head h3{margin:0;font-size:21px}.announcement-home-head p{margin:5px 0 0;color:var(--muted);font-size:11px}.announcement-list{display:grid}.announcement-item{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:start;padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.05)}.announcement-item:last-child{border-bottom:0}.announcement-level{min-width:54px;padding:7px 8px;border:1px solid rgba(55,244,164,.28);border-radius:999px;color:var(--green);font-size:9px;font-weight:900;text-align:center;letter-spacing:.5px}.announcement-item.important .announcement-level{border-color:rgba(255,215,106,.35);color:var(--gold);background:rgba(255,215,106,.05)}.announcement-item.emergency .announcement-level{border-color:rgba(255,115,130,.38);color:var(--red);background:rgba(255,115,130,.055)}.announcement-item h4{margin:0;font-size:15px}.announcement-item p{margin:6px 0 0;color:var(--muted);font-size:11px;line-height:1.65;white-space:pre-line}.announcement-date{display:block;margin-top:8px;color:#637984;font-size:9px}.announcement-item .btn{white-space:nowrap;align-self:center}
+    .announcement-modal{width:min(620px,calc(100% - 24px));background:radial-gradient(circle at 100% 0,rgba(55,244,164,.16),transparent 38%),linear-gradient(155deg,#0b1d25,#061117 78%)}.announcement-modal.important{background:radial-gradient(circle at 100% 0,rgba(255,215,106,.14),transparent 40%),linear-gradient(155deg,#161b20,#071117 78%)}.announcement-modal.emergency{border-color:rgba(255,115,130,.5);background:radial-gradient(circle at 100% 0,rgba(255,115,130,.14),transparent 40%),linear-gradient(155deg,#1b1218,#071117 78%)}.announcement-modal-badge{display:inline-flex;padding:7px 10px;border:1px solid rgba(55,244,164,.3);border-radius:999px;color:var(--green);font-size:9px;font-weight:900;letter-spacing:1px}.announcement-modal.important .announcement-modal-badge{color:var(--gold);border-color:rgba(255,215,106,.35)}.announcement-modal.emergency .announcement-modal-badge{color:var(--red);border-color:rgba(255,115,130,.4)}.announcement-modal h2{margin:12px 0 0;font-size:29px}.announcement-modal-meta{margin-top:7px;color:var(--muted);font-size:10px}.announcement-modal-body{margin-top:18px;padding:18px;border:1px solid rgba(255,255,255,.06);border-radius:17px;color:#dce8ed;background:rgba(255,255,255,.022);font-size:13px;line-height:1.85;white-space:pre-wrap}.announcement-dismiss{display:flex;align-items:center;gap:9px;margin-top:16px;color:#bfced5;font-size:12px}.announcement-dismiss input{width:18px;height:18px;accent-color:var(--green)}.announcement-modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.announcement-modal-actions .btn{min-width:120px}
+    .announcement-admin-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:18px}.announcement-form-card,.announcement-admin-list-card{padding:22px}.announcement-form-card h2,.announcement-admin-list-card h2{margin:0}.announcement-form-card>p,.announcement-admin-list-card>p{margin:6px 0 18px;color:var(--muted);font-size:11px;line-height:1.6}.announcement-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.announcement-form-grid label{display:grid;gap:6px;color:#c5d2d8;font-size:11px}.announcement-form-grid .full{grid-column:1/-1}.announcement-form-grid input,.announcement-form-grid select,.announcement-form-grid textarea{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;color:var(--white);background:#071219;outline:0;color-scheme:dark}.announcement-form-grid textarea{min-height:120px;resize:vertical;line-height:1.55}.announcement-form-grid input:focus,.announcement-form-grid select:focus,.announcement-form-grid textarea:focus{border-color:var(--line-strong);box-shadow:0 0 0 3px rgba(55,244,164,.06)}.announcement-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;grid-column:1/-1}.announcement-check{display:flex!important;grid-template-columns:auto 1fr!important;align-items:center;gap:9px!important;min-height:43px;padding:10px 12px;border:1px solid rgba(255,255,255,.055);border-radius:12px;background:rgba(255,255,255,.018)}.announcement-check input{width:17px!important;height:17px!important;min-height:0!important;accent-color:var(--green)}.announcement-form-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.announcement-admin-note{min-height:19px;margin-top:12px;color:var(--muted);font-size:11px}.announcement-admin-note.error{color:var(--red)}.announcement-admin-note.success{color:var(--green)}.announcement-admin-list{display:grid;gap:10px}.announcement-admin-row{padding:15px;border:1px solid rgba(255,255,255,.06);border-radius:15px;background:rgba(255,255,255,.02)}.announcement-admin-row-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.announcement-admin-row h3{margin:0;font-size:14px}.announcement-admin-row p{margin:7px 0 0;color:var(--muted);font-size:10px;line-height:1.55}.announcement-admin-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.announcement-admin-chips span{padding:5px 7px;border:1px solid rgba(255,255,255,.07);border-radius:999px;color:#9eb1ba;font-size:8px}.announcement-admin-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.announcement-empty{padding:28px 14px;text-align:center;color:var(--muted);font-size:11px}.app-install-note{margin-top:16px;padding:14px;border:1px solid rgba(55,244,164,.15);border-radius:14px;color:var(--muted);font-size:10px;line-height:1.65;background:rgba(55,244,164,.025)}
+    @media (display-mode:standalone){body{min-height:100dvh}.topbar{padding-top:env(safe-area-inset-top)}.bottom-nav{padding-bottom:max(8px,env(safe-area-inset-bottom))}}
+  </style>
+
+  <style>
+    @media(max-width:760px){
+      .announcement-home-head{padding:18px}.announcement-item{grid-template-columns:1fr;padding:17px 18px}.announcement-level{width:max-content}.announcement-item .btn{width:100%}.announcement-modal h2{font-size:25px}.announcement-modal-actions{flex-direction:column}.announcement-modal-actions .btn{width:100%}.announcement-admin-layout{grid-template-columns:1fr}.announcement-form-grid{grid-template-columns:1fr}.announcement-form-grid .full,.announcement-checks{grid-column:1}.announcement-checks{grid-template-columns:1fr}.announcement-form-card,.announcement-admin-list-card{padding:18px}#adminAnnouncementsPage .page-space{padding-bottom:210px}
+    }
   </style>
 </head>
 <body>
@@ -787,6 +806,15 @@
           <div class="engine-card">
             <div class="engine-card-head"><span>AI ENGINE · DATA SYNC</span><b>即時運作中</b></div>
             <div class="progress"><i></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section announcement-home" id="homeAnnouncementsSection" hidden>
+        <div class="wrap">
+          <div class="card announcement-home-card">
+            <div class="announcement-home-head"><div><div class="kicker">LATEST NEWS</div><h3>最新公告</h3><p>系統更新、推薦時程與會員重要消息。</p></div><span class="micro-pill" id="homeAnnouncementStatus">最新</span></div>
+            <div class="announcement-list" id="homeAnnouncementList"></div>
           </div>
         </div>
       </div>
@@ -1131,6 +1159,43 @@
       </div>
     </section>
 
+    <section class="page" id="adminAnnouncementsPage" aria-labelledby="adminAnnouncementsTitle">
+      <div class="wrap page-space">
+        <div class="page-head"><div><div class="kicker">FOUNDER ADMIN</div><h1 id="adminAnnouncementsTitle">公告管理</h1><p>建立首頁公告與登入彈窗，依會員身分、時段及重要程度自動顯示。</p></div><button type="button" class="btn ghost small" id="announcementAdminRefresh">重新整理</button></div>
+        <div class="announcement-admin-layout">
+          <section class="card announcement-form-card">
+            <h2 id="announcementFormTitle">新增公告</h2><p>緊急公告可關閉「今日不再顯示」，確保會員每次登入都能看到。</p>
+            <form id="announcementAdminForm">
+              <div class="announcement-form-grid">
+                <label class="full">公告標題<input id="announcementTitle" maxlength="120" required placeholder="例如：今晚 23:00 資料維護"></label>
+                <label class="full">首頁摘要<input id="announcementSummary" maxlength="320" placeholder="首頁顯示的簡短說明"></label>
+                <label class="full">公告內容<textarea id="announcementBody" maxlength="6000" required placeholder="輸入完整公告內容"></textarea></label>
+                <label>重要程度<select id="announcementSeverity"><option value="general">一般</option><option value="important">重要</option><option value="emergency">緊急</option></select></label>
+                <label>顯示對象<select id="announcementAudience"><option value="all">全部會員與訪客</option><option value="free">免費會員</option><option value="pro">Pro 會員</option></select></label>
+                <label>開始時間<input type="datetime-local" id="announcementStartsAt"></label>
+                <label>結束時間<input type="datetime-local" id="announcementEndsAt"></label>
+                <label>按鈕文字<input id="announcementActionLabel" maxlength="40" placeholder="例如：查看會員方案"></label>
+                <label>按鈕跳轉頁面<select id="announcementActionPage"><option value="">無跳轉按鈕</option><option value="homePage">首頁</option><option value="gamesPage">賽事</option><option value="predictionPage">AI 預測</option><option value="recordsPage">紀錄</option><option value="membershipPage">會員方案</option><option value="morePage">會員中心／更多</option></select></label>
+                <div class="announcement-checks">
+                  <label class="announcement-check"><input type="checkbox" id="announcementShowHome" checked><span>顯示在首頁</span></label>
+                  <label class="announcement-check"><input type="checkbox" id="announcementShowLogin" checked><span>登入後自動彈出</span></label>
+                  <label class="announcement-check"><input type="checkbox" id="announcementDismissible" checked><span>允許「今日不再顯示」</span></label>
+                  <label class="announcement-check"><input type="checkbox" id="announcementActive" checked><span>立即啟用公告</span></label>
+                </div>
+              </div>
+              <div class="announcement-form-actions"><button type="submit" class="btn primary" id="announcementSaveButton">發布公告</button><button type="button" class="btn ghost" id="announcementPreviewButton">預覽</button><button type="button" class="btn ghost" id="announcementResetButton">新增另一則</button></div>
+              <div class="announcement-admin-note" id="announcementAdminNote"></div>
+            </form>
+            <div class="app-install-note">主畫面圖示已使用你選定的 DM 棒球科技圖。iPhone 更新圖示時，請刪除舊主畫面捷徑，再用 Safari 重新「加入主畫面」。</div>
+          </section>
+          <section class="card announcement-admin-list-card">
+            <h2>已建立公告</h2><p>可編輯、啟用、暫停或刪除；過期公告會自動停止顯示。</p>
+            <div class="announcement-admin-list" id="announcementAdminList"><div class="announcement-empty">載入公告中…</div></div>
+          </section>
+        </div>
+      </div>
+    </section>
+
     <section class="page" id="morePage" aria-labelledby="moreTitle">
       <div class="wrap page-space">
         <div class="page-head">
@@ -1155,6 +1220,7 @@
           <button type="button" class="menu-card" data-auth-guest data-modal="registerModal"><span class="menu-icon">＋</span><span><b>免費註冊</b><small>建立你的 DiamondMind 帳號</small></span><span class="chevron">›</span></button>
           <button type="button" class="menu-card" data-page="membershipPage"><span class="menu-icon">P</span><span><b>Pro 會員方案</b><small>查看月繳、季繳與年繳價格</small></span><span class="chevron">›</span></button>
           <button type="button" class="menu-card" data-auth-admin data-page="adminMembersPage" hidden><span class="menu-icon">M</span><span><b>會員與交易管理</b><small>查看會員、方案、到期日與付款紀錄</small></span><span class="chevron">›</span></button>
+          <button type="button" class="menu-card" data-auth-admin data-page="adminAnnouncementsPage" hidden><span class="menu-icon">!</span><span><b>公告管理</b><small>發布首頁消息與登入彈窗</small></span><span class="chevron">›</span></button>
           <button type="button" class="menu-card" data-modal="tutorialModal"><span class="menu-icon">?</span><span><b>新手教學</b><small>了解五個主要功能怎麼使用</small></span><span class="chevron">›</span></button>
           <button type="button" class="menu-card" data-modal="faqModal"><span class="menu-icon">i</span><span><b>常見問題</b><small>資料、模型與會員相關說明</small></span><span class="chevron">›</span></button>
         </div>
@@ -1309,6 +1375,15 @@
     </div>
   </section>
 
+  <section class="modal announcement-modal" id="announcementModal" role="dialog" aria-modal="true" aria-labelledby="announcementModalTitle">
+    <div class="announcement-modal-badge" id="announcementModalBadge">DIAMONDMIND 公告</div>
+    <h2 id="announcementModalTitle">最新公告</h2>
+    <div class="announcement-modal-meta" id="announcementModalMeta">—</div>
+    <div class="announcement-modal-body" id="announcementModalBody"></div>
+    <label class="announcement-dismiss" id="announcementDismissRow"><input type="checkbox" id="announcementDismissToday"><span>今日不再顯示</span></label>
+    <div class="announcement-modal-actions"><button type="button" class="btn ghost" id="announcementAcknowledgeButton">我知道了</button><button type="button" class="btn primary" id="announcementActionButton" hidden>前往查看</button></div>
+  </section>
+
   <section class="modal" id="tutorialModal" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
     <div class="modal-head"><div><h2 id="tutorialTitle">使用教學</h2><p>五個主功能快速上手</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
     <div class="tutorial-list">
@@ -1456,7 +1531,7 @@
     const SUPABASE_PUBLISHABLE_KEY=window.DIAMONDMIND_SUPABASE_PUBLISHABLE_KEY||"sb_publishable__JivOxRrvBQdYHTlVWmJug_Uh0Cc79g";
     const AUTH_STORAGE_KEY="diamondmind.auth.session.v1";
     const AUTH_REDIRECT_URL=/^https?:$/.test(location.protocol)?`${location.origin}${location.pathname}`:"https://gigia1127520-gif.github.io/diamondmind-web/";
-    const pages = ["homePage","gamesPage","predictionPage","recordsPage","membershipPage","adminMembersPage","morePage"];
+    const pages = ["homePage","gamesPage","predictionPage","recordsPage","membershipPage","adminMembersPage","adminAnnouncementsPage","morePage"];
     const state = {
       games:[],gameFilter:"all",gamesLoaded:false,predictionDate:"",predictionRole:"",
       records:[],marketRecords:[],recordStats:null,recordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:"",recordsAccessRole:"",
@@ -1464,7 +1539,8 @@
       founderMarketDate:"",founderMarketsLoading:false,founderMarketBundle:null,
       upgradeReturnGame:null,billingConfig:null,billingStatus:null,selectedPlan:null,paymentHandled:false,
       paymentSuccessTimer:null,paymentSuccessInterval:null,
-      adminTab:"members",adminMembers:null,adminTransactions:null,adminMembersOffset:0,adminTransactionsOffset:0,adminPageSize:30,adminSelectedMember:null,adminSelectedTransaction:null,adminPendingAction:null,adminLoading:false
+      adminTab:"members",adminMembers:null,adminTransactions:null,adminMembersOffset:0,adminTransactionsOffset:0,adminPageSize:30,adminSelectedMember:null,adminSelectedTransaction:null,adminPendingAction:null,adminLoading:false,
+      homeAnnouncements:[],homeAnnouncementRole:"",adminAnnouncements:[],editingAnnouncementId:null,announcementModalItem:null,announcementModalPreview:false,announcementLoginChecked:""
     };
     const authState={session:null,user:null,ready:false,role:"free"};
 
@@ -1549,6 +1625,10 @@
         if(!isAdminMember()){showPage("morePage");showToast("此功能僅限創辦人使用");return}
         loadAdminMembers();
       }
+      if(pageId==="adminAnnouncementsPage"){
+        if(!isAdminMember()){showPage("morePage");showToast("此功能僅限創辦人使用");return}
+        loadAdminAnnouncements();
+      }
     }
 
     function focusMembershipPlans(){
@@ -1584,6 +1664,7 @@
       state.paymentSuccessInterval=null;
     }
     function closeModals(){
+      if(document.getElementById("announcementModal")?.classList.contains("open")&&!state.announcementModalPreview)rememberAnnouncementDismissal(state.announcementModalItem);
       clearPaymentSuccessTimers();
       backdrop.classList.remove("open");
       document.querySelectorAll(".modal.open").forEach(m=>m.classList.remove("open"));
@@ -1995,6 +2076,7 @@
       state.founderMarketDate="";
       state.founderMarketBundle=null;
       state.adminMembers=null;state.adminTransactions=null;state.adminSelectedMember=null;state.adminMembersOffset=0;state.adminTransactionsOffset=0;
+      state.homeAnnouncementRole="";state.announcementLoginChecked="";state.announcementModalItem=null;
       saveAuthSession(null);
       renderAuthState();
     }
@@ -2043,6 +2125,100 @@
       return "操作未完成，請確認資料後再試。";
     }
 
+    function announcementHeaders(includeAuth=true){
+      const headers={Accept:"application/json","Content-Type":"application/json"};
+      if(includeAuth&&authState.session?.access_token)headers.Authorization=`Bearer ${authState.session.access_token}`;
+      return headers;
+    }
+    async function announcementFetch(path,{method="GET",body,admin=false}={}){
+      const response=await fetch(`${API_BASE}${path}`,{method,headers:announcementHeaders(true),body:body===undefined?undefined:JSON.stringify(body),cache:"no-store"});
+      const raw=await response.text();let payload={};if(raw){try{payload=JSON.parse(raw)}catch{payload={detail:raw}}}
+      if(!response.ok){const error=new Error(payload.detail||payload.message||`HTTP ${response.status}`);error.status=response.status;throw error}
+      return payload;
+    }
+    function announcementLevelLabel(severity){return severity==="emergency"?"緊急":severity==="important"?"重要":"公告"}
+    function announcementDateLabel(item){
+      const value=item.updated_at||item.created_at||item.starts_at;if(!value)return "";
+      const date=new Date(value);if(Number.isNaN(date.getTime()))return "";
+      return new Intl.DateTimeFormat("zh-TW",{timeZone:"Asia/Taipei",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).format(date);
+    }
+    function announcementAction(item){
+      if(!item?.action_page)return;
+      closeAnnouncementModal(true);
+      showPage(item.action_page);
+      if(item.action_page==="membershipPage")window.setTimeout(()=>document.getElementById("pricingPlans")?.scrollIntoView({behavior:"smooth",block:"start"}),220);
+    }
+    function renderHomeAnnouncements(){
+      const section=document.getElementById("homeAnnouncementsSection");const list=document.getElementById("homeAnnouncementList");if(!section||!list)return;
+      const items=state.homeAnnouncements||[];section.hidden=!items.length;
+      list.innerHTML=items.map(item=>`<article class="announcement-item ${escapeHtml(item.severity||"general")}"><span class="announcement-level">${announcementLevelLabel(item.severity)}</span><div><h4>${escapeHtml(item.title)}</h4><p>${escapeHtml(item.summary||item.body||"")}</p><span class="announcement-date">更新 ${escapeHtml(announcementDateLabel(item))}</span></div>${item.action_page&&item.action_label?`<button type="button" class="btn ghost small" data-home-announcement-action="${escapeHtml(item.id)}">${escapeHtml(item.action_label)}</button>`:""}</article>`).join("");
+      list.querySelectorAll("[data-home-announcement-action]").forEach(button=>button.addEventListener("click",()=>announcementAction(items.find(item=>String(item.id)===button.dataset.homeAnnouncementAction))));
+    }
+    async function loadHomeAnnouncements(force=false){
+      const role=isSignedIn()?authState.role:"guest";if(!force&&state.homeAnnouncementRole===role)return;
+      try{const payload=await announcementFetch("/announcements/active?placement=home");state.homeAnnouncements=payload.items||[];state.homeAnnouncementRole=role;renderHomeAnnouncements()}catch{state.homeAnnouncements=[];state.homeAnnouncementRole=role;renderHomeAnnouncements()}
+    }
+    function announcementDismissKey(item){
+      const version=String(item?.updated_at||item?.created_at||"").replace(/[^0-9]/g,"").slice(0,20);
+      return `diamondmind.announcement.dismissed.${authState.user?.id||"guest"}.${item?.id}.${version}.${taiwanToday()}`;
+    }
+    function announcementWasDismissed(item){try{return localStorage.getItem(announcementDismissKey(item))==="1"}catch{return false}}
+    function rememberAnnouncementDismissal(item){if(!item||!document.getElementById("announcementDismissToday")?.checked)return;try{localStorage.setItem(announcementDismissKey(item),"1")}catch{}}
+    function displayAnnouncementModal(item,{preview=false}={}){
+      if(!item)return;state.announcementModalItem=item;state.announcementModalPreview=preview;
+      const modal=document.getElementById("announcementModal");modal.classList.remove("general","important","emergency");modal.classList.add(item.severity||"general");
+      document.getElementById("announcementModalBadge").textContent=preview?"FOUNDER PREVIEW":item.severity==="emergency"?"緊急公告":item.severity==="important"?"重要公告":"DIAMONDMIND 公告";
+      document.getElementById("announcementModalTitle").textContent=item.title||"最新公告";
+      document.getElementById("announcementModalMeta").textContent=`${announcementDateLabel(item)||"即時公告"} · ${item.audience==="pro"?"Pro 會員":item.audience==="free"?"免費會員":"全部使用者"}`;
+      document.getElementById("announcementModalBody").textContent=item.body||item.summary||"";
+      const dismissible=!preview&&item.dismissible_today!==false&&item.severity!=="emergency";
+      document.getElementById("announcementDismissRow").hidden=!dismissible;document.getElementById("announcementDismissToday").checked=false;
+      const action=document.getElementById("announcementActionButton");action.hidden=!(item.action_page&&item.action_label);action.textContent=item.action_label||"前往查看";
+      openModal("announcementModal");
+    }
+    function closeAnnouncementModal(remember=true){
+      if(remember&&!state.announcementModalPreview)rememberAnnouncementDismissal(state.announcementModalItem);
+      closeModals();state.announcementModalItem=null;state.announcementModalPreview=false;
+    }
+    document.getElementById("announcementAcknowledgeButton").addEventListener("click",()=>closeAnnouncementModal(true));
+    document.getElementById("announcementActionButton").addEventListener("click",()=>announcementAction(state.announcementModalItem));
+    async function maybeShowLoginAnnouncement(force=false){
+      if(!isSignedIn())return;const checkKey=`${authState.user?.id||""}.${taiwanToday()}`;if(!force&&state.announcementLoginChecked===checkKey)return;state.announcementLoginChecked=checkKey;
+      try{const payload=await announcementFetch("/announcements/active?placement=login");const item=(payload.items||[]).find(value=>!announcementWasDismissed(value));if(item)window.setTimeout(()=>displayAnnouncementModal(item),280)}catch{}
+    }
+    function toLocalDateTime(value){if(!value)return "";const d=new Date(value);if(Number.isNaN(d.getTime()))return "";const z=n=>String(n).padStart(2,"0");return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`}
+    function fromLocalDateTime(value){if(!value)return null;const d=new Date(value);return Number.isNaN(d.getTime())?null:d.toISOString()}
+    function announcementFormPayload(){
+      const severity=document.getElementById("announcementSeverity").value;
+      return {title:document.getElementById("announcementTitle").value.trim(),summary:document.getElementById("announcementSummary").value.trim()||null,body:document.getElementById("announcementBody").value.trim(),severity,audience:document.getElementById("announcementAudience").value,starts_at:fromLocalDateTime(document.getElementById("announcementStartsAt").value),ends_at:fromLocalDateTime(document.getElementById("announcementEndsAt").value),action_label:document.getElementById("announcementActionLabel").value.trim()||null,action_page:document.getElementById("announcementActionPage").value||null,show_home:document.getElementById("announcementShowHome").checked,show_login_modal:document.getElementById("announcementShowLogin").checked,dismissible_today:severity==="emergency"?false:document.getElementById("announcementDismissible").checked,is_active:document.getElementById("announcementActive").checked};
+    }
+    function setAnnouncementAdminNote(message,type=""){const note=document.getElementById("announcementAdminNote");if(!note)return;note.textContent=message;note.classList.toggle("error",type==="error");note.classList.toggle("success",type==="success")}
+    function resetAnnouncementForm(){
+      state.editingAnnouncementId=null;document.getElementById("announcementAdminForm").reset();document.getElementById("announcementShowHome").checked=true;document.getElementById("announcementShowLogin").checked=true;document.getElementById("announcementDismissible").checked=true;document.getElementById("announcementActive").checked=true;document.getElementById("announcementFormTitle").textContent="新增公告";document.getElementById("announcementSaveButton").textContent="發布公告";setAnnouncementAdminNote("");
+    }
+    function fillAnnouncementForm(item){
+      state.editingAnnouncementId=item.id;document.getElementById("announcementTitle").value=item.title||"";document.getElementById("announcementSummary").value=item.summary||"";document.getElementById("announcementBody").value=item.body||"";document.getElementById("announcementSeverity").value=item.severity||"general";document.getElementById("announcementAudience").value=item.audience||"all";document.getElementById("announcementStartsAt").value=toLocalDateTime(item.starts_at);document.getElementById("announcementEndsAt").value=toLocalDateTime(item.ends_at);document.getElementById("announcementActionLabel").value=item.action_label||"";document.getElementById("announcementActionPage").value=item.action_page||"";document.getElementById("announcementShowHome").checked=Boolean(item.show_home);document.getElementById("announcementShowLogin").checked=Boolean(item.show_login_modal);document.getElementById("announcementDismissible").checked=Boolean(item.dismissible_today);document.getElementById("announcementActive").checked=Boolean(item.is_active);document.getElementById("announcementFormTitle").textContent="編輯公告";document.getElementById("announcementSaveButton").textContent="儲存修改";setAnnouncementAdminNote(`正在編輯：${item.title}`);window.scrollTo({top:0,behavior:"smooth"});
+    }
+    function renderAdminAnnouncements(){
+      const list=document.getElementById("announcementAdminList");if(!list)return;const items=state.adminAnnouncements||[];
+      if(!items.length){list.innerHTML='<div class="announcement-empty">目前尚未建立公告。</div>';return}
+      list.innerHTML=items.map(item=>`<article class="announcement-admin-row"><div class="announcement-admin-row-top"><div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.summary||item.body||"")}</p></div><span class="announcement-level">${announcementLevelLabel(item.severity)}</span></div><div class="announcement-admin-chips"><span>${item.is_active?"啟用中":"已暫停"}</span><span>${item.audience==="pro"?"Pro":item.audience==="free"?"免費會員":"全部"}</span><span>${item.show_home?"首頁":"不顯示首頁"}</span><span>${item.show_login_modal?"登入彈窗":"不彈窗"}</span><span>更新 ${escapeHtml(announcementDateLabel(item))}</span></div><div class="announcement-admin-actions"><button type="button" class="btn ghost small" data-ann-edit="${escapeHtml(item.id)}">編輯</button><button type="button" class="btn ghost small" data-ann-toggle="${escapeHtml(item.id)}">${item.is_active?"暫停":"啟用"}</button><button type="button" class="btn ghost small" data-ann-preview="${escapeHtml(item.id)}">預覽</button><button type="button" class="btn ghost small" data-ann-delete="${escapeHtml(item.id)}">刪除</button></div></article>`).join("");
+      const find=id=>items.find(item=>String(item.id)===String(id));
+      list.querySelectorAll("[data-ann-edit]").forEach(btn=>btn.addEventListener("click",()=>fillAnnouncementForm(find(btn.dataset.annEdit))));
+      list.querySelectorAll("[data-ann-preview]").forEach(btn=>btn.addEventListener("click",()=>displayAnnouncementModal(find(btn.dataset.annPreview),{preview:true})));
+      list.querySelectorAll("[data-ann-toggle]").forEach(btn=>btn.addEventListener("click",async()=>{const item=find(btn.dataset.annToggle);if(!item)return;try{await announcementFetch(`/admin/announcements/${item.id}`,{method:"PATCH",body:{...item,is_active:!item.is_active}});showToast(item.is_active?"公告已暫停":"公告已啟用");await loadAdminAnnouncements(true);await loadHomeAnnouncements(true)}catch(error){showToast(error.message)}}));
+      list.querySelectorAll("[data-ann-delete]").forEach(btn=>btn.addEventListener("click",async()=>{const item=find(btn.dataset.annDelete);if(!item||!confirm(`確定刪除「${item.title}」？`))return;try{await announcementFetch(`/admin/announcements/${item.id}`,{method:"DELETE"});showToast("公告已刪除");if(state.editingAnnouncementId===item.id)resetAnnouncementForm();await loadAdminAnnouncements(true);await loadHomeAnnouncements(true)}catch(error){showToast(error.message)}}));
+    }
+    async function loadAdminAnnouncements(force=false){
+      if(!isAdminMember())return;if(!force&&state.adminAnnouncements.length){renderAdminAnnouncements();return}
+      try{const payload=await announcementFetch("/admin/announcements");state.adminAnnouncements=payload.items||[];renderAdminAnnouncements()}catch(error){document.getElementById("announcementAdminList").innerHTML=`<div class="announcement-empty">${escapeHtml(error.message)}</div>`}
+    }
+    document.getElementById("announcementAdminForm").addEventListener("submit",async event=>{event.preventDefault();const payload=announcementFormPayload();if(!payload.title||!payload.body){setAnnouncementAdminNote("請填寫公告標題與內容。","error");return}const button=document.getElementById("announcementSaveButton");button.disabled=true;try{const path=state.editingAnnouncementId?`/admin/announcements/${state.editingAnnouncementId}`:"/admin/announcements";await announcementFetch(path,{method:state.editingAnnouncementId?"PATCH":"POST",body:payload});setAnnouncementAdminNote(state.editingAnnouncementId?"公告修改完成。":"公告發布完成。","success");showToast(state.editingAnnouncementId?"公告已更新":"公告已發布");resetAnnouncementForm();await loadAdminAnnouncements(true);await loadHomeAnnouncements(true)}catch(error){setAnnouncementAdminNote(error.message,"error")}finally{button.disabled=false}});
+    document.getElementById("announcementPreviewButton").addEventListener("click",()=>{const item={...announcementFormPayload(),id:"preview",updated_at:new Date().toISOString()};if(!item.title||!item.body){setAnnouncementAdminNote("請先填寫公告標題與內容。","error");return}displayAnnouncementModal(item,{preview:true})});
+    document.getElementById("announcementResetButton").addEventListener("click",resetAnnouncementForm);
+    document.getElementById("announcementAdminRefresh").addEventListener("click",()=>loadAdminAnnouncements(true));
+    document.getElementById("announcementSeverity").addEventListener("change",event=>{if(event.target.value==="emergency"){document.getElementById("announcementDismissible").checked=false;document.getElementById("announcementDismissible").disabled=true}else document.getElementById("announcementDismissible").disabled=false});
+
     document.getElementById("loginForm").addEventListener("submit",async event=>{
       event.preventDefault();
       const form=event.currentTarget;
@@ -2057,6 +2233,7 @@
         closeModals();
         showPage("morePage");
         showToast(`歡迎回來，${memberDisplayName(authState.user)}`);
+        state.homeAnnouncementRole="";loadHomeAnnouncements(true);window.setTimeout(()=>maybeShowLoginAnnouncement(true),420);
         setAuthNote("loginNote","使用你註冊時的電子信箱與密碼登入。");
       }catch(error){setAuthNote("loginNote",authErrorMessage(error),"error")}
       finally{setAuthFormBusy(form,false,"登入中…")}
@@ -2079,6 +2256,7 @@
           closeModals();
           showPage("morePage");
           showToast(`帳號建立完成，歡迎 ${memberDisplayName(authState.user)}`);
+          state.homeAnnouncementRole="";loadHomeAnnouncements(true);window.setTimeout(()=>maybeShowLoginAnnouncement(true),420);
         }else{
           form.reset();
           setAuthNote("registerNote","註冊資料已送出，請到信箱點擊驗證連結後再登入。","success");
@@ -2139,7 +2317,7 @@
       }catch(error){
         clearAuthSession();
         if(callback?.handled)showToast(authErrorMessage(error));
-      }finally{authState.ready=true;handlePaymentReturn()}
+      }finally{authState.ready=true;handlePaymentReturn();loadHomeAnnouncements(true);if(isSignedIn())window.setTimeout(()=>maybeShowLoginAnnouncement(false),520)}
     }
 
     function escapeHtml(value){
@@ -3356,7 +3534,7 @@
         const sourceMeta=`<div class="engine-source-meta">${meta.updated_at?`<span>最後更新 ${escapeHtml(formatAnalysisUpdatedAt(meta.updated_at))}</span>`:""}${sources?`<span>來源 ${escapeHtml(sources)}</span>`:""}${meta.roster_date?`<span>名單日期 ${escapeHtml(meta.roster_date)}</span>`:""}</div>`;
         return `<section class="engine-module"><div class="engine-module-top"><b>${escapeHtml(group.label||fallback)}</b><span class="engine-quality ${quality<60?"low":""}">完整度 ${quality}%</span></div><p class="engine-note">${escapeHtml(group.note||"依可取得資料動態評分")}</p><div class="engine-metrics"><div class="engine-metric"><span>比較指標</span><span>客隊</span><span>主隊</span></div>${rows}</div>${engineExtraHtml(key,context)}${sourceMeta}</section>`;
       }).join("");
-      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V17.5 · 管理後台完整工具 · Pro 自動開通 · 開賽前自動重算</span></div><div class="engine-module-grid">${cards}</div>`;
+      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V17.6 · 公告中心 · 主畫面 App 圖示 · Pro 自動開通 · 開賽前自動重算</span></div><div class="engine-module-grid">${cards}</div>`;
     }
 
     window.setDiamondMindPrediction=function(prediction){
@@ -3393,6 +3571,7 @@
     renderRecords();
     renderAuthState();
     loadRecords();
+    loadHomeAnnouncements(true);
     if(initialHash&&pages.includes(`${initialHash}Page`))showPage(`${initialHash}Page`);
     initializeAuth(authCallback);
   </script>
