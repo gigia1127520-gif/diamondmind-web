@@ -2063,8 +2063,9 @@
         aiStatus.textContent=analysis.pick?.label?`${analysis.pick.label} · 信心 ${analysis.confidence}% · 資料 ${quality}%`:"五大引擎已完成";
         renderEngineBreakdown(analysis.analysis_groups||{},"detailEngineBreakdown",{
           lineups:payload.lineups||analysis.lineups||{},
+          bullpen:payload.bullpen||analysis.bullpen||{},
           environment:payload.environment||analysis.environment||{},
-          startingPitchers:payload.starting_pitchers||analysis.starting_pitchers||{}
+          starting_pitchers:payload.starting_pitchers||analysis.starting_pitchers||{}
         });
       }catch(error){
         aiStatus.textContent="後端暫時無法連線，顯示基本賽事資料";
@@ -2616,26 +2617,59 @@
     }
 
     function engineExtraHtml(key,context){
+      if(key==="starter"){
+        const starters=context.starting_pitchers||{};
+        const sideText=side=>{
+          const pitcher=starters[side]||{};
+          const stats=pitcher.stats||{};
+          const name=pitcher.name&&pitcher.name!=="尚未公布"?pitcher.name:"尚未公布";
+          const hand=stats.pitch_hand?` · ${stats.pitch_hand==="L"?"左投":"右投"}`:"";
+          return `${name}${hand}`;
+        };
+        return `<div class="engine-extra"><div><b>客隊預計先發</b><p>${escapeHtml(sideText("away"))}</p></div><div><b>主隊預計先發</b><p>${escapeHtml(sideText("home"))}</p></div></div>`;
+      }
       if(key==="lineup"){
         const away=((context.lineups||{}).away||{}).official_lineup||{};
         const home=((context.lineups||{}).home||{}).official_lineup||{};
         const names=side=>(side.players||[]).map(player=>player.name).filter(Boolean).join("、");
         if(!away.players?.length&&!home.players?.length)return "";
-        return `<div class="engine-extra"><div><b>客隊${away.confirmed?"正式":"預計"}打線</b><p>${escapeHtml(names(away)||"尚未公布")}</p></div><div><b>主隊${home.confirmed?"正式":"預計"}打線</b><p>${escapeHtml(names(home)||"尚未公布")}</p></div></div>`;
+        return `<div class="engine-extra"><div><b>客隊${away.confirmed?"正式":"預計核心"}打線</b><p>${escapeHtml(names(away)||"尚未公布")}</p></div><div><b>主隊${home.confirmed?"正式":"預計核心"}打線</b><p>${escapeHtml(names(home)||"尚未公布")}</p></div></div>`;
+      }
+      if(key==="bullpen"){
+        const bullpen=context.bullpen||{};
+        const sideHtml=(label,data={})=>{
+          const recent=data.recent_3_days||{};
+          const availability=data.availability||{};
+          const closer=availability.closer||{};
+          const workload=availability.workload_games==null?"近期場次資料不足":`近三日 ${availability.workload_games} 場 · ${recent.innings_pitched??"0.0"} 局 · ${recent.pitches??0} 球`;
+          const closerText=closer.name?`${closer.name}（${availability.closer_status||"狀態未定"}）`:availability.closer_status||"終結者尚未辨識";
+          return `<div><b>${label}</b><p>${escapeHtml(`${availability.freshness_status||"近期負荷未確認"} · ${workload} · 終結者：${closerText}`)}</p></div>`;
+        };
+        return `<div class="engine-extra">${sideHtml("客隊牛棚",bullpen.away)}${sideHtml("主隊牛棚",bullpen.home)}</div>`;
       }
       if(key==="environment"){
         const environment=context.environment||{};
         const weather=environment.weather||{};
         const park=environment.park_factors||{};
         const venue=environment.venue||{};
+        const temperature=weather.temperature_c!=null?`${weather.temperature_c}°C${weather.temperature_f!=null?` / ${weather.temperature_f}°F`:""}`:weather.temperature_f!=null?`${weather.temperature_f}°F`:"—";
         const parts=[
           venue.name,
-          weather.available?`${weather.condition||"天氣"} ${weather.temperature_f??"—"}°F`:null,
-          weather.available?`風速 ${weather.wind_speed_mph??"—"} mph`:null,
+          weather.available?`${weather.condition||"天氣"} ${temperature}`:null,
+          weather.available?`風速 ${weather.wind_speed_mph??"—"} mph${weather.wind_direction_text?` ${weather.wind_direction_text}`:""}`:null,
+          weather.time_local_label?`球場當地預報 ${weather.time_local_label}`:null,
           park.available?`得分因子 ${park.run_factor}`:null,
           environment.roof_closed?"屋頂關閉":null
         ].filter(Boolean);
         return parts.length?`<div class="engine-extra"><p>${escapeHtml(parts.join(" · "))}</p></div>`:"";
+      }
+      if(key==="advanced"){
+        const away=((((context.lineups||{}).away||{}).official_lineup||{}).advanced)||{};
+        const home=((((context.lineups||{}).home||{}).official_lineup||{}).advanced)||{};
+        const basis=value=>value.basis==="official_lineup"?"正式打線":value.basis==="projected_core"?"預計核心打者":"資料未確認";
+        const text=(label,value)=>`${label}：${basis(value)} · 覆蓋 ${value.coverage_players??value.players??0} 人`;
+        if(!away.available&&!home.available)return "";
+        return `<div class="engine-extra"><div><b>Statcast 覆蓋</b><p>${escapeHtml(text("客隊",away))}</p></div><div><b>Statcast 覆蓋</b><p>${escapeHtml(text("主隊",home))}</p></div></div>`;
       }
       return "";
     }
@@ -2669,7 +2703,7 @@
         const quality=Math.round(Number(group.quality||0)*100);
         return `<section class="engine-module"><div class="engine-module-top"><b>${escapeHtml(group.label||fallback)}</b><span class="engine-quality ${quality<60?"low":""}">完整度 ${quality}%</span></div><p class="engine-note">${escapeHtml(group.note||"依可取得資料動態評分")}</p><div class="engine-metrics"><div class="engine-metric"><span>比較指標</span><span>客隊</span><span>主隊</span></div>${rows}</div>${engineExtraHtml(key,context)}</section>`;
       }).join("");
-      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>不產生模擬比分 · 缺值自動降權</span></div><div class="engine-module-grid">${cards}</div>`;
+      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>不產生模擬比分 · 缺值自動降權 · 不使用固定預設值</span></div><div class="engine-module-grid">${cards}</div>`;
     }
 
     window.setDiamondMindPrediction=function(prediction){
