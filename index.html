@@ -3865,7 +3865,7 @@
         const sourceMeta=`<div class="engine-source-meta">${meta.updated_at?`<span>最後更新 ${escapeHtml(formatAnalysisUpdatedAt(meta.updated_at))}</span>`:""}${sources?`<span>來源 ${escapeHtml(sources)}</span>`:""}${meta.roster_date?`<span>名單日期 ${escapeHtml(meta.roster_date)}</span>`:""}</div>`;
         return `<section class="engine-module"><div class="engine-module-top"><b>${escapeHtml(group.label||fallback)}</b><span class="engine-quality ${quality<60?"low":""}">完整度 ${quality}%</span></div><p class="engine-note">${escapeHtml(group.note||"依可取得資料動態評分")}</p><div class="engine-metrics"><div class="engine-metric"><span>比較指標</span><span>客隊</span><span>主隊</span></div>${rows}</div>${engineExtraHtml(key,context)}${sourceMeta}</section>`;
       }).join("");
-      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V17.9.0 · 營運監控與政策防呆 · 模型快照與校正 · 自動結算監控 · 公告中心 · Pro 自動開通 · 開賽前自動重算</span></div><div class="engine-module-grid">${cards}</div>`;
+      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>先發投手 · 打線火力 · 牛棚狀態 · 環境條件 · Statcast 進階數據</span></div><div class="engine-module-grid">${cards}</div>`;
     }
 
     window.setDiamondMindPrediction=function(prediction){
