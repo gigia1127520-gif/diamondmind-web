@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
+  <!-- DiamondMind contact-information submission update -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#03080c">
@@ -1388,6 +1389,7 @@
             <button type="button" class="footer-link" data-modal="faqModal">常見問題</button>
             <button type="button" class="footer-link" data-modal="aboutModal">關於我們</button>
             <button type="button" class="footer-link" data-modal="contactModal">聯絡我們</button>
+            <a class="footer-link" id="footerSupportEmail" href="mailto:diamondmind.support@gmail.com">diamondmind.support@gmail.com</a>
             <button type="button" class="footer-link" data-modal="loginModal">會員登入</button>
           </div>
         </div>
@@ -1540,7 +1542,7 @@
   <section class="modal" id="contactModal" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
     <div class="modal-head"><div><h2 id="contactTitle">聯絡我們</h2><p>客服與商務合作</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
     <div class="legal-copy">
-      <p>付款或會員問題請先保留交易編號與畫面。客服信箱：<strong id="contactSupportEmail">正式客服信箱尚未設定</strong></p>
+      <p>付款或會員問題請先保留交易編號與畫面。客服信箱：<a id="contactSupportEmail" href="mailto:diamondmind.support@gmail.com"><strong>diamondmind.support@gmail.com</strong></a></p>
       <div class="legal-callout">信用卡資料僅在綠界頁面輸入。請勿將密碼、OTP 驗證碼、完整卡號或 API 金鑰傳送給任何自稱客服的人員。</div>
     </div>
   </section>
@@ -1888,7 +1890,11 @@
       badge.classList.toggle("stage",!config.live);
       badge.textContent=!config.enabled?"付款服務尚未完成設定":config.live?"綠界正式付款｜固定期間，不自動續扣":"綠界測試模式｜不會產生真實扣款";
       setCheckoutNote(!config.enabled?"付款服務目前尚未完成設定，請稍後再試。":config.live?"付款成功後，系統會驗證綠界通知並自動開通 Pro。":"目前僅限指定測試帳號使用；測試交易不會產生真實費用。",!config.enabled?"error":"");
-      const supportText=document.getElementById("contactSupportEmail");if(supportText)supportText.textContent=config.support_email||"正式客服信箱尚未設定";
+      const supportEmail=config.support_email||"diamondmind.support@gmail.com";
+      const supportText=document.getElementById("contactSupportEmail");
+      if(supportText){supportText.textContent=supportEmail;supportText.href=`mailto:${supportEmail}`;}
+      const footerSupport=document.getElementById("footerSupportEmail");
+      if(footerSupport){footerSupport.textContent=supportEmail;footerSupport.href=`mailto:${supportEmail}`;}
     }
     function submitPaymentForm(checkout){
       const form=document.createElement("form");
