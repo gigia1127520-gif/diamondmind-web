@@ -1602,8 +1602,8 @@
       <div class="admin-detail-box"><small>最近交易編號</small><b id="adminDetailTrade">—</b></div>
     </div>
     <div class="admin-control-card" id="adminMemberControls">
-      <h3>Pro 權限管理</h3><p>「開通／重設」從現在重新計算期限；「延長」會接在目前有效期限之後；「取消」會立即恢復免費會員。</p>
-      <div class="admin-control-grid"><select id="adminControlPlan"><option value="monthly">月方案 · 1 個月</option><option value="quarterly">季方案 · 3 個月</option><option value="annual">年方案 · 12 個月</option></select><input type="text" id="adminControlNote" maxlength="300" placeholder="備註（選填，例如客服補償、退款）"></div>
+      <h3>Pro 權限管理</h3><p>新註冊且完成信箱驗證的會員會自動獲得一次 24 小時 Pro。你也能手動贈送短期權限、使用月／季／年方案，或指定自訂到期時間。</p>
+      <div class="admin-control-grid"><select id="adminControlPlan"><option value="trial_1d">試用方案 · 1 天</option><option value="gift_3d">短期贈送 · 3 天</option><option value="gift_7d">短期贈送 · 7 天</option><option value="monthly">月方案 · 1 個月</option><option value="quarterly">季方案 · 3 個月</option><option value="annual">年方案 · 12 個月</option><option value="custom">自訂到期時間</option></select><input type="datetime-local" id="adminCustomExpiry" hidden><input type="text" id="adminControlNote" maxlength="300" placeholder="備註（選填，例如新客試用、客服補償）"></div>
       <div class="admin-control-actions"><button type="button" class="btn primary" data-admin-membership-action="grant">開通／重設 Pro</button><button type="button" class="btn ghost" data-admin-membership-action="extend">延長 Pro</button><button type="button" class="btn ghost" data-admin-membership-action="cancel">取消 Pro</button></div>
       <div class="admin-note" id="adminControlNoteStatus"></div>
     </div>
@@ -1680,7 +1680,7 @@
       settlementDate:"",settlementDashboard:null,settlementLoading:false,
       modelPerformance:null,modelSnapshots:null,modelLoading:false,modelSuggestedWeights:null,operationsStatus:null,operationsLoading:false
     };
-    const authState={session:null,user:null,ready:false,role:"free"};
+    const authState={session:null,user:null,ready:false,role:"free",trialJustGranted:false};
 
     const teamZh = {
       "Arizona Diamondbacks":"亞利桑那響尾蛇","Atlanta Braves":"亞特蘭大勇士","Baltimore Orioles":"巴爾的摩金鶯",
@@ -1933,7 +1933,7 @@
       if(!isSignedIn()){target.innerHTML="";return}
       if(isAdminMember()){target.innerHTML="<span>永久權限</span>";return}
       if(status?.active){
-        const plan=({monthly:"月方案",quarterly:"季方案",annual:"年方案"})[status.plan]||"Pro";
+        const plan=({trial_1d:"新會員 1 天試用",gift_3d:"3 天贈送",gift_7d:"7 天贈送",monthly:"月方案",quarterly:"季方案",annual:"年方案",custom:"自訂期限"})[status.plan]||"Pro";
         target.innerHTML=`<span>${plan}</span><span>有效至 ${formatMembershipDate(status.current_period_end)}</span><span>不自動續扣</span>`;
       }else if(status?.status==="pending")target.innerHTML="<span>付款確認中</span>";
       else target.innerHTML="<span>免費方案</span><span>可選月／季／年</span>";
@@ -2223,6 +2223,7 @@
       authState.session=null;
       authState.user=null;
       authState.role="free";
+      authState.trialJustGranted=false;
       state.predictionDate="";
       state.predictionRole="";
       state.marketRecords=[];
@@ -2240,10 +2241,21 @@
       const payload=await authRequest("/user",{accessToken:session.access_token});
       return payload.user||payload;
     }
+    async function claimNewMemberTrial(session){
+      if(!session?.access_token)return null;
+      try{
+        const response=await fetch(`${API_BASE}/membership/trial/claim`,{method:"POST",headers:{Accept:"application/json",Authorization:`Bearer ${session.access_token}`},cache:"no-store"});
+        const raw=await response.text();let payload={};if(raw){try{payload=JSON.parse(raw)}catch{payload={}}}
+        if(!response.ok)return null;
+        return payload;
+      }catch{return null}
+    }
     async function acceptAuthSession(payload){
       const session=normalizeSession(payload);
       if(!session)throw new Error("missing_session");
       session.user=session.user||await fetchAuthUser(session);
+      const trial=await claimNewMemberTrial(session);
+      if(trial?.granted){session.user=await fetchAuthUser(session);authState.trialJustGranted=true}
       authState.session=session;
       authState.user=session.user;
       authState.role=memberRole(session.user);
@@ -2388,7 +2400,7 @@
         form.reset();
         closeModals();
         showPage("morePage");
-        showToast(`歡迎回來，${memberDisplayName(authState.user)}`);
+        showToast(authState.trialJustGranted?"新會員 1 天 Pro 試用已自動開通":`歡迎回來，${memberDisplayName(authState.user)}`);authState.trialJustGranted=false;
         state.homeAnnouncementRole="";loadHomeAnnouncements(true);window.setTimeout(()=>maybeShowLoginAnnouncement(true),420);
         setAuthNote("loginNote","使用你註冊時的電子信箱與密碼登入。");
       }catch(error){setAuthNote("loginNote",authErrorMessage(error),"error")}
@@ -2411,7 +2423,7 @@
           form.reset();
           closeModals();
           showPage("morePage");
-          showToast(`帳號建立完成，歡迎 ${memberDisplayName(authState.user)}`);
+          showToast(authState.trialJustGranted?"帳號建立完成，1 天 Pro 試用已開通":`帳號建立完成，歡迎 ${memberDisplayName(authState.user)}`);authState.trialJustGranted=false;
           state.homeAnnouncementRole="";loadHomeAnnouncements(true);window.setTimeout(()=>maybeShowLoginAnnouncement(true),420);
         }else{
           form.reset();
@@ -3005,7 +3017,7 @@
         :"今日尚無完整玩法通過固定門檻；DiamondMind 不會使用示範單或低信心場次湊單。";
     }
 
-    const adminPlanLabels={monthly:"月方案",quarterly:"季方案",annual:"年方案",founder:"創辦人"};
+    const adminPlanLabels={trial_1d:"試用方案 · 1 天",gift_3d:"短期贈送 · 3 天",gift_7d:"短期贈送 · 7 天",monthly:"月方案",quarterly:"季方案",annual:"年方案",custom:"自訂到期時間",founder:"創辦人"};
     const adminStatusLabels={free:"免費",active:"有效",pending:"確認中",expired:"已到期",canceled:"已取消",payment_failed:"付款失敗",refunded:"已退款",founder:"永久權限"};
     function formatAdminDateTime(value){
       if(!value)return "—";
@@ -3297,7 +3309,7 @@
       document.getElementById("adminDetailProvider").textContent=member.provider||"—";
       document.getElementById("adminDetailTrade").textContent=member.merchant_trade_no||"—";
       document.getElementById("adminMemberControls").hidden=member.role==="admin";
-      document.getElementById("adminControlNote").value="";document.getElementById("adminControlNoteStatus").textContent="";
+      document.getElementById("adminControlNote").value="";document.getElementById("adminControlPlan").value="trial_1d";document.getElementById("adminCustomExpiry").value="";document.getElementById("adminCustomExpiry").hidden=true;document.getElementById("adminControlNoteStatus").textContent="";
       const payments=payload?.payments||[];document.getElementById("adminMemberPayments").innerHTML=payments.length?payments.slice(0,8).map(item=>adminHistoryItem(`${item.success?"付款成功":"付款失敗"} · ${adminCurrency(item.amount)}`,`${formatAdminDateTime(item.created_at)} · ${item.merchant_trade_no||"—"} · ${item.rtn_msg||item.event_type||"—"}`)).join(""):'<div class="admin-empty">尚無付款紀錄。</div>';
       const audit=payload?.admin_events||[];document.getElementById("adminMemberAudit").innerHTML=audit.length?audit.slice(0,8).map(item=>adminHistoryItem(`${({grant:"開通／重設",extend:"延長",cancel:"取消"})[item.action]||item.action} · ${adminPlanLabels[item.plan_code]||"—"}`,`${formatAdminDateTime(item.created_at)} · 操作者 ${item.actor_email||"—"}${item.note?` · ${item.note}`:""}`)).join(""):'<div class="admin-empty">尚無人工調整紀錄。</div>';
     }
@@ -3306,13 +3318,16 @@
       try{const payload=await billingRequest(`/admin/members/${encodeURIComponent(userId)}`,{timeout:30000});renderAdminMemberDetail(payload)}
       catch(error){document.getElementById("adminMemberModalTitle").textContent="會員資料載入失敗";document.getElementById("adminMemberModalMeta").textContent=error.message||"請稍後重試"}
     }
+    function adminCustomExpiryIso(){const value=document.getElementById("adminCustomExpiry").value;if(!value)return null;const date=new Date(value);return Number.isNaN(date.getTime())?null:date.toISOString()}
+    function toggleAdminCustomExpiry(){const custom=document.getElementById("adminControlPlan").value==="custom";document.getElementById("adminCustomExpiry").hidden=!custom}
     function openAdminMembershipConfirm(action){
       const member=state.adminSelectedMember;if(!member?.id)return;
-      const plan=document.getElementById("adminControlPlan").value;const note=document.getElementById("adminControlNote").value.trim();
+      const plan=document.getElementById("adminControlPlan").value;const note=document.getElementById("adminControlNote").value.trim();const customExpiresAt=plan==="custom"?adminCustomExpiryIso():null;
+      if(action!=="cancel"&&plan==="custom"&&!customExpiresAt){document.getElementById("adminControlNoteStatus").textContent="請選擇有效的自訂到期時間";document.getElementById("adminControlNoteStatus").className="admin-note error";return}
       const actionLabel=({grant:"開通／重設 Pro",extend:"延長 Pro",cancel:"取消 Pro"})[action];
-      state.adminPendingAction={action,plan:action==="cancel"?null:plan,note,memberId:member.id,email:member.email||"—"};
+      state.adminPendingAction={action,plan:action==="cancel"?null:plan,note,custom_expires_at:action==="cancel"?null:customExpiresAt,memberId:member.id,email:member.email||"—"};
       document.getElementById("adminConfirmAction").textContent=actionLabel;
-      document.getElementById("adminConfirmPlan").textContent=action==="cancel"?"立即恢復免費會員":adminPlanLabels[plan]||plan;
+      document.getElementById("adminConfirmPlan").textContent=action==="cancel"?"立即恢復免費會員":plan==="custom"?`自訂至 ${formatAdminDateTime(customExpiresAt)}`:adminPlanLabels[plan]||plan;
       document.getElementById("adminConfirmMember").textContent=member.email||"—";
       document.getElementById("adminConfirmNote").textContent=note||"未填寫";
       document.getElementById("adminConfirmWarning").textContent=action==="cancel"?"取消後會立即收回 Pro 權限，但不會自動向綠界退款。":"執行後會立即更新會員到期日；所有操作都會保留操作者與時間紀錄。";
@@ -3323,11 +3338,12 @@
       const status=document.getElementById("adminConfirmStatus");const submit=document.getElementById("adminConfirmSubmit");const cancel=document.getElementById("adminConfirmCancel");
       status.textContent="正在更新會員權限…";status.className="admin-note";submit.disabled=true;cancel.disabled=true;
       try{
-        await billingRequest(`/admin/members/${encodeURIComponent(pending.memberId)}/membership`,{method:"POST",body:{action:pending.action,plan:pending.plan,note:pending.note},timeout:30000});
+        await billingRequest(`/admin/members/${encodeURIComponent(pending.memberId)}/membership`,{method:"POST",body:{action:pending.action,plan:pending.plan,note:pending.note,custom_expires_at:pending.custom_expires_at},timeout:30000});
         state.adminMembers=null;state.adminTransactions=null;state.adminPendingAction=null;closeModals();await loadAdminMembers(true);await openAdminMember(pending.memberId);showToast("會員權限已更新");
       }catch(error){status.textContent=error.message||"會員權限更新失敗";status.className="admin-note error"}
       finally{submit.disabled=false;cancel.disabled=false}
     }
+    document.getElementById("adminControlPlan")?.addEventListener("change",toggleAdminCustomExpiry);
     document.querySelectorAll("[data-admin-membership-action]").forEach(button=>button.addEventListener("click",()=>openAdminMembershipConfirm(button.dataset.adminMembershipAction)));
     document.getElementById("adminConfirmSubmit")?.addEventListener("click",applyAdminMembership);
     document.getElementById("adminConfirmCancel")?.addEventListener("click",()=>{const id=state.adminPendingAction?.memberId;state.adminPendingAction=null;closeModals();if(id)openAdminMember(id)});
