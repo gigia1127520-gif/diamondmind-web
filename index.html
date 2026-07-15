@@ -550,6 +550,7 @@
     .payment-success-row{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;padding:13px 15px;border-bottom:1px solid rgba(255,255,255,.055)}.payment-success-row:last-child{border-bottom:0}.payment-success-row span{color:var(--muted);font-size:11px}.payment-success-row b{overflow-wrap:anywhere;color:#dce8ed;font-size:12px;text-align:right}.payment-success-row b.gold{color:var(--gold)}
     .payment-success-progress{height:7px;overflow:hidden;border-radius:999px;background:#102028}.payment-success-progress i{display:block;width:100%;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--green-2),var(--green));transform-origin:left center;animation:paymentSuccessCountdown 5s linear forwards}@keyframes paymentSuccessCountdown{to{transform:scaleX(0)}}
     .payment-success-countdown{margin:10px 0 0;color:#91a4ad;font-size:11px}.payment-success-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:20px}.payment-success-actions .btn{min-width:150px}
+    .operations-hero{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:21px;margin-bottom:16px}.operations-hero-copy{min-width:0}.operations-hero-copy small{display:block;color:var(--muted);font-size:10px;letter-spacing:1px}.operations-hero-copy b{display:block;margin-top:6px;font-size:25px}.operations-hero-copy p{margin:7px 0 0;color:var(--muted);font-size:11px;line-height:1.55}.operations-state{flex:0 0 auto;padding:8px 11px;border:1px solid var(--line);border-radius:999px;color:var(--gold);font-size:10px;font-weight:950;background:rgba(255,215,106,.05)}.operations-state.pass{color:var(--green);border-color:var(--line-strong);background:rgba(55,244,164,.06)}.operations-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-bottom:16px}.operations-card{padding:17px}.operations-card small{display:block;color:var(--muted);font-size:10px}.operations-card b{display:block;margin-top:7px;font-size:17px;overflow-wrap:anywhere}.operations-card span{display:block;margin-top:6px;color:#81949d;font-size:9px;line-height:1.45}.operations-card b.pass{color:var(--green)}.operations-card b.warning{color:var(--gold)}.operations-card b.fail{color:var(--red)}.operations-layout{display:grid;grid-template-columns:1.08fr .92fr;gap:14px}.operations-panel{padding:19px}.operations-panel h2{margin:0 0 5px;font-size:18px}.operations-panel>p{margin:0 0 15px;color:var(--muted);font-size:11px;line-height:1.55}.operations-checklist{display:grid;gap:8px}.operations-check{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:14px;background:rgba(255,255,255,.018)}.operations-check-icon{width:26px;height:26px;display:grid;place-items:center;border-radius:9px;color:var(--gold);background:rgba(255,215,106,.07);font-weight:950}.operations-check.pass .operations-check-icon{color:var(--green);background:rgba(55,244,164,.08)}.operations-check.fail .operations-check-icon{color:var(--red);background:rgba(255,115,130,.08)}.operations-check b{display:block;font-size:12px}.operations-check p{margin:4px 0 0;color:var(--muted);font-size:10px;line-height:1.5}.operations-monitor{display:grid;gap:9px}.operations-monitor-row{padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:13px;background:rgba(255,255,255,.018)}.operations-monitor-row small{display:block;color:var(--muted);font-size:9px}.operations-monitor-row b{display:block;margin-top:5px;font-size:12px;overflow-wrap:anywhere}.operations-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.operations-error{margin-top:14px;padding:13px;border:1px solid rgba(255,115,130,.22);border-radius:13px;color:#ff9cab;font-size:10px;line-height:1.55;background:rgba(255,115,130,.035)}.operations-error[hidden]{display:none}
 
 
     .footer{
@@ -695,6 +696,7 @@
       .market-package-head{align-items:flex-start}.market-result-row{grid-template-columns:68px minmax(0,1fr) 48px;padding:13px 14px}.market-result-score{display:none}
       .more-hero{grid-template-columns:1fr}.more-actions{justify-content:flex-start}
       .footer{padding-top:46px}.footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:31px 24px}.footer-brand{grid-column:1/-1}.footer-column h3{font-size:12px}.footer-link{font-size:11px}.footer-divider{margin:32px 0 22px}.footer-bottom{align-items:flex-start;flex-direction:column}.footer-bottom-links{justify-content:flex-start}.footer-disclaimer{padding:17px 15px;text-align:left}
+      .operations-grid{grid-template-columns:1fr 1fr}.operations-layout{grid-template-columns:1fr}.operations-hero{align-items:flex-start;flex-direction:column}
       .detail-score{padding:15px}.detail-team b{font-size:22px}.detail-info{grid-template-columns:1fr}
     }
 
@@ -1277,6 +1279,40 @@
       </div>
     </section>
 
+    <section class="page" id="adminOperationsPage" aria-labelledby="adminOperationsTitle">
+      <div class="wrap page-space">
+        <div class="page-head">
+          <div><div class="kicker">FOUNDER ADMIN</div><h1 id="adminOperationsTitle">營運上線監控</h1><p>集中查看付款、資料庫、盤口、排程、開賽前更新與自動結算狀態；此頁只讀，不會修改推薦或會員資料。</p></div>
+          <button type="button" class="btn ghost small" id="operationsRefresh">重新檢查</button>
+        </div>
+        <div class="card operations-hero">
+          <div class="operations-hero-copy"><small>LAUNCH READINESS</small><b id="operationsOverall">正在檢查系統…</b><p id="operationsGenerated">尚未載入</p></div>
+          <span class="operations-state" id="operationsState">CHECKING</span>
+        </div>
+        <div class="operations-grid">
+          <div class="card operations-card"><small>API 版本</small><b id="operationsVersion">—</b><span>後端目前部署版本</span></div>
+          <div class="card operations-card"><small>付款環境</small><b id="operationsPayment">—</b><span id="operationsPaymentMeta">—</span></div>
+          <div class="card operations-card"><small>Supabase</small><b id="operationsDatabase">—</b><span>推薦、會員與模型資料</span></div>
+          <div class="card operations-card"><small>真實盤口</small><b id="operationsOdds">—</b><span>正式 Pro 玩法必要來源</span></div>
+          <div class="card operations-card"><small>安全排程</small><b id="operationsScheduler">—</b><span>自動更新與結算觸發</span></div>
+          <div class="card operations-card"><small>客服管道</small><b id="operationsSupport">—</b><span>正式收費前需完成</span></div>
+        </div>
+        <div class="operations-layout">
+          <section class="card operations-panel"><h2>上線檢查清單</h2><p>系統自動檢查設定；真實推薦結算屬人工驗收項目。</p><div class="operations-checklist" id="operationsChecklist"><div class="admin-empty">載入檢查項目中…</div></div></section>
+          <section class="card operations-panel"><h2>背景監控狀態</h2><p>顯示 Render 執行中的開賽前更新與自動結算監控。</p>
+            <div class="operations-monitor">
+              <div class="operations-monitor-row"><small>開賽前更新</small><b id="operationsPregame">—</b></div>
+              <div class="operations-monitor-row"><small>上次開賽前更新</small><b id="operationsPregameLast">—</b></div>
+              <div class="operations-monitor-row"><small>自動結算監控</small><b id="operationsSettlement">—</b></div>
+              <div class="operations-monitor-row"><small>上次結算檢查</small><b id="operationsSettlementLast">—</b></div>
+            </div>
+            <div class="operations-actions"><button type="button" class="btn ghost small" data-page="adminSettlementPage">前往結算監控</button><button type="button" class="btn ghost small" data-page="adminMembersPage">前往交易管理</button></div>
+            <div class="operations-error" id="operationsErrors" hidden></div>
+          </section>
+        </div>
+      </div>
+    </section>
+
     <section class="page" id="morePage" aria-labelledby="moreTitle">
       <div class="wrap page-space">
         <div class="page-head">
@@ -1304,6 +1340,7 @@
           <button type="button" class="menu-card" data-auth-admin data-page="adminSettlementPage" hidden><span class="menu-icon">✓</span><span><b>推薦與結算監控</b><small>查看鎖單、賽果及自動結算狀態</small></span><span class="chevron">›</span></button>
           <button type="button" class="menu-card" data-auth-admin data-page="adminModelPage" hidden><span class="menu-icon">◎</span><span><b>模型戰績與校正</b><small>查看快照、信心區間與權重建議</small></span><span class="chevron">›</span></button>
           <button type="button" class="menu-card" data-auth-admin data-page="adminAnnouncementsPage" hidden><span class="menu-icon">!</span><span><b>公告管理</b><small>發布首頁消息與登入彈窗</small></span><span class="chevron">›</span></button>
+          <button type="button" class="menu-card" data-auth-admin data-page="adminOperationsPage" hidden><span class="menu-icon">●</span><span><b>營運上線監控</b><small>檢查付款、資料庫、排程與背景服務</small></span><span class="chevron">›</span></button>
           <button type="button" class="menu-card" data-modal="tutorialModal"><span class="menu-icon">?</span><span><b>新手教學</b><small>了解五個主要功能怎麼使用</small></span><span class="chevron">›</span></button>
           <button type="button" class="menu-card" data-modal="faqModal"><span class="menu-icon">i</span><span><b>常見問題</b><small>資料、模型與會員相關說明</small></span><span class="chevron">›</span></button>
         </div>
@@ -1360,6 +1397,7 @@
           <div class="footer-links">
             <button type="button" class="footer-link" data-modal="termsModal">服務條款</button>
             <button type="button" class="footer-link" data-modal="privacyModal">隱私政策</button>
+            <button type="button" class="footer-link" data-modal="refundModal">退款與訂閱政策</button>
             <button type="button" class="footer-link" data-modal="disclaimerModal">免責聲明</button>
             <button type="button" class="footer-link" data-modal="disclaimerModal">理性使用提醒</button>
           </div>
@@ -1372,6 +1410,7 @@
         <div class="footer-bottom-links">
           <button type="button" class="footer-link" data-modal="termsModal">用戶協議</button><span class="footer-dot">·</span>
           <button type="button" class="footer-link" data-modal="privacyModal">隱私政策</button><span class="footer-dot">·</span>
+          <button type="button" class="footer-link" data-modal="refundModal">退款政策</button><span class="footer-dot">·</span>
           <button type="button" class="footer-link" data-modal="disclaimerModal">免責聲明</button>
         </div>
       </div>
@@ -1434,7 +1473,8 @@
       <b id="checkoutPlanPrice">—</b>
       <p id="checkoutPlanCopy">付款成功後會自動開通對應期間的 Pro 權限。此方案不會自動續扣。</p>
     </div>
-    <label class="checkout-confirm"><input type="checkbox" id="checkoutAgree"><span>我已確認方案價格與期間，並同意服務條款與隱私政策。這是固定期間方案，不會自動續扣。</span></label>
+    <label class="checkout-confirm"><input type="checkbox" id="checkoutAgree"><span>我已確認方案價格與期間，並同意服務條款、隱私政策及退款與訂閱政策。這是固定期間方案，不會自動續扣。</span></label>
+    <label class="checkout-confirm"><input type="checkbox" id="checkoutDigitalConsent"><span>我同意付款驗證完成後立即提供數位分析服務，並了解服務開始後的解除與退款將依適用法律、服務使用狀況及退款政策處理。</span></label>
     <div class="checkout-note" id="checkoutNote" role="status" aria-live="polite">信用卡資料只會在綠界付款頁輸入，DiamondMind 不會接觸或保存完整卡號。</div>
     <div class="checkout-actions"><button type="button" class="btn ghost" data-close-modal>返回比較方案</button><button type="button" class="btn pro" id="checkoutPayButton">前往綠界安全付款</button></div>
   </section>
@@ -1500,7 +1540,7 @@
   <section class="modal" id="contactModal" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
     <div class="modal-head"><div><h2 id="contactTitle">聯絡我們</h2><p>客服與商務合作</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
     <div class="legal-copy">
-      <p>付款測試期間如遇問題，請先保留交易編號與畫面；正式客服信箱與 LINE 客服會在正式收費前公布。</p>
+      <p>付款或會員問題請先保留交易編號與畫面。客服信箱：<strong id="contactSupportEmail">正式客服信箱尚未設定</strong></p>
       <div class="legal-callout">信用卡資料僅在綠界頁面輸入。請勿將密碼、OTP 驗證碼、完整卡號或 API 金鑰傳送給任何自稱客服的人員。</div>
     </div>
   </section>
@@ -1511,7 +1551,7 @@
       <p><strong>1. 服務用途</strong><br>DiamondMind 提供賽事資訊、數據整理與模型分析，僅供個人資訊及研究參考，不提供任何形式的下注或代操服務。</p>
       <p><strong>2. 帳號使用</strong><br>使用者應妥善保管帳號，並對帳號內的活動負責；不得冒用他人身分、破壞服務、批次擷取或未經授權散布本站內容。</p>
       <p><strong>3. 服務與資料</strong><br>賽事、盤口與模型結果可能因資料來源、延遲或系統維護而變動。DiamondMind 不保證服務永不中斷，也不保證任何分析結果。</p>
-      <p><strong>4. 會員方案</strong><br>月、季、年方案皆為單次固定期間服務，付款前會顯示價格與期間；不會自動續扣。付款完成並經金流通知驗證後，系統才會開通 Pro。</p>
+      <p><strong>4. 會員方案</strong><br>月、季、年方案皆為單次固定期間服務，付款前會顯示價格與期間；不會自動續扣。付款完成並經金流通知驗證後，系統才會開通 Pro。</p><p><strong>5. 退款與數位服務</strong><br>付款驗證後服務會立即開始；解除、退款與權限終止依適用法律及退款與訂閱政策辦理。</p>
     </div>
   </section>
 
@@ -1522,6 +1562,17 @@
       <p><strong>使用目的</strong><br>資料僅用於身分驗證、提供會員功能、維護服務安全及必要的客服處理，不會用於出售個人資料。</p>
       <p><strong>密碼與安全</strong><br>密碼由專業身分驗證服務安全處理，DiamondMind 不會讀取或保存你的明碼密碼。請勿與任何人分享密碼或驗證碼。</p>
       <p><strong>第三方服務</strong><br>網站使用 GitHub Pages、Render、Supabase 與綠界科技提供託管、後端、會員驗證及付款處理；各服務可能依其政策處理必要的技術與交易資料。</p>
+    </div>
+  </section>
+
+  <section class="modal" id="refundModal" role="dialog" aria-modal="true" aria-labelledby="refundTitle">
+    <div class="modal-head"><div><h2 id="refundTitle">退款與訂閱政策</h2><p>最後更新：2026 年 7 月</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
+    <div class="legal-copy">
+      <p><strong>固定期間方案</strong><br>月、季、年方案皆為單次購買的固定使用期間，不會自動續扣。期限屆滿後，會員可自行決定是否再次購買。</p>
+      <p><strong>服務開始時間</strong><br>付款經金流與 DiamondMind 後端驗證成功後，Pro 數位分析服務會立即開通。付款前會要求使用者明確確認方案、政策與立即提供服務的同意。</p>
+      <p><strong>退款申請</strong><br>退款申請將依適用法律、實際服務使用狀況、申請原因與交易狀態個別審核。退款不會由網站自動執行；核准後會透過原付款管道辦理，實際入帳時間依金流與發卡銀行作業為準。</p>
+      <p><strong>權限處理</strong><br>退款完成或交易遭撤銷時，DiamondMind 得同步終止該筆方案所提供的 Pro 權限。創辦人後台取消會員權限本身不等同完成金流退款。</p>
+      <div class="legal-callout">正式客服管道公布後，申請時請提供會員 Email、交易編號、付款日期與申請原因；請勿提供完整卡號、OTP 或密碼。</div>
     </div>
   </section>
 
@@ -1614,7 +1665,7 @@
     const SUPABASE_PUBLISHABLE_KEY=window.DIAMONDMIND_SUPABASE_PUBLISHABLE_KEY||"sb_publishable__JivOxRrvBQdYHTlVWmJug_Uh0Cc79g";
     const AUTH_STORAGE_KEY="diamondmind.auth.session.v1";
     const AUTH_REDIRECT_URL=/^https?:$/.test(location.protocol)?`${location.origin}${location.pathname}`:"https://gigia1127520-gif.github.io/diamondmind-web/";
-    const pages = ["homePage","gamesPage","predictionPage","recordsPage","membershipPage","adminMembersPage","adminAnnouncementsPage","adminSettlementPage","adminModelPage","morePage"];
+    const pages = ["homePage","gamesPage","predictionPage","recordsPage","membershipPage","adminMembersPage","adminAnnouncementsPage","adminSettlementPage","adminModelPage","adminOperationsPage","morePage"];
     const state = {
       games:[],gameFilter:"all",gamesLoaded:false,predictionDate:"",predictionRole:"",
       records:[],marketRecords:[],recordStats:null,recordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:"",recordsAccessRole:"",
@@ -1625,7 +1676,7 @@
       adminTab:"members",adminMembers:null,adminTransactions:null,adminMembersOffset:0,adminTransactionsOffset:0,adminPageSize:30,adminSelectedMember:null,adminSelectedTransaction:null,adminPendingAction:null,adminLoading:false,
       homeAnnouncements:[],homeAnnouncementRole:"",adminAnnouncements:[],editingAnnouncementId:null,announcementModalItem:null,announcementModalPreview:false,announcementLoginChecked:"",
       settlementDate:"",settlementDashboard:null,settlementLoading:false,
-      modelPerformance:null,modelSnapshots:null,modelLoading:false,modelSuggestedWeights:null
+      modelPerformance:null,modelSnapshots:null,modelLoading:false,modelSuggestedWeights:null,operationsStatus:null,operationsLoading:false
     };
     const authState={session:null,user:null,ready:false,role:"free"};
 
@@ -1721,6 +1772,10 @@
       if(pageId==="adminModelPage"){
         if(!isAdminMember()){showPage("morePage");showToast("此功能僅限創辦人使用");return}
         loadModelPerformance();
+      }
+      if(pageId==="adminOperationsPage"){
+        if(!isAdminMember()){showPage("morePage");showToast("此功能僅限創辦人使用");return}
+        loadOperationsStatus();
       }
     }
 
@@ -1833,6 +1888,7 @@
       badge.classList.toggle("stage",!config.live);
       badge.textContent=!config.enabled?"付款服務尚未完成設定":config.live?"綠界正式付款｜固定期間，不自動續扣":"綠界測試模式｜不會產生真實扣款";
       setCheckoutNote(!config.enabled?"付款服務目前尚未完成設定，請稍後再試。":config.live?"付款成功後，系統會驗證綠界通知並自動開通 Pro。":"目前僅限指定測試帳號使用；測試交易不會產生真實費用。",!config.enabled?"error":"");
+      const supportText=document.getElementById("contactSupportEmail");if(supportText)supportText.textContent=config.support_email||"正式客服信箱尚未設定";
     }
     function submitPaymentForm(checkout){
       const form=document.createElement("form");
@@ -1842,7 +1898,8 @@
     }
     document.getElementById("checkoutPayButton").addEventListener("click",async()=>{
       const button=document.getElementById("checkoutPayButton");
-      if(!document.getElementById("checkoutAgree").checked){setCheckoutNote("請先勾選確認方案與條款。","error");return}
+      if(!document.getElementById("checkoutAgree").checked){setCheckoutNote("請先勾選確認方案與政策。","error");return}
+      if(!document.getElementById("checkoutDigitalConsent").checked){setCheckoutNote("請先確認同意付款後立即提供數位服務。","error");return}
       if(!state.selectedPlan){setCheckoutNote("請重新選擇方案。","error");return}
       button.disabled=true;button.textContent="建立安全付款中…";setCheckoutNote("正在建立付款訂單，請勿重複點擊。");
       try{
@@ -3075,6 +3132,42 @@
     }
 
     function adminRoleLabel(role){return role==="admin"?"創辦人":role==="pro"?"PRO":"FREE"}
+    function operationsStatusLabel(status){return status==="pass"?"正常":status==="fail"?"異常":status==="warning"?"需注意":"待完成"}
+    function operationsClass(status){return status==="pass"?"pass":status==="fail"?"fail":"warning"}
+    function renderOperationsStatus(payload){
+      state.operationsStatus=payload||{};
+      const services=payload?.services||{},monitors=payload?.monitors||{},pregame=monitors.pregame||{},settlement=monitors.settlement||{};
+      const ready=payload?.overall==="stage_ready";
+      const overall=document.getElementById("operationsOverall"),badge=document.getElementById("operationsState");
+      if(overall)overall.textContent=ready?"測試營運環境已就緒":"仍有項目需要處理";
+      if(badge){badge.className=`operations-state ${ready?"pass":""}`;badge.textContent=ready?"STAGE READY":"ATTENTION"}
+      document.getElementById("operationsGenerated").textContent=`檢查時間：${formatAdminDateTime(payload?.generated_at)} · Runtime：${formatAdminDateTime(payload?.runtime_started_at)}`;
+      document.getElementById("operationsVersion").textContent=payload?.version||"—";
+      const payment=document.getElementById("operationsPayment");payment.textContent=services.billing?services.billing_live?"正式環境":"測試環境":"未設定";payment.className=services.billing?(services.billing_live?"pass":"warning"):"fail";
+      document.getElementById("operationsPaymentMeta").textContent=services.billing?`ECPay · ${services.billing_mode||"—"}`:"付款服務設定不完整";
+      const db=document.getElementById("operationsDatabase");db.textContent=services.records_database?"已連線":"未設定";db.className=services.records_database?"pass":"fail";
+      const odds=document.getElementById("operationsOdds");odds.textContent=services.odds_feed?"已設定":"未設定";odds.className=services.odds_feed?"pass":"warning";
+      const scheduler=document.getElementById("operationsScheduler");scheduler.textContent=services.scheduler?"已設定":"未設定";scheduler.className=services.scheduler?"pass":"warning";
+      const support=document.getElementById("operationsSupport");support.textContent=services.support_email||"尚未設定";support.className=services.support_email?"pass":"warning";
+      const checks=payload?.checks||[];
+      document.getElementById("operationsChecklist").innerHTML=checks.length?checks.map(item=>`<div class="operations-check ${operationsClass(item.status)}"><span class="operations-check-icon">${item.status==="pass"?"✓":item.status==="fail"?"!":"•"}</span><div><b>${escapeHtml(item.label||item.key||"檢查項目")} · ${operationsStatusLabel(item.status)}</b><p>${escapeHtml(item.detail||"")}</p></div></div>`).join(""):'<div class="admin-empty">沒有檢查項目。</div>';
+      document.getElementById("operationsPregame").textContent=pregame.running===false?"已停止":pregame.last_error?"發生錯誤":"執行中";
+      document.getElementById("operationsPregameLast").textContent=formatAdminDateTime(pregame.last_run)||"尚無紀錄";
+      document.getElementById("operationsSettlement").textContent=settlement.running===false?"已停止":settlement.last_error?"發生錯誤":"執行中";
+      document.getElementById("operationsSettlementLast").textContent=formatAdminDateTime(settlement.last_run)||"尚無紀錄";
+      const errors=[...(payload?.monitor_errors||[])];const errorBox=document.getElementById("operationsErrors");
+      errorBox.hidden=!errors.length;errorBox.textContent=errors.length?`監控錯誤：${errors.join(" / ")}`:"";
+    }
+    async function loadOperationsStatus(force=false){
+      if(state.operationsLoading)return;
+      if(state.operationsStatus&&!force){renderOperationsStatus(state.operationsStatus);return}
+      state.operationsLoading=true;
+      try{const payload=await billingRequest("/admin/operations/status",{timeout:30000});renderOperationsStatus(payload)}
+      catch(error){showToast(error.message||"營運狀態載入失敗");const box=document.getElementById("operationsErrors");if(box){box.hidden=false;box.textContent=error.message||"營運狀態載入失敗"}}
+      finally{state.operationsLoading=false}
+    }
+    document.getElementById("operationsRefresh")?.addEventListener("click",()=>{state.operationsStatus=null;loadOperationsStatus(true)});
+
     function adminRoleClass(role,status){if(role==="admin")return "admin";if(role==="pro")return "pro";if(["canceled","expired","payment_failed"].includes(status))return "canceled";return ""}
     function adminStatusClass(status){return status==="active"||status==="founder"?"success":["canceled","expired","payment_failed","refunded"].includes(status)?"failed":""}
     function setAdminTab(tab){
@@ -3766,7 +3859,7 @@
         const sourceMeta=`<div class="engine-source-meta">${meta.updated_at?`<span>最後更新 ${escapeHtml(formatAnalysisUpdatedAt(meta.updated_at))}</span>`:""}${sources?`<span>來源 ${escapeHtml(sources)}</span>`:""}${meta.roster_date?`<span>名單日期 ${escapeHtml(meta.roster_date)}</span>`:""}</div>`;
         return `<section class="engine-module"><div class="engine-module-top"><b>${escapeHtml(group.label||fallback)}</b><span class="engine-quality ${quality<60?"low":""}">完整度 ${quality}%</span></div><p class="engine-note">${escapeHtml(group.note||"依可取得資料動態評分")}</p><div class="engine-metrics"><div class="engine-metric"><span>比較指標</span><span>客隊</span><span>主隊</span></div>${rows}</div>${engineExtraHtml(key,context)}${sourceMeta}</section>`;
       }).join("");
-      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V17.8.1 · TEST 快照即時顯示 · 模型快照與校正 · 自動結算監控 · 公告中心 · Pro 自動開通 · 開賽前自動重算</span></div><div class="engine-module-grid">${cards}</div>`;
+      target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>V17.9.0 · 營運監控與政策防呆 · 模型快照與校正 · 自動結算監控 · 公告中心 · Pro 自動開通 · 開賽前自動重算</span></div><div class="engine-module-grid">${cards}</div>`;
     }
 
     window.setDiamondMindPrediction=function(prediction){
