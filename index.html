@@ -452,7 +452,7 @@
     .empty b{display:block;margin-bottom:8px;color:var(--text);font-size:18px}
 
     .prediction-shell{display:grid;grid-template-columns:1.12fr .88fr;gap:16px}
-    .prediction-main{position:relative;overflow:hidden;padding:27px;min-height:440px}
+    .prediction-main{position:relative;overflow:hidden;padding:27px;min-height:360px}
     .prediction-main::before{content:"";position:absolute;width:320px;aspect-ratio:1;right:-90px;top:-120px;border:1px solid var(--line-strong);border-radius:50%;box-shadow:0 0 90px rgba(55,244,164,.12)}
     .prediction-top{display:flex;align-items:center;justify-content:space-between;gap:15px;position:relative}
     .prediction-title{font-size:12px;color:var(--green);font-weight:900;letter-spacing:2px}
@@ -702,7 +702,7 @@
       .record-card-head{padding:20px 18px 15px}.pick-list{padding:0 18px 18px}.record-summary{padding:0 18px 20px}
       .game-card{grid-template-columns:1fr 42px;padding:15px}.game-time{grid-column:1/2;display:flex;align-items:center;gap:9px}.game-time small{margin:0}.game-teams{grid-column:1/2}.pitchers{grid-column:1/2}.status-label{grid-column:2;grid-row:1}.chevron{grid-column:2;grid-row:2/4;align-self:center;justify-self:center}
       .toolbar{align-items:stretch}.date-control{width:100%;min-width:0;flex-basis:100%}.date-actions{width:100%;min-width:0}.date-actions input{flex:1 1 0;width:0;min-width:0;max-width:calc(100% - 48px)}#refreshGames{position:static;flex:0 0 38px}
-      .prediction-main{padding:20px;min-height:390px}.confidence-preview{grid-template-columns:1fr;text-align:center}.confidence-ring{margin:auto}.pick-highlight{text-align:left}.engine-module-grid{grid-template-columns:1fr}.engine-breakdown-head{align-items:flex-start;flex-direction:column}.engine-module{text-align:left}.locked-engine-list{grid-template-columns:1fr}.locked-engine-item:last-child{grid-column:auto}
+      .prediction-main{padding:20px;min-height:330px}.confidence-preview{grid-template-columns:1fr;text-align:center}.confidence-ring{margin:auto}.pick-highlight{text-align:left}.engine-module-grid{grid-template-columns:1fr}.engine-breakdown-head{align-items:flex-start;flex-direction:column}.engine-module{text-align:left}.locked-engine-list{grid-template-columns:1fr}.locked-engine-item:last-child{grid-column:auto}
       .prediction-access-gate{padding:28px 18px}.access-level-head{align-items:flex-start;flex-direction:column}.pro-access-grid{grid-template-columns:1fr}.pro-access-card{min-height:142px}.membership-hero{grid-template-columns:1fr;padding:21px}.current-plan-box{min-width:0}.benefit-table{overflow-x:auto}.benefit-table-head,.benefit-row{min-width:570px}.checkout-actions{flex-direction:column}.checkout-actions .btn{width:100%}
       .payment-success-modal{padding:22px 18px}.payment-success-modal h2{font-size:26px}.payment-success-row{grid-template-columns:88px minmax(0,1fr);padding:12px}.payment-success-actions{flex-direction:column}.payment-success-actions .btn{width:100%}.payment-preview-controls{grid-template-columns:1fr}.payment-preview-action .btn{width:100%}#membershipPage .page-space{padding-bottom:240px}
       .founder-console{padding:18px}.founder-console-head,.founder-candidate-top,.founder-candidate-actions{align-items:flex-start;flex-direction:column}.founder-toolbar input,.founder-toolbar .btn,.founder-candidate-actions .btn,.founder-market-actions .btn{width:100%}.founder-market-options{grid-template-columns:1fr}.founder-market-actions{align-items:stretch;flex-direction:column}
@@ -1006,8 +1006,6 @@
                   <span id="predictionTime">—</span>
                   <div class="pick-highlight"><small>AI 獨贏推薦</small><b id="predictionPick">—</b></div>
                   <div class="prediction-market-meta" id="predictionMarketMeta"></div>
-                  <div class="factor-list" id="predictionFactors"></div>
-                  <div class="engine-breakdown" id="predictionEngineBreakdown"></div>
                 </div>
               </div>
             </article>
@@ -1061,7 +1059,7 @@
           </section>
 
           <section class="access-levels" aria-labelledby="accessLevelTitle">
-            <div class="access-level-head"><div><h2 id="accessLevelTitle">會員預測權限</h2><p>Pro 會員只顯示通過正式門檻並鎖定發布的推薦；未達門檻的候選僅供創辦人內部審核。</p></div><button type="button" class="btn pro small" id="predictionUpgradeButton" data-page="membershipPage">升級 DiamondMind Pro</button></div>
+            <div class="access-level-head"><div><h2 id="accessLevelTitle">會員預測權限</h2><p>Pro 會員只顯示已正式發布並鎖定的推薦，不會混入未發布候選。</p></div><button type="button" class="btn pro small" id="predictionUpgradeButton" data-page="membershipPage">升級 DiamondMind Pro</button></div>
             <div class="pro-access-grid">
               <article class="pro-access-card open"><div class="pro-access-top"><span class="market-tag">FREE PICK</span><span class="access-chip">已開放</span></div><h3>每日免費精選</h3><p>免費會員每日最多一場，只發布通過信心門檻的獨贏推薦。</p></article>
               <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">MONEYLINE+</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>獨贏精選</h3><div class="pro-prediction-body" data-pro-body="moneylines"><p>所有已啟用棒球聯盟中，通過正式門檻的獨贏候選都會顯示。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
@@ -3371,6 +3369,16 @@
         :"MLB／NPB 玩法均優先使用真實盤口與固定門檻；沒有玩法通過時就不發布，不會為了出單降低標準。";
     }
 
+    function memberVisibleSelectionSummary(value){
+      const text=String(value||"").trim();
+      if(!text)return "此推薦已正式發布並鎖定。";
+      if(isAdminMember())return text;
+      const internal=/(創辦人|觀察名單|觀察候選|內部審核|不(?:計入|記錄|列入|計)[^。！？]{0,16}戰績)/;
+      const sentences=text.match(/[^。！？]+[。！？]?/g)||[text];
+      const cleaned=sentences.filter(sentence=>!internal.test(sentence)).join("").trim();
+      return cleaned||"此推薦已正式發布並鎖定。";
+    }
+
     function renderMarketList(key,selections,emptyMessage){
       const body=document.querySelector(`[data-pro-body="${key}"]`);
       if(!body)return;
@@ -3409,7 +3417,7 @@
         });
         const summary=document.createElement("p");
         summary.className="pro-summary";
-        summary.textContent=selection.summary||"此推薦已通過正式發布門檻。";
+        summary.textContent=memberVisibleSelectionSummary(selection.summary);
         item.append(no,pick,matchup,metrics,summary);
         list.append(item);
       });
@@ -4491,8 +4499,10 @@
         chip.textContent=value;
         meta.append(chip);
       });
-      document.getElementById("predictionFactors").innerHTML=(prediction.factors||[]).map(f=>`<div><div class="factor-head"><span>${f.label}</span><b>${f.value}%</b></div><div class="factor-bar"><i style="width:${f.value}%"></i></div></div>`).join("");
-      renderEngineBreakdown(prediction.analysisGroups||{},"predictionEngineBreakdown");
+      const freeFactors=document.getElementById("predictionFactors");
+      if(freeFactors)freeFactors.replaceChildren();
+      const freeBreakdown=document.getElementById("predictionEngineBreakdown");
+      if(freeBreakdown)freeBreakdown.replaceChildren();
     };
 
     const authCallback=consumeAuthCallback();
