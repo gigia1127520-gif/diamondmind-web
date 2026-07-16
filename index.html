@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind home-screen wake and session refresh update -->
+  <!-- DiamondMind V18.2 multi-league foundation and NPB schedule beta -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#03080c">
@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <meta name="description" content="DiamondMind Grand Slam AI：MLB 賽事資料、AI 預測與公開推薦紀錄。">
+  <meta name="description" content="DiamondMind Grand Slam AI：MLB 完整分析、NPB 賽程測試版、AI 預測與公開推薦紀錄。">
   <title>DiamondMind · Grand Slam AI</title>
   <style>
     :root{
@@ -394,6 +394,11 @@
     .how-card p{margin:0;color:var(--muted);line-height:1.6;font-size:13px}
 
     .toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding:15px;margin-bottom:18px}
+    .league-switch{display:flex;gap:7px;flex-wrap:wrap;flex:1 1 100%;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+    .league-btn{border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 14px;color:var(--muted);background:rgba(255,255,255,.025);font-weight:800;cursor:pointer}
+    .league-btn.active{border-color:var(--line-strong);color:var(--green);background:rgba(55,244,164,.08);box-shadow:0 0 0 1px rgba(55,244,164,.05) inset}
+    .league-btn[disabled]{opacity:.45;cursor:not-allowed}
+    .league-beta{font-size:9px;margin-left:5px;padding:2px 5px;border-radius:999px;color:#04150e;background:var(--green)}
     .date-control{display:grid;gap:7px;flex:1 1 420px;min-width:0}
     .date-control label{color:var(--muted);font-size:12px}
     .date-actions{display:flex;align-items:center;gap:10px;width:100%;min-width:0}
@@ -890,11 +895,17 @@
     <section class="page" id="gamesPage" aria-labelledby="gamesTitle">
       <div class="wrap page-space">
         <div class="page-head">
-          <div><div class="kicker">TODAY'S MLB</div><h1 id="gamesTitle">完整賽事</h1><p>依台灣日期載入 MLB 全部賽事，點擊任一場查看比賽資料。</p></div>
-          <span class="status-pill padded"><span class="pulse"></span>MLB 資料連線</span>
+          <div><div class="kicker" id="gamesKicker">TODAY'S MLB</div><h1 id="gamesTitle">完整賽事</h1><p id="gamesDescription">依台灣日期載入 MLB 全部賽事，點擊任一場查看比賽資料。</p></div>
+          <span class="status-pill padded"><span class="pulse"></span><span id="gamesConnectionLabel">MLB 資料連線</span></span>
         </div>
 
         <div class="card toolbar">
+          <div class="league-switch" id="leagueSwitch" aria-label="選擇棒球聯盟">
+            <button type="button" class="league-btn active" data-league="MLB">MLB 美棒</button>
+            <button type="button" class="league-btn" data-league="NPB">NPB 日棒 <span class="league-beta">BETA</span></button>
+            <button type="button" class="league-btn" data-league="KBO" disabled>KBO 韓棒・準備中</button>
+            <button type="button" class="league-btn" data-league="CPBL" disabled>CPBL 中職・準備中</button>
+          </div>
           <div class="date-control">
             <label for="scheduleDate">比賽日期</label>
             <div class="date-actions">
@@ -910,7 +921,7 @@
           </div>
         </div>
         <div class="live-status"><span class="pulse"></span><span id="liveDataStatus">準備載入今日賽事…</span></div>
-        <div class="games-list" id="gamesList"><div class="card empty"><b>正在讀取 MLB 賽程</b>請稍候，系統正在依台灣日期整理賽事。</div></div>
+        <div class="games-list" id="gamesList"><div class="card empty"><b>正在讀取賽程</b>請稍候，系統正在依台灣日期整理賽事。</div></div>
       </div>
     </section>
 
@@ -1672,7 +1683,7 @@
     const AUTH_REDIRECT_URL=/^https?:$/.test(location.protocol)?`${location.origin}${location.pathname}`:"https://gigia1127520-gif.github.io/diamondmind-web/";
     const pages = ["homePage","gamesPage","predictionPage","recordsPage","membershipPage","adminMembersPage","adminAnnouncementsPage","adminSettlementPage","adminModelPage","adminOperationsPage","morePage"];
     const state = {
-      games:[],gameFilter:"all",gamesLoaded:false,predictionDate:"",predictionRole:"",
+      games:[],gameFilter:"all",gamesLoaded:false,activeLeague:"MLB",predictionDate:"",predictionRole:"",
       records:[],marketRecords:[],recordStats:null,recordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:"",recordsAccessRole:"",
       founderCandidateDate:"",founderCandidatesLoading:false,
       founderMarketDate:"",founderMarketsLoading:false,founderMarketBundle:null,
@@ -1715,6 +1726,18 @@
       "AL All-Stars":"AL","NL All-Stars":"NL",
       "American League":"AL","National League":"NL","AL":"AL","NL":"NL"
     };
+    const npbTeamZh={
+      "Tokyo Yakult Swallows":"東京養樂多燕子","Yomiuri Giants":"讀賣巨人","YOKOHAMA DeNA BAYSTARS":"橫濱DeNA海灣之星",
+      "Chunichi Dragons":"中日龍","Hanshin Tigers":"阪神虎","Hiroshima Toyo Carp":"廣島東洋鯉魚",
+      "Fukuoka SoftBank Hawks":"福岡軟銀鷹","Hokkaido Nippon-Ham Fighters":"北海道日本火腿鬥士","ORIX Buffaloes":"歐力士猛牛",
+      "Tohoku Rakuten Golden Eagles":"東北樂天金鷲","Saitama Seibu Lions":"埼玉西武獅","Chiba Lotte Marines":"千葉羅德海洋",
+      "Central League All-Stars":"中央聯盟明星隊","Pacific League All-Stars":"太平洋聯盟明星隊"
+    };
+    const leagueUi={
+      MLB:{kicker:"TODAY'S MLB",description:"依台灣日期載入 MLB 全部賽事，點擊任一場查看比賽資料。",connection:"MLB 資料連線"},
+      NPB:{kicker:"TODAY'S NPB",description:"日本職棒賽程測試版：先提供官方賽程、台灣時間與賽果；先發與 AI 分析會在下一階段加入。",connection:"NPB 官方賽程"}
+    };
+
     const allStarTeamById={
       159:{abbr:"AL",zh:"美聯明星隊",name:"American League All-Stars"},
       160:{abbr:"NL",zh:"國聯明星隊",name:"National League All-Stars"}
@@ -1753,7 +1776,7 @@
       document.querySelectorAll("[data-page]").forEach(btn=>btn.classList.toggle("active",btn.dataset.page===pageId));
       history.replaceState(null,"",`#${pageId.replace("Page","")}`);
       window.scrollTo({top:0,behavior:"smooth"});
-      if(pageId==="gamesPage"&&!state.gamesLoaded) loadMlbGames();
+      if(pageId==="gamesPage"&&!state.gamesLoaded) loadLeagueGames();
       if(pageId==="predictionPage"){
         renderPredictionAccess();
         if(isSignedIn()){
@@ -2758,6 +2781,7 @@
         return inning;
       }
       if(game.status==="final")return "已結束";
+      if(game.status==="postponed")return "延賽／取消";
       return "未開賽";
     }
     function normalizeGame(game){
@@ -2797,6 +2821,31 @@
       };
     }
 
+    function normalizeLeagueGame(game,league){
+      if(league==="MLB")return normalizeBackendGame(game);
+      const away=game.away?.name||"Away";
+      const home=game.home?.name||"Home";
+      return {
+        id:String(game.game_pk||game.external_game_id||`${league}-${away}-${home}`),league,gameDate:game.game_date||"",
+        time:game.time_taiwan||(game.status==="final"?"已完賽":"時間待定"),status:game.status||"upcoming",
+        detailedState:game.detailed_status||"",inning:game.inning||null,inningState:game.inning_state||"",
+        away,home,awayZh:game.away?.name_zh||npbTeamZh[away]||away,homeZh:game.home?.name_zh||npbTeamZh[home]||home,
+        awayAbbr:game.away?.abbr||"AWY",homeAbbr:game.home?.abbr||"HME",
+        awayScore:game.away?.score,homeScore:game.home?.score,
+        awayPitcher:game.away?.probable_pitcher?.name||"尚未公布",homePitcher:game.home?.probable_pitcher?.name||"尚未公布",
+        venue:game.venue||"",eventLabel:game.event_label||`${league} 例行賽`,analysisAvailable:game.analysis_available===true,
+        sourceUrl:game.source_url||game.official_schedule_url||""
+      };
+    }
+
+    function updateLeagueUi(){
+      const ui=leagueUi[state.activeLeague]||leagueUi.MLB;
+      document.getElementById("gamesKicker").textContent=ui.kicker;
+      document.getElementById("gamesDescription").textContent=ui.description;
+      document.getElementById("gamesConnectionLabel").textContent=ui.connection;
+      document.querySelectorAll("[data-league]").forEach(button=>button.classList.toggle("active",button.dataset.league===state.activeLeague));
+    }
+
     async function fetchJsonWithTimeout(url,timeout=6500,options={}){
       const controller=new AbortController();
       const timer=setTimeout(()=>controller.abort(),timeout);
@@ -2823,31 +2872,42 @@
       return unique.filter(game=>gameTaiwanDate(game.gameDate)===date).sort((a,b)=>new Date(a.gameDate)-new Date(b.gameDate)).map(normalizeGame);
     }
 
-    async function loadMlbGames(){
+    async function loadMlbGames(date,statusEl,list){
+      try{
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/games?league=MLB&date=${encodeURIComponent(date)}`);
+        state.games=(payload.items||[]).map(game=>normalizeLeagueGame(game,"MLB"));
+        const cacheLabel=payload.meta?.cache==="stale"?"舊資料備援":"後端資料";
+        statusEl.textContent=`已載入 ${state.games.length} 場 · ${cacheLabel} · 台灣日期 ${date}`;
+      }catch(backendError){
+        state.games=await loadMlbDirect(date);
+        statusEl.textContent=`已載入 ${state.games.length} 場 · MLB 直連備援 · 台灣日期 ${date}`;
+      }
+    }
+
+    async function loadNpbGames(date,statusEl){
+      const payload=await fetchJsonWithTimeout(`${API_BASE}/games?league=NPB&date=${encodeURIComponent(date)}`,20000);
+      state.games=(payload.items||[]).map(game=>normalizeLeagueGame(game,"NPB"));
+      const cacheLabel=payload.meta?.cache==="stale"?"舊資料備援":"NPB 官方資料";
+      statusEl.textContent=`已載入 ${state.games.length} 場 · ${cacheLabel} · 台灣日期 ${date} · 賽程 BETA`;
+    }
+
+    async function loadLeagueGames(){
       const date=document.getElementById("scheduleDate").value||taiwanToday();
       const statusEl=document.getElementById("liveDataStatus");
       const list=document.getElementById("gamesList");
-      statusEl.textContent=`正在載入 ${date} 的 MLB 賽事…`;
-      list.innerHTML=`<div class="card empty"><b>資料同步中</b>正在依台灣日期整理完整賽程。</div>`;
+      updateLeagueUi();
+      statusEl.textContent=`正在載入 ${date} 的 ${state.activeLeague} 賽事…`;
+      list.innerHTML=`<div class="card empty"><b>資料同步中</b>正在依台灣日期整理 ${state.activeLeague} 完整賽程。</div>`;
       try{
-        const payload=await fetchJsonWithTimeout(`${API_BASE}/mlb/games?date=${encodeURIComponent(date)}`);
-        state.games=(payload.items||[]).map(normalizeBackendGame);
+        if(state.activeLeague==="NPB")await loadNpbGames(date,statusEl);
+        else await loadMlbGames(date,statusEl,list);
         state.gamesLoaded=true;
-        const cacheLabel=payload.meta?.cache==="stale"?"舊資料備援":"後端資料";
-        statusEl.textContent=`已載入 ${state.games.length} 場 · ${cacheLabel} · 台灣日期 ${date}`;
         renderGames();
-      }catch(backendError){
-        try{
-          state.games=await loadMlbDirect(date);
-          state.gamesLoaded=true;
-          statusEl.textContent=`已載入 ${state.games.length} 場 · MLB 直連備援 · 台灣日期 ${date}`;
-          renderGames();
-        }catch(directError){
-          state.games=[];
-          state.gamesLoaded=false;
-          statusEl.textContent="DiamondMind API 與 MLB 資料目前皆無法連線";
-          list.innerHTML=`<div class="card empty"><b>賽程連線失敗</b>請確認網路後按「重新整理」。</div>`;
-        }
+      }catch(error){
+        state.games=[];
+        state.gamesLoaded=false;
+        statusEl.textContent=`${state.activeLeague} 賽程目前無法連線`;
+        list.innerHTML=`<div class="card empty"><b>賽程連線失敗</b>${state.activeLeague==="NPB"?"NPB 官方來源可能暫時維護中，請稍後按重新整理。":"請確認網路後按重新整理。"}</div>`;
       }
     }
 
@@ -2859,18 +2919,18 @@
         return;
       }
       list.innerHTML=filtered.map(game=>`
-        <article class="game-card" data-game-id="${game.id}" tabindex="0" role="button" aria-label="查看 ${game.awayZh} 對 ${game.homeZh}">
-          <div class="game-time"><b>${game.time}</b><small>${game.venue||"MLB"}</small></div>
+        <article class="game-card" data-game-id="${escapeHtml(String(game.id))}" data-game-league="${escapeHtml(game.league||state.activeLeague)}" tabindex="0" role="button" aria-label="查看 ${game.awayZh} 對 ${game.homeZh}">
+          <div class="game-time"><b>${game.time}</b><small>${game.venue||game.league||state.activeLeague}</small></div>
           <div class="game-teams">
             <div class="team-line"><span class="abbr">${game.awayAbbr}</span><span>${game.awayZh}</span><span class="score">${game.awayScore??""}</span></div>
             <div class="team-line"><span class="abbr">${game.homeAbbr}</span><span>${game.homeZh}</span><span class="score">${game.homeScore??""}</span></div>
           </div>
-          <div class="pitchers">${game.eventLabel?`${escapeHtml(game.eventLabel)} · `:""}客：${game.awayPitcher}<br>主：${game.homePitcher}</div>
+          <div class="pitchers">${game.eventLabel?`${escapeHtml(game.eventLabel)} · `:""}${(game.league||state.activeLeague)==="NPB"&&!game.analysisAvailable?"先發與模型分析下一階段加入":`客：${escapeHtml(game.awayPitcher)}<br>主：${escapeHtml(game.homePitcher)}`}</div>
           <span class="status-label ${game.status}">${statusText(game)}</span>
           <span class="chevron">›</span>
         </article>`).join("");
       document.querySelectorAll("[data-game-id]").forEach(card=>{
-        const open=()=>openGame(Number(card.dataset.gameId));
+        const open=()=>openGame(card.dataset.gameId);
         card.addEventListener("click",open);
         card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open()}});
       });
@@ -2902,11 +2962,11 @@
     });
 
     function openGame(id){
-      const game=state.games.find(x=>x.id===id);
+      const game=state.games.find(x=>String(x.id)===String(id));
       if(!game)return;
       state.upgradeReturnGame=id;
       document.getElementById("gameModalTitle").textContent=`${game.awayAbbr} @ ${game.homeAbbr}`;
-      document.getElementById("gameModalMeta").textContent=`${document.getElementById("scheduleDate").value} · ${game.time} · ${game.venue||"MLB"}`;
+      document.getElementById("gameModalMeta").textContent=`${document.getElementById("scheduleDate").value} · ${game.time} · ${game.venue||game.league||state.activeLeague}`;
       document.getElementById("detailAwayAbbr").textContent=game.awayAbbr;
       document.getElementById("detailAwayName").textContent=game.awayZh;
       document.getElementById("detailHomeAbbr").textContent=game.homeAbbr;
@@ -2915,6 +2975,13 @@
       document.getElementById("detailAwayPitcher").textContent=game.awayPitcher;
       document.getElementById("detailHomePitcher").textContent=game.homePitcher;
       document.getElementById("detailStatus").textContent=statusText(game);
+      if((game.league||state.activeLeague)==="NPB"){
+        document.getElementById("detailAiStatus").textContent="NPB 賽程測試版";
+        const sourceLink=game.sourceUrl?`<a class="btn ghost small" href="${escapeHtml(game.sourceUrl)}" target="_blank" rel="noopener">查看 NPB 官方賽程</a>`:"";
+        document.getElementById("detailEngineBreakdown").innerHTML=`<div class="engine-unavailable"><b>多聯盟第一階段已連線</b><br>目前先提供官方賽程、台灣時間與賽果。預告先發、球隊數據、AI 推薦及自動結算會在後續階段逐項開放。<div style="margin-top:12px">${sourceLink}</div></div>`;
+        openModal("gameModal");
+        return;
+      }
       document.getElementById("detailAiStatus").textContent=isProMember()?"正在載入五大引擎…":"Pro 會員專屬";
       document.getElementById("detailEngineBreakdown").innerHTML=isProMember()?`<div class="engine-unavailable">正在整理先發、打線、牛棚、環境與進階數據…</div>`:renderGameAnalysisGate({role:isSignedIn()?"free":"guest"});
       openModal("gameModal");
@@ -2957,11 +3024,20 @@
       document.querySelectorAll("[data-game-filter]").forEach(x=>x.classList.toggle("active",x===btn));
       renderGames();
     }));
-    document.getElementById("refreshGames").addEventListener("click",loadMlbGames);
+    document.querySelectorAll("[data-league]:not([disabled])").forEach(button=>button.addEventListener("click",()=>{
+      const league=button.dataset.league;
+      if(!league||league===state.activeLeague)return;
+      state.activeLeague=league;
+      state.gamesLoaded=false;
+      state.gameFilter="all";
+      document.querySelectorAll("[data-game-filter]").forEach(filter=>filter.classList.toggle("active",filter.dataset.gameFilter==="all"));
+      loadLeagueGames();
+    }));
+    document.getElementById("refreshGames").addEventListener("click",loadLeagueGames);
     document.getElementById("scheduleDate").addEventListener("change",()=>{
       state.predictionDate="";
       state.predictionRole="";
-      loadMlbGames();
+      loadLeagueGames();
     });
 
     function formatAmericanOdds(value){
