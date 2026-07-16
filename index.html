@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind V18.5 multi-league homepage and recommendation pool -->
+  <!-- DiamondMind V18.6 MLB/NPB real-market recommendation pool -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#03080c">
@@ -841,7 +841,7 @@
           </div>
           <div class="home-league-grid" id="homeLeagueGrid">
             <article class="card home-league-card active" data-home-league="MLB"><div class="home-league-top"><span class="home-league-code">MLB</span><span class="home-league-state">完整運作</span></div><h3>美國職棒</h3><p>完整五大引擎、盤口、Pro 推薦與自動結算。</p><span class="home-league-count" id="homeLeagueMLBCount">今日資料載入中</span></article>
-            <article class="card home-league-card active" data-home-league="NPB"><div class="home-league-top"><span class="home-league-code">NPB</span><span class="home-league-state">推薦 BETA</span></div><h3>日本職棒</h3><p>官方賽程、比分、預告先發、戰績、AI 獨贏候選與結算。</p><span class="home-league-count" id="homeLeagueNPBCount">今日資料載入中</span></article>
+            <article class="card home-league-card active" data-home-league="NPB"><div class="home-league-top"><span class="home-league-code">NPB</span><span class="home-league-state">完整盤口</span></div><h3>日本職棒</h3><p>官方賽程、比分、預告先發、戰績、AI 三大玩法、串關與結算。</p><span class="home-league-count" id="homeLeagueNPBCount">今日資料載入中</span></article>
             <article class="card home-league-card planned" data-home-league="KBO"><div class="home-league-top"><span class="home-league-code">KBO</span><span class="home-league-state">下一階段</span></div><h3>韓國職棒</h3><p>將加入賽程、即時比分、和局規則與獨立資料轉換器。</p><span class="home-league-count" id="homeLeagueKBOCount">資料模組準備中</span></article>
             <article class="card home-league-card planned" data-home-league="CPBL"><div class="home-league-top"><span class="home-league-code">CPBL</span><span class="home-league-state">下一階段</span></div><h3>中華職棒</h3><p>將加入官方賽程、即時比分、保留比賽與台灣在地分析。</p><span class="home-league-count" id="homeLeagueCPBLCount">資料模組準備中</span></article>
           </div>
@@ -926,7 +926,7 @@
         <div class="card toolbar">
           <div class="league-switch" id="leagueSwitch" aria-label="選擇棒球聯盟">
             <button type="button" class="league-btn active" data-league="MLB">MLB 美棒</button>
-            <button type="button" class="league-btn" data-league="NPB">NPB 日棒 <span class="league-beta">推薦 BETA</span></button>
+            <button type="button" class="league-btn" data-league="NPB">NPB 日棒 <span class="league-beta">三大玩法</span></button>
             <button type="button" class="league-btn" data-league="KBO" disabled>KBO 韓棒・準備中</button>
             <button type="button" class="league-btn" data-league="CPBL" disabled>CPBL 中職・準備中</button>
           </div>
@@ -1332,7 +1332,7 @@
           <div class="card operations-card"><small>API 版本</small><b id="operationsVersion">—</b><span>後端目前部署版本</span></div>
           <div class="card operations-card"><small>付款環境</small><b id="operationsPayment">—</b><span id="operationsPaymentMeta">—</span></div>
           <div class="card operations-card"><small>Supabase</small><b id="operationsDatabase">—</b><span>推薦、會員與模型資料</span></div>
-          <div class="card operations-card"><small>MLB 真實盤口</small><b id="operationsOdds">—</b><span>MLB 讓分、大小分與市場優勢必要來源</span></div>
+          <div class="card operations-card"><small>MLB／NPB 真實盤口</small><b id="operationsOdds">—</b><span>兩聯盟獨贏、讓分、大小分與市場優勢來源</span></div>
           <div class="card operations-card"><small>安全排程</small><b id="operationsScheduler">—</b><span>自動更新與結算觸發</span></div>
           <div class="card operations-card"><small>客服管道</small><b id="operationsSupport">—</b><span>正式收費前需完成</span></div>
         </div>
@@ -1397,7 +1397,7 @@
             <div class="logo" aria-hidden="true">DM</div>
             <div class="footer-wordmark"><b>DIAMOND<span>MIND</span></b><small>GRAND SLAM AI</small></div>
           </div>
-          <p class="footer-description">以 MLB 賽事資料、盤口資訊與機率模型，整理出更容易理解的賽前分析與公開推薦紀錄。</p>
+          <p class="footer-description">以 MLB／NPB 賽事資料、真實盤口與機率模型，整理出更容易理解的賽前分析與公開推薦紀錄。</p>
           <span class="footer-status">AI DATA SYSTEM · ONLINE</span>
         </div>
 
@@ -1759,7 +1759,7 @@
     };
     const leagueUi={
       MLB:{kicker:"TODAY'S MLB",description:"依台灣日期載入 MLB 全部賽事，點擊任一場查看比賽資料。",connection:"MLB 資料連線"},
-      NPB:{kicker:"TODAY'S NPB",description:"日本職棒推薦 BETA：整合官方賽程、比分、預告先發、球隊戰績、畢氏勝率、打線、牛棚與獨贏候選。",connection:"NPB 推薦資料"}
+      NPB:{kicker:"TODAY'S NPB",description:"日本職棒三大玩法：整合官方賽程、比分、預告先發、球隊戰績、畢氏勝率、打線、牛棚與真實盤口。",connection:"NPB 官方資料＋真實盤口"}
     };
 
     const allStarTeamById={
@@ -3231,7 +3231,7 @@
       setProBodyMessage("two_leg","最多 2 組，由已通過門檻的不同場次組成。");
       setProBodyMessage("three_leg","最多 1 組高風險組合，不為湊關硬選。");
       const note=document.getElementById("proPredictionNote");
-      if(note)note.textContent="MLB 玩法使用真實盤口與固定門檻；NPB 目前使用官方資料模型門檻。升級 Pro 後可查看跨聯盟內容。";
+      if(note)note.textContent="MLB／NPB 玩法均優先使用真實盤口與固定門檻；NPB 若暫時沒有盤口，只保留官方數據獨贏觀察，不會猜測讓分或大小分。";
     }
 
     function renderMarketList(key,selections,emptyMessage){
@@ -4029,7 +4029,7 @@
       if(!force&&state.founderMarketDate===date&&state.founderMarketBundle)return;
       state.founderMarketsLoading=true;
       document.getElementById("founderPublishMarkets").disabled=true;
-      status.textContent="正在整合 MLB 真實盤口與 NPB 官方模型候選…";
+      status.textContent="正在整合 MLB／NPB 真實盤口與官方數據模型候選…";
       container.replaceChildren();
       try{
         const payload=await fetchJsonWithTimeout(
