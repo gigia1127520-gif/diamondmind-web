@@ -2618,7 +2618,7 @@
           const score=result.away_score==null||result.home_score==null
             ?`${result.legs?.length||legs.length} 關已結算`
             :`終場 ${result.away_score}–${result.home_score}`;
-          const sourceLabel=selection.publication?.mode==="founder_selected"?"創辦人指定":"AI 正式";
+          const sourceLabel="Pro 精選";
           return [{key,name,pickLabel,matchup,price,probability,score,status:result.status||"pending",sourceLabel}];
         });
       });
@@ -3018,8 +3018,6 @@
         const metrics=document.createElement("div");
         metrics.className="pro-metrics";
         [
-          selection.publication?.mode==="founder_selected"?"創辦人指定":null,
-          selection.publication?.promoted_from_watchlist?"由觀察名單升級":null,
           selection.model_probability!=null?`模型 ${selection.model_probability}%`:null,
           selection.edge!=null?`優勢 ${Number(selection.edge)>0?"+":""}${selection.edge}%`:null,
           selection.price!=null?`盤口 ${formatAmericanOdds(selection.price)}`:null
@@ -4075,8 +4073,7 @@
         prediction.price!=null?`盤口 ${formatAmericanOdds(prediction.price)}`:null,
         prediction.edge!=null?`市場優勢 ${Number(prediction.edge)>0?"+":""}${prediction.edge}%`:null,
         prediction.impliedProbability!=null?`市場機率 ${prediction.impliedProbability}%`:null,
-        prediction.eventLabel&&prediction.eventLabel!=="例行賽"?prediction.eventLabel:null,
-        prediction.founderSelected?"創辦人指定":null
+        prediction.eventLabel&&prediction.eventLabel!=="例行賽"?prediction.eventLabel:null
       ].filter(Boolean).forEach(value=>{
         const chip=document.createElement("span");
         chip.textContent=value;
