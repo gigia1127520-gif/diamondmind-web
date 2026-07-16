@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind V18.3 NPB probable starters and standings beta -->
+  <!-- DiamondMind V18.4 NPB AI analysis preview -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#03080c">
@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <meta name="description" content="DiamondMind Grand Slam AI：MLB 完整分析、NPB 即時比分、預告先發與球隊戰績、AI 預測與公開推薦紀錄。">
+  <meta name="description" content="DiamondMind Grand Slam AI：MLB 完整分析、NPB 即時比分、預告先發、球隊戰績與 AI 分析預覽、AI 預測與公開推薦紀錄。">
   <title>DiamondMind · Grand Slam AI</title>
   <style>
     :root{
@@ -902,7 +902,7 @@
         <div class="card toolbar">
           <div class="league-switch" id="leagueSwitch" aria-label="選擇棒球聯盟">
             <button type="button" class="league-btn active" data-league="MLB">MLB 美棒</button>
-            <button type="button" class="league-btn" data-league="NPB">NPB 日棒 <span class="league-beta">DATA BETA</span></button>
+            <button type="button" class="league-btn" data-league="NPB">NPB 日棒 <span class="league-beta">AI BETA</span></button>
             <button type="button" class="league-btn" data-league="KBO" disabled>KBO 韓棒・準備中</button>
             <button type="button" class="league-btn" data-league="CPBL" disabled>CPBL 中職・準備中</button>
           </div>
@@ -1735,7 +1735,7 @@
     };
     const leagueUi={
       MLB:{kicker:"TODAY'S MLB",description:"依台灣日期載入 MLB 全部賽事，點擊任一場查看比賽資料。",connection:"MLB 資料連線"},
-      NPB:{kicker:"TODAY'S NPB",description:"日本職棒資料測試版：提供官方賽程、即時比分、預告先發與球隊戰績；AI 模型下一階段加入。",connection:"NPB 官方資料"}
+      NPB:{kicker:"TODAY'S NPB",description:"日本職棒 AI 測試版：整合官方賽程、比分、預告先發、球隊戰績、得失分、畢氏勝率、打線與牛棚數據。",connection:"NPB AI 資料"}
     };
 
     const allStarTeamById={
@@ -2890,7 +2890,7 @@
       const payload=await fetchJsonWithTimeout(`${API_BASE}/games?league=NPB&date=${encodeURIComponent(date)}`,20000);
       state.games=(payload.items||[]).map(game=>normalizeLeagueGame(game,"NPB"));
       const cacheLabel=payload.meta?.cache==="stale"?"舊資料備援":"NPB 官方資料";
-      statusEl.textContent=`已載入 ${state.games.length} 場 · ${cacheLabel} · 台灣日期 ${date} · 資料 BETA`;
+      statusEl.textContent=`已載入 ${state.games.length} 場 · ${cacheLabel} · 台灣日期 ${date} · AI BETA`;
     }
 
     async function loadLeagueGames(){
@@ -2977,6 +2977,102 @@
       focusMembershipPlans();
     });
 
+    function renderNpbAnalysisGate(access={}){
+      const guest=String(access.role||"guest").toLowerCase()==="guest";
+      return `<div class="game-analysis-gate">
+        <div class="game-analysis-gate-icon" aria-hidden="true">🔒</div>
+        <h3>NPB AI 分析預覽</h3>
+        <p>球隊實力、預告先發、打線火力與牛棚數據為 Pro 會員專屬內容。</p>
+        <div class="locked-engine-list">
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>球隊戰績與畢氏勝率</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>先發投手 ERA／WHIP／K-BB</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>打線 OPS 與近期得分</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>牛棚球季狀態</span></div>
+        </div>
+        <button type="button" class="btn pro" data-game-upgrade-pro>升級 Pro 解鎖 NPB 分析</button>
+        <p class="game-analysis-gate-note">${guest?"登入後可查看會員方案。":"你目前是免費會員，可升級 Pro 解鎖。"}</p>
+      </div>`;
+    }
+
+    function formatNpbMetricValue(label,value){
+      if(value===null||value===undefined||value==="")return "—";
+      const number=Number(value);
+      if(!Number.isFinite(number))return escapeHtml(String(value));
+      if(String(label).includes("勝率")||String(label).includes("畢氏"))return number.toFixed(3).replace(/^0/,"");
+      if(["球季 OPS","WHIP","K/BB"].some(key=>String(label).includes(key)))return number.toFixed(3).replace(/0+$/,"").replace(/\.$/,"");
+      if(String(label).includes("ERA")||String(label).includes("場均"))return number.toFixed(2);
+      return number.toFixed(1);
+    }
+
+    function renderNpbMetricRows(metrics=[]){
+      if(!metrics.length)return `<p class="engine-module-note">目前尚無可比較數據。</p>`;
+      return `<div class="engine-table">
+        <div class="engine-table-row engine-table-head"><span>比較指標</span><span>客隊</span><span>主隊</span></div>
+        ${metrics.map(metric=>`<div class="engine-table-row"><span>${escapeHtml(metric.label||"")}</span><span>${formatNpbMetricValue(metric.label,metric.away)}</span><span>${formatNpbMetricValue(metric.label,metric.home)}</span></div>`).join("")}
+      </div>`;
+    }
+
+    function npbEdgeLabel(group={}){
+      const edge=Number(group.edge_home);
+      if(!Number.isFinite(edge))return "資料不足";
+      if(Math.abs(edge)<0.08)return "接近五五波";
+      return edge>0?"主隊略優":"客隊略優";
+    }
+
+    function renderNpbAnalysis(payload){
+      const analysis=payload.analysis||{};
+      const groups=analysis.analysis_groups||{};
+      const pick=analysis.pick||{};
+      const quality=Math.round(Number(analysis.data_quality||0)*100);
+      const score=analysis.projected_score||{};
+      const groupOrder=["team","starter","offense","bullpen"];
+      const cards=groupOrder.map(key=>{
+        const group=groups[key]||{};
+        const extra=key==="starter"?`<div class="engine-module-note">客隊先發：${escapeHtml(group.away_pitcher?.name||"尚未公布")}<br>主隊先發：${escapeHtml(group.home_pitcher?.name||"尚未公布")}</div>`:"";
+        return `<article class="engine-module-card">
+          <div class="engine-module-title"><b>${escapeHtml(group.label||key)}</b><span>${escapeHtml(npbEdgeLabel(group))} · 完整度 ${Math.round(Number(group.quality||0)*100)}%</span></div>
+          ${renderNpbMetricRows(group.metrics||[])}
+          ${extra}
+          <p class="engine-module-note">${escapeHtml(group.note||"")}</p>
+        </article>`;
+      }).join("");
+      return `<div class="engine-breakdown-head">
+          <h3>NPB AI 分析預覽</h3>
+          <span>球隊實力 · 先發投手 · 打線火力 · 牛棚狀態</span>
+        </div>
+        <div class="engine-unavailable"><b>${escapeHtml(pick.label||"目前無明確方向")}</b><br>
+          模型信心 ${Number(analysis.confidence||0).toFixed(1)}% · 資料完整度 ${quality}% · 預估比分 ${score.away??"—"}：${score.home??"—"}<br>
+          ${escapeHtml(analysis.message||"NPB 模型目前為測試預覽。")}
+        </div>
+        <div class="engine-module-grid" style="margin-top:14px">${cards}</div>`;
+    }
+
+    async function loadNpbGameDetail(id){
+      const aiStatus=document.getElementById("detailAiStatus");
+      const headers={Accept:"application/json"};
+      if(authState.session?.access_token)headers.Authorization=`Bearer ${authState.session.access_token}`;
+      try{
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/npb/games/${encodeURIComponent(id)}`,60000,{headers});
+        if(payload.analysis_locked||payload.access?.has_pro_access!==true){
+          aiStatus.textContent="Pro 會員專屬";
+          document.getElementById("detailEngineBreakdown").innerHTML=renderNpbAnalysisGate(payload.access||{role:isSignedIn()?"free":"guest"});
+          return;
+        }
+        const analysis=payload.analysis||{};
+        const quality=Math.round(Number(analysis.data_quality||0)*100);
+        aiStatus.textContent=analysis.pick?.label?`${analysis.pick.label} · 信心 ${analysis.confidence}% · 資料 ${quality}%`:"NPB AI 分析完成";
+        document.getElementById("detailEngineBreakdown").innerHTML=renderNpbAnalysis(payload);
+      }catch(error){
+        if(error.status===401){
+          aiStatus.textContent="登入已過期";
+          document.getElementById("detailEngineBreakdown").innerHTML=renderNpbAnalysisGate({role:"guest"});
+          return;
+        }
+        aiStatus.textContent="NPB AI 資料暫時無法載入";
+        document.getElementById("detailEngineBreakdown").innerHTML=`<div class="engine-unavailable">官方球員數據或歷史賽果目前暫時無法同步，請稍後重新開啟。</div>`;
+      }
+    }
+
     function openGame(id){
       const game=state.games.find(x=>String(x.id)===String(id));
       if(!game)return;
@@ -2992,18 +3088,13 @@
       document.getElementById("detailHomePitcher").textContent=game.homePitcher;
       document.getElementById("detailStatus").textContent=statusText(game);
       if((game.league||state.activeLeague)==="NPB"){
-        document.getElementById("detailAiStatus").textContent="NPB 官方資料已同步";
-        const sourceLink=game.sourceUrl?`<a class="btn ghost small" href="${escapeHtml(game.sourceUrl)}" target="_blank" rel="noopener">查看 NPB 官方資料</a>`:"";
-        const awayRecord=formatNpbRecord(game.awayRecord);
-        const homeRecord=formatNpbRecord(game.homeRecord);
-        document.getElementById("detailEngineBreakdown").innerHTML=`
-          <div class="engine-unavailable"><b>NPB 資料模組第二階段</b><br>已加入官方即時比分、預告先發與聯盟戰績；投手詳細數據、打線、牛棚與 AI 推薦會在下一階段加入。</div>
-          <div class="engine-module-grid" style="margin-top:14px">
-            <article class="engine-module-card"><div class="engine-module-title"><b>${escapeHtml(game.awayZh)}</b><span>${escapeHtml(game.awayAbbr)}</span></div><p>預告先發：${escapeHtml(game.awayPitcher)}</p><p>${escapeHtml(awayRecord)}</p></article>
-            <article class="engine-module-card"><div class="engine-module-title"><b>${escapeHtml(game.homeZh)}</b><span>${escapeHtml(game.homeAbbr)}</span></div><p>預告先發：${escapeHtml(game.homePitcher)}</p><p>${escapeHtml(homeRecord)}</p></article>
-          </div>
-          <div style="margin-top:12px">${sourceLink}</div>`;
+        document.getElementById("detailAiStatus").textContent=isProMember()?"正在載入 NPB AI 分析…":"Pro 會員專屬";
+        const sourceLink=game.sourceUrl?`<div style="margin-top:12px"><a class="btn ghost small" href="${escapeHtml(game.sourceUrl)}" target="_blank" rel="noopener">查看 NPB 官方資料</a></div>`:"";
+        document.getElementById("detailEngineBreakdown").innerHTML=isProMember()
+          ?`<div class="engine-unavailable">正在整合球季戰績、最近十場、預告先發、打線與牛棚數據…</div>${sourceLink}`
+          :`${renderNpbAnalysisGate({role:isSignedIn()?"free":"guest"})}${sourceLink}`;
         openModal("gameModal");
+        if(isProMember())loadNpbGameDetail(id);
         return;
       }
       document.getElementById("detailAiStatus").textContent=isProMember()?"正在載入五大引擎…":"Pro 會員專屬";
