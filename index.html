@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind V18.4 NPB AI analysis preview -->
+  <!-- DiamondMind V18.5 multi-league homepage and recommendation pool -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#03080c">
@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <meta name="description" content="DiamondMind Grand Slam AI：MLB 完整分析、NPB 即時比分、預告先發、球隊戰績與 AI 分析預覽、AI 預測與公開推薦紀錄。">
+  <meta name="description" content="DiamondMind Grand Slam AI：MLB、NPB 多聯盟棒球賽事、即時比分、預告先發、AI 分析、跨聯盟推薦與公開紀錄。">
   <title>DiamondMind · Grand Slam AI</title>
   <style>
     :root{
@@ -349,6 +349,14 @@
       background:linear-gradient(180deg,rgba(12,27,35,.9),rgba(7,17,23,.84));
       box-shadow:var(--shadow);
     }
+    .home-league-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .home-league-card{position:relative;overflow:hidden;padding:19px;min-height:164px}
+    .home-league-card::after{content:"";position:absolute;width:120px;height:120px;right:-52px;top:-48px;border:1px solid var(--line);border-radius:50%}
+    .home-league-card.active{border-color:var(--line-strong);background:linear-gradient(145deg,rgba(55,244,164,.075),rgba(7,19,25,.96))}
+    .home-league-card.planned{opacity:.72}
+    .home-league-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .home-league-code{font-size:24px;font-weight:950;letter-spacing:-1px}.home-league-state{padding:5px 8px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:9px;font-weight:900}.home-league-card.active .home-league-state{color:var(--green);border-color:var(--line-strong)}
+    .home-league-card h3{margin:16px 0 6px;font-size:16px}.home-league-card p{margin:0;color:var(--muted);font-size:11px;line-height:1.55}.home-league-count{display:block;margin-top:14px;color:var(--green);font-size:12px;font-weight:900}
     .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
     .feature-card{padding:21px}
     .feature-icon{width:44px;height:44px;display:grid;place-items:center;margin-bottom:15px;border:1px solid var(--line-strong);border-radius:13px;color:var(--green);font-weight:900;background:rgba(55,244,164,.07)}
@@ -689,6 +697,7 @@
       .section{padding:48px 0}
       .section-head,.page-head{align-items:flex-start;flex-direction:column}
       .page-space{padding-top:26px}
+      .home-league-grid{grid-template-columns:1fr 1fr}
       .feature-grid,.how-grid,.record-summary,.menu-grid{grid-template-columns:1fr}
       .record-card-head{padding:20px 18px 15px}.pick-list{padding:0 18px 18px}.record-summary{padding:0 18px 20px}
       .game-card{grid-template-columns:1fr 42px;padding:15px}.game-time{grid-column:1/2;display:flex;align-items:center;gap:9px}.game-time small{margin:0}.game-teams{grid-column:1/2}.pitchers{grid-column:1/2}.status-label{grid-column:2;grid-row:1}.chevron{grid-column:2;grid-row:2/4;align-self:center;justify-self:center}
@@ -757,18 +766,18 @@
     <section class="page active" id="homePage" aria-labelledby="homeTitle">
       <div class="wrap hero">
         <div class="hero-copy">
-          <div class="eyebrow"><span class="pulse"></span>MLB AI 智慧分析平台</div>
+          <div class="eyebrow"><span class="pulse"></span>多聯盟棒球 AI 智慧分析平台</div>
           <h1 id="homeTitle">GRAND<br><span>SLAM AI</span></h1>
           <h2>讀懂比賽，做出更聰明的選擇</h2>
-          <p>DiamondMind 整合每日 MLB 賽程、先發投手、球隊近況與模型分析，把複雜數據整理成容易理解的比賽情報。</p>
+          <p>DiamondMind 整合 MLB、NPB，並逐步加入 KBO 與 CPBL；將每日賽程、先發投手、球隊近況與模型分析整理成容易理解的棒球情報。</p>
           <div class="hero-actions">
             <button type="button" class="btn primary" data-page="gamesPage">查看今日賽事</button>
             <button type="button" class="btn ghost" data-page="predictionPage">查看 AI 精選</button>
           </div>
           <div class="trust-row" role="group" aria-label="平台特色">
-            <div><b>完整賽程</b><span>MLB 每日資料</span></div>
+            <div><b>多聯盟賽程</b><span>MLB＋NPB 已啟用</span></div>
             <div><b>公開紀錄</b><span>推薦結果可追蹤</span></div>
-            <div><b>一場精選</b><span>聚焦最高信心</span></div>
+            <div><b>跨聯盟精選</b><span>通過門檻全部保留</span></div>
           </div>
         </div>
 
@@ -824,6 +833,21 @@
         </div>
       </div>
 
+      <div class="section">
+        <div class="wrap">
+          <div class="section-head">
+            <div><div class="kicker">BASEBALL LEAGUES</div><h2>多聯盟棒球中心</h2></div>
+            <p>首頁統一呈現各聯盟進度；推薦頁會把已啟用聯盟中所有通過門檻的候選合併顯示。</p>
+          </div>
+          <div class="home-league-grid" id="homeLeagueGrid">
+            <article class="card home-league-card active" data-home-league="MLB"><div class="home-league-top"><span class="home-league-code">MLB</span><span class="home-league-state">完整運作</span></div><h3>美國職棒</h3><p>完整五大引擎、盤口、Pro 推薦與自動結算。</p><span class="home-league-count" id="homeLeagueMLBCount">今日資料載入中</span></article>
+            <article class="card home-league-card active" data-home-league="NPB"><div class="home-league-top"><span class="home-league-code">NPB</span><span class="home-league-state">推薦 BETA</span></div><h3>日本職棒</h3><p>官方賽程、比分、預告先發、戰績、AI 獨贏候選與結算。</p><span class="home-league-count" id="homeLeagueNPBCount">今日資料載入中</span></article>
+            <article class="card home-league-card planned" data-home-league="KBO"><div class="home-league-top"><span class="home-league-code">KBO</span><span class="home-league-state">下一階段</span></div><h3>韓國職棒</h3><p>將加入賽程、即時比分、和局規則與獨立資料轉換器。</p><span class="home-league-count" id="homeLeagueKBOCount">資料模組準備中</span></article>
+            <article class="card home-league-card planned" data-home-league="CPBL"><div class="home-league-top"><span class="home-league-code">CPBL</span><span class="home-league-state">下一階段</span></div><h3>中華職棒</h3><p>將加入官方賽程、即時比分、保留比賽與台灣在地分析。</p><span class="home-league-count" id="homeLeagueCPBLCount">資料模組準備中</span></article>
+          </div>
+        </div>
+      </div>
+
       <div class="section announcement-home" id="homeAnnouncementsSection" hidden>
         <div class="wrap">
           <div class="card announcement-home-card">
@@ -868,8 +892,8 @@
             <p>複雜數據由系統整理，保留來源、分析原因與模型信心，不用自己翻找多個網站。</p>
           </div>
           <div class="how-grid">
-            <article class="card how-card"><span class="step-no">1</span><h3>完整賽事</h3><p>集中顯示每日 MLB 賽程、台灣時間、即時比分與預計先發。</p></article>
-            <article class="card how-card"><span class="step-no">2</span><h3>AI 最強一場</h3><p>每天從全部賽事挑出模型勝率最高、資料最完整的一場。</p></article>
+            <article class="card how-card"><span class="step-no">1</span><h3>完整賽事</h3><p>集中顯示 MLB、NPB 賽程、台灣時間、即時比分與預告先發；KBO、CPBL 依序加入。</p></article>
+            <article class="card how-card"><span class="step-no">2</span><h3>跨聯盟推薦</h3><p>免費精選聚焦最高信心；Pro 將所有通過正式門檻的 MLB／NPB 候選完整列出。</p></article>
             <article class="card how-card"><span class="step-no">3</span><h3>結果可驗證</h3><p>推薦發布後保留原始內容，賽後自動標記命中、未中或走水。</p></article>
           </div>
         </div>
@@ -902,7 +926,7 @@
         <div class="card toolbar">
           <div class="league-switch" id="leagueSwitch" aria-label="選擇棒球聯盟">
             <button type="button" class="league-btn active" data-league="MLB">MLB 美棒</button>
-            <button type="button" class="league-btn" data-league="NPB">NPB 日棒 <span class="league-beta">AI BETA</span></button>
+            <button type="button" class="league-btn" data-league="NPB">NPB 日棒 <span class="league-beta">推薦 BETA</span></button>
             <button type="button" class="league-btn" data-league="KBO" disabled>KBO 韓棒・準備中</button>
             <button type="button" class="league-btn" data-league="CPBL" disabled>CPBL 中職・準備中</button>
           </div>
@@ -1017,9 +1041,9 @@
             <div class="access-level-head"><div><h2 id="accessLevelTitle">會員預測權限</h2><p>Pro 正式推薦維持嚴格門檻；接近門檻的玩法另列觀察名單，不會混入正式戰績。</p></div><button type="button" class="btn pro small" id="predictionUpgradeButton" data-page="membershipPage">升級 DiamondMind Pro</button></div>
             <div class="pro-access-grid">
               <article class="pro-access-card open"><div class="pro-access-top"><span class="market-tag">FREE PICK</span><span class="access-chip">已開放</span></div><h3>每日免費精選</h3><p>免費會員每日最多一場，只發布通過信心門檻的獨贏推薦。</p></article>
-              <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">MONEYLINE+</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>獨贏精選</h3><div class="pro-prediction-body" data-pro-body="moneylines"><p>依當日合格場次提供最多 3 場獨贏精選。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
-              <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">RUN LINE</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>讓分精選</h3><div class="pro-prediction-body" data-pro-body="run_lines"><p>依當日合格場次提供最多 3 場讓分推薦。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
-              <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">TOTALS</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>大小分精選</h3><div class="pro-prediction-body" data-pro-body="totals"><p>依當日合格場次提供最多 3 場大小分推薦。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
+              <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">MONEYLINE+</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>獨贏精選</h3><div class="pro-prediction-body" data-pro-body="moneylines"><p>所有已啟用棒球聯盟中，通過正式門檻的獨贏候選都會顯示。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
+              <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">RUN LINE</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>讓分精選</h3><div class="pro-prediction-body" data-pro-body="run_lines"><p>所有通過正式門檻的讓分候選都會顯示。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
+              <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">TOTALS</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>大小分精選</h3><div class="pro-prediction-body" data-pro-body="totals"><p>所有通過正式門檻的大小分候選都會顯示。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
               <article class="pro-access-card locked watchlist-card" data-pro-feature><div class="pro-access-top"><span class="market-tag">WATCHLIST</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>Pro 觀察名單</h3><div class="pro-prediction-body" data-pro-body="watchlist"><p>接近正式門檻的玩法只供參考，不計入正式推薦、結算或命中率。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
               <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">2-LEG</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>二關串關</h3><div class="pro-prediction-body" data-pro-body="two_leg"><p>最多 2 組，由不同場次的合格單場推薦組成。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
               <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">3-LEG</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>三關串關</h3><div class="pro-prediction-body" data-pro-body="three_leg"><p>最多 1 組高風險組合，清楚標示組合依據。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
@@ -1267,7 +1291,7 @@
     <section class="page" id="adminSettlementPage" aria-labelledby="adminSettlementTitle">
       <div class="wrap page-space">
         <div class="page-head">
-          <div><div class="kicker">FOUNDER ADMIN</div><h1 id="adminSettlementTitle">推薦與結算監控</h1><p>查看免費精選與 Pro 玩法是否已發布、鎖定及結算；系統會定期向 MLB 官方資料自動重新檢查。</p></div>
+          <div><div class="kicker">FOUNDER ADMIN</div><h1 id="adminSettlementTitle">推薦與結算監控</h1><p>查看免費精選與 Pro 玩法是否已發布、鎖定及結算；系統會定期向 MLB／NPB 官方資料自動重新檢查。</p></div>
         </div>
         <div class="card settlement-toolbar">
           <label>推薦日期<input type="date" id="settlementDate"></label>
@@ -1308,7 +1332,7 @@
           <div class="card operations-card"><small>API 版本</small><b id="operationsVersion">—</b><span>後端目前部署版本</span></div>
           <div class="card operations-card"><small>付款環境</small><b id="operationsPayment">—</b><span id="operationsPaymentMeta">—</span></div>
           <div class="card operations-card"><small>Supabase</small><b id="operationsDatabase">—</b><span>推薦、會員與模型資料</span></div>
-          <div class="card operations-card"><small>真實盤口</small><b id="operationsOdds">—</b><span>正式 Pro 玩法必要來源</span></div>
+          <div class="card operations-card"><small>MLB 真實盤口</small><b id="operationsOdds">—</b><span>MLB 讓分、大小分與市場優勢必要來源</span></div>
           <div class="card operations-card"><small>安全排程</small><b id="operationsScheduler">—</b><span>自動更新與結算觸發</span></div>
           <div class="card operations-card"><small>客服管道</small><b id="operationsSupport">—</b><span>正式收費前需完成</span></div>
         </div>
@@ -1527,7 +1551,7 @@
     <div class="modal-head"><div><h2 id="tutorialTitle">使用教學</h2><p>五個主功能快速上手</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
     <div class="tutorial-list">
       <div class="tutorial-step"><b>首頁</b><p>了解軟體特色，查看近期免費推薦與公開命中率。</p></div>
-      <div class="tutorial-step"><b>賽事</b><p>選擇台灣日期，查看當日全部 MLB 比賽與即時比分。</p></div>
+      <div class="tutorial-step"><b>賽事</b><p>選擇台灣日期與聯盟，查看 MLB／NPB 當日賽事與即時比分。</p></div>
       <div class="tutorial-step"><b>AI 預測</b><p>免費會員每日最多一場獨贏精選；Pro 會員可查看多場玩法與二、三關串關。</p></div>
       <div class="tutorial-step"><b>紀錄</b><p>查看所有推薦單，並依命中、未中、未結算篩選。</p></div>
       <div class="tutorial-step"><b>更多</b><p>管理會員帳號、比較 Pro 方案、開啟教學與常見問題。</p></div>
@@ -1537,7 +1561,7 @@
   <section class="modal" id="faqModal" role="dialog" aria-modal="true" aria-labelledby="faqTitle">
     <div class="modal-head"><div><h2 id="faqTitle">常見問題</h2><p>關於資料與 AI 預測</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
     <div class="tutorial-list">
-      <div class="tutorial-step"><b>賽事時間是哪個時區？</b><p>網站以台灣時間與台灣日期整理 MLB 賽事。</p></div>
+      <div class="tutorial-step"><b>賽事時間是哪個時區？</b><p>網站以台灣時間與台灣日期整理各棒球聯盟賽事。</p></div>
       <div class="tutorial-step"><b>AI 預測會保證命中嗎？</b><p>不會。AI 提供的是機率與分析，不可能保證單場結果。</p></div>
       <div class="tutorial-step"><b>為什麼有時沒有今日精選？</b><p>若資料不足或沒有場次達到最低信心門檻，系統可以選擇不發布。</p></div>
       <div class="tutorial-step"><b>月繳、季繳與年繳功能不同嗎？</b><p>功能相同，只有使用期間與平均月費不同。付款成功後會自動開通，且不會自動續扣。</p></div>
@@ -1547,7 +1571,7 @@
   <section class="modal" id="aboutModal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
     <div class="modal-head"><div><h2 id="aboutTitle">關於 DiamondMind</h2><p>Grand Slam AI · Smarter Baseball Decisions.</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
     <div class="legal-copy">
-      <p><strong>DiamondMind</strong> 專注於 MLB 賽事資料整理、盤口觀察與機率模型分析，目標是把複雜的賽前資訊轉換成清楚、可追蹤的判斷依據。</p>
+      <p><strong>DiamondMind</strong> 專注於多聯盟棒球賽事資料整理、盤口觀察與機率模型分析，目標是把複雜的賽前資訊轉換成清楚、可追蹤的判斷依據。</p>
       <p>我們保留每一筆正式推薦與賽後結果；若資料不足或未達模型門檻，系統可以選擇不發布，而不是為了每天出單而勉強推薦。</p>
       <div class="legal-callout">資料透明、紀錄可追蹤、風險說明清楚，是 DiamondMind 的核心原則。</div>
     </div>
@@ -1596,7 +1620,7 @@
     <div class="modal-head"><div><h2 id="disclaimerTitle">免責聲明</h2><p>請在使用分析內容前詳閱</p></div><button type="button" class="modal-close" data-close-modal aria-label="關閉">×</button></div>
     <div class="legal-copy">
       <p>DiamondMind 所提供的勝率、盤口分析、推薦與串關組合均為模型計算結果，可能發生錯誤，亦不代表未來賽果。</p>
-      <p>本站不接受投注、不保管投注資金、不代客操作，也不與任何博彩公司合作或代表其立場。MLB、球隊及其他商標均屬各自權利人所有；除非另有明確說明，本站與其無官方隸屬或背書關係。</p>
+      <p>本站不接受投注、不保管投注資金、不代客操作，也不與任何博彩公司合作或代表其立場。MLB、NPB、KBO、CPBL、各球隊及其他商標均屬各自權利人所有；除非另有明確說明，本站與其無官方隸屬或背書關係。</p>
       <div class="legal-callout">請理性使用資訊、遵守所在地法律並自行承擔決策風險。若分析內容造成任何直接或間接損失，DiamondMind 在法律允許範圍內不負賠償責任。</div>
     </div>
   </section>
@@ -1735,7 +1759,7 @@
     };
     const leagueUi={
       MLB:{kicker:"TODAY'S MLB",description:"依台灣日期載入 MLB 全部賽事，點擊任一場查看比賽資料。",connection:"MLB 資料連線"},
-      NPB:{kicker:"TODAY'S NPB",description:"日本職棒 AI 測試版：整合官方賽程、比分、預告先發、球隊戰績、得失分、畢氏勝率、打線與牛棚數據。",connection:"NPB AI 資料"}
+      NPB:{kicker:"TODAY'S NPB",description:"日本職棒推薦 BETA：整合官方賽程、比分、預告先發、球隊戰績、畢氏勝率、打線、牛棚與獨贏候選。",connection:"NPB 推薦資料"}
     };
 
     const allStarTeamById={
@@ -2067,7 +2091,7 @@
       clearTimeout(toastTimer);
       toastTimer=setTimeout(()=>toast.classList.remove("show"),2600);
     }
-    document.getElementById("themeInfo").addEventListener("click",()=>showToast("DiamondMind 前端運作正常 · MLB 賽程按需求載入"));
+    document.getElementById("themeInfo").addEventListener("click",()=>showToast("DiamondMind 前端運作正常 · MLB／NPB 多聯盟資料按需求載入"));
 
     let authRefreshTimer;
     let appHeartbeatTimer=null;
@@ -2641,8 +2665,9 @@
           const score=result.away_score==null||result.home_score==null
             ?`${result.legs?.length||legs.length} 關已結算`
             :`終場 ${result.away_score}–${result.home_score}`;
+          const league=isParlay?[...new Set(legs.map(leg=>leg.league||"MLB"))].join("＋"):(selection.league||"MLB");
           const sourceLabel="Pro 精選";
-          return [{key,name,pickLabel,matchup,price,probability,score,status:result.status||"pending",sourceLabel}];
+          return [{key,name,pickLabel,matchup,price,probability,score,status:result.status||"pending",sourceLabel,league}];
         });
       });
     }
@@ -2672,7 +2697,7 @@
           <div class="market-package-head"><b>${recordDate(bundle.date)} Pro 完整玩法</b><span>全部已結算</span></div>
           ${rows.map(row=>`<div class="market-result-row">
             <div class="market-result-name">${row.name}</div>
-            <div class="market-result-pick"><b>${escapeHtml(row.pickLabel)}</b><small>${escapeHtml(row.sourceLabel)} · ${escapeHtml(row.matchup)}${row.probability!=null?` · 模型 ${Number(row.probability).toFixed(1)}%`:""}${row.price!=null?` · 賠率 ${row.price>0?"+":""}${row.price}`:""}</small></div>
+            <div class="market-result-pick"><b>${escapeHtml(row.pickLabel)}</b><small>${escapeHtml(row.sourceLabel)} · ${escapeHtml(row.league)} · ${escapeHtml(row.matchup)}${row.probability!=null?` · 模型 ${Number(row.probability).toFixed(1)}%`:""}${row.price!=null?` · 賠率 ${row.price>0?"+":""}${row.price}`:""}</small></div>
             <div class="market-result-score">${escapeHtml(row.score)}</div>
             <span class="result ${resultClass(row.status)}">${resultLabel(row.status)}</span>
           </div>`).join("")}
@@ -2981,7 +3006,7 @@
       const guest=String(access.role||"guest").toLowerCase()==="guest";
       return `<div class="game-analysis-gate">
         <div class="game-analysis-gate-icon" aria-hidden="true">🔒</div>
-        <h3>NPB AI 分析預覽</h3>
+        <h3>NPB AI 分析</h3>
         <p>球隊實力、預告先發、打線火力與牛棚數據為 Pro 會員專屬內容。</p>
         <div class="locked-engine-list">
           <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>球隊戰績與畢氏勝率</span></div>
@@ -3024,7 +3049,6 @@
       const groups=analysis.analysis_groups||{};
       const pick=analysis.pick||{};
       const quality=Math.round(Number(analysis.data_quality||0)*100);
-      const score=analysis.projected_score||{};
       const groupOrder=["team","starter","offense","bullpen"];
       const cards=groupOrder.map(key=>{
         const group=groups[key]||{};
@@ -3037,11 +3061,11 @@
         </article>`;
       }).join("");
       return `<div class="engine-breakdown-head">
-          <h3>NPB AI 分析預覽</h3>
+          <h3>NPB AI 分析</h3>
           <span>球隊實力 · 先發投手 · 打線火力 · 牛棚狀態</span>
         </div>
         <div class="engine-unavailable"><b>${escapeHtml(pick.label||"目前無明確方向")}</b><br>
-          模型信心 ${Number(analysis.confidence||0).toFixed(1)}% · 資料完整度 ${quality}% · 預估比分 ${score.away??"—"}：${score.home??"—"}<br>
+          模型信心 ${Number(analysis.confidence||0).toFixed(1)}% · 資料完整度 ${quality}%<br>
           ${escapeHtml(analysis.message||"NPB 模型目前為測試預覽。")}
         </div>
         <div class="engine-module-grid" style="margin-top:14px">${cards}</div>`;
@@ -3153,6 +3177,7 @@
       state.predictionDate="";
       state.predictionRole="";
       loadLeagueGames();
+      loadHomeLeagueSummary();
     });
 
     function formatAmericanOdds(value){
@@ -3171,14 +3196,14 @@
     }
 
     function renderLockedProPredictions(){
-      setProBodyMessage("moneylines","依當日合格場次提供最多 3 場獨贏精選。");
-      setProBodyMessage("run_lines","依當日合格場次提供最多 3 場讓分推薦。");
-      setProBodyMessage("totals","依當日合格場次提供最多 3 場大小分推薦。");
+      setProBodyMessage("moneylines","所有已啟用棒球聯盟中，通過正式門檻的獨贏候選都會顯示。");
+      setProBodyMessage("run_lines","所有通過正式門檻的讓分候選都會顯示。");
+      setProBodyMessage("totals","所有通過正式門檻的大小分候選都會顯示。");
       setProBodyMessage("watchlist","接近門檻的玩法只供 Pro 會員觀察，不計入正式戰績。");
       setProBodyMessage("two_leg","最多 2 組，由已通過門檻的不同場次組成。");
       setProBodyMessage("three_leg","最多 1 組高風險組合，不為湊關硬選。");
       const note=document.getElementById("proPredictionNote");
-      if(note)note.textContent="正式玩法使用真實盤口與固定發布門檻；升級 Pro 後可查看已發布的多場內容。";
+      if(note)note.textContent="MLB 玩法使用真實盤口與固定門檻；NPB 目前使用官方資料模型門檻。升級 Pro 後可查看跨聯盟內容。";
     }
 
     function renderMarketList(key,selections,emptyMessage){
@@ -3205,7 +3230,7 @@
         pick.textContent=selection.pick?.label||"今日正式推薦";
         const matchup=document.createElement("p");
         matchup.className="pro-matchup";
-        matchup.textContent=`${selection.matchup||"MLB"}${selection.time_taiwan?` · ${selection.time_taiwan}`:""}`;
+        matchup.textContent=`${selection.league?`[${selection.league}] `:""}${selection.matchup||"棒球賽事"}${selection.time_taiwan?` · ${selection.time_taiwan}`:""}`;
         const metrics=document.createElement("div");
         metrics.className="pro-metrics";
         [
@@ -3301,7 +3326,7 @@
         pick.textContent=selection.pick?.label||"觀察項目";
         const matchup=document.createElement("p");
         matchup.className="pro-matchup";
-        matchup.textContent=`${selection.matchup||"MLB"}${selection.time_taiwan?` · ${selection.time_taiwan}`:""}`;
+        matchup.textContent=`${selection.league?`[${selection.league}] `:""}${selection.matchup||"棒球賽事"}${selection.time_taiwan?` · ${selection.time_taiwan}`:""}`;
         const metrics=document.createElement("div");
         metrics.className="pro-metrics";
         [
@@ -3855,7 +3880,7 @@
       const reasons=asSelectionArray(item.watchlist_reasons);
       return {
         title:item.pick?.label||(isWatchlist?"觀察項目":"正式推薦"),
-        meta:`${item.matchup||"MLB"}${item.model_probability!=null?` · 模型 ${item.model_probability}%`:""}${item.edge!=null?` · 優勢 ${Number(item.edge)>0?"+":""}${item.edge}%`:""}${item.price!=null?` · ${formatAmericanOdds(item.price)}`:""}${isWatchlist&&reasons.length?` · ${reasons.join("；")}`:""}`
+        meta:`${item.league?`[${item.league}] `:""}${item.matchup||"棒球賽事"}${item.model_probability!=null?` · 模型 ${item.model_probability}%`:""}${item.edge!=null?` · 優勢 ${Number(item.edge)>0?"+":""}${item.edge}%`:""}${item.price!=null?` · ${formatAmericanOdds(item.price)}`:""}${item.market_basis==="model_only"?" · 模型獨贏":""}${isWatchlist&&reasons.length?` · ${reasons.join("；")}`:""}`
       };
     }
 
@@ -3894,7 +3919,7 @@
         input.checked=input.dataset.founderMarketTier!=="watchlist"&&ids.includes(input.dataset.candidateId);
       });
       updateFounderMarketSelectionCount();
-      showToast("已套用 AI 正式推薦建議");
+      showToast("已套用全部跨聯盟正式候選");
     }
 
     function founderMarketOptionsHtml(group,items,tier,recommended){
@@ -3945,7 +3970,7 @@
         const watchHtml=founderMarketOptionsHtml(group,group.watchItems,"watchlist",recommended);
         const options=formalHtml+watchHtml||`<div class="founder-lock">目前沒有符合正式或觀察標準的${escapeHtml(group.title)}候選。</div>`;
         return `<section class="founder-market-group" data-founder-market-section="${group.key}" data-max="${group.max}">
-          <div class="founder-market-group-head"><b>${escapeHtml(group.title)}</b><span>最多選 ${group.max} 個 · 正式 ${group.items.length} · 觀察 ${group.watchItems.length}</span></div>
+          <div class="founder-market-group-head"><b>${escapeHtml(group.title)}</b><span>${group.parlay?`最多選 ${group.max} 個 · `:"通過門檻可全選 · "}正式 ${group.items.length} · 觀察 ${group.watchItems.length}</span></div>
           ${options}
         </section>`;
       }).join("");
@@ -3976,7 +4001,7 @@
       if(!force&&state.founderMarketDate===date&&state.founderMarketBundle)return;
       state.founderMarketsLoading=true;
       document.getElementById("founderPublishMarkets").disabled=true;
-      status.textContent="正在讀取真實盤口並建立多場玩法候選…";
+      status.textContent="正在整合 MLB 真實盤口與 NPB 官方模型候選…";
       container.replaceChildren();
       try{
         const payload=await fetchJsonWithTimeout(
@@ -4045,6 +4070,36 @@
       state.founderMarketBundle=null;
       loadFounderMarkets(true);
     });
+
+    async function loadHomeLeagueSummary(){
+      const date=document.getElementById("scheduleDate")?.value||taiwanToday();
+      try{
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/leagues/summary?date=${encodeURIComponent(date)}`,30000);
+        (payload.items||[]).forEach(item=>{
+          const target=document.getElementById(`homeLeague${item.code}Count`);
+          if(!target)return;
+          if(item.available&&Number.isFinite(Number(item.count))){
+            const details=[item.live?`進行中 ${item.live}`:null,item.final?`已結束 ${item.final}`:null].filter(Boolean).join(" · ");
+            target.textContent=`今日 ${item.count} 場${details?` · ${details}`:""}`;
+          }else if(item.code==="KBO"||item.code==="CPBL"){
+            target.textContent="資料模組準備中";
+          }else{
+            target.textContent="今日資料暫時無法載入";
+          }
+        });
+      }catch{
+        ["MLB","NPB"].forEach(code=>{const target=document.getElementById(`homeLeague${code}Count`);if(target)target.textContent="今日資料暫時無法載入"});
+      }
+    }
+
+    document.querySelectorAll(".home-league-card.active[data-home-league]").forEach(card=>card.addEventListener("click",()=>{
+      const league=card.dataset.homeLeague;
+      if(!league)return;
+      state.activeLeague=league;
+      state.gamesLoaded=false;
+      showPage("gamesPage");
+      loadLeagueGames();
+    }));
 
     async function loadTopPrediction(){
       if(!isSignedIn()){
@@ -4283,6 +4338,7 @@
     renderAuthState();
     loadRecords();
     loadHomeAnnouncements(true);
+    loadHomeLeagueSummary();
     if(initialHash&&pages.includes(`${initialHash}Page`))showPage(`${initialHash}Page`);
     initializeAuth(authCallback);
   </script>
