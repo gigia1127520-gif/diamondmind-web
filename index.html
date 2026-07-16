@@ -1061,17 +1061,17 @@
           </section>
 
           <section class="access-levels" aria-labelledby="accessLevelTitle">
-            <div class="access-level-head"><div><h2 id="accessLevelTitle">會員預測權限</h2><p>Pro 正式推薦維持嚴格門檻；接近門檻的玩法另列觀察名單，不會混入正式戰績。</p></div><button type="button" class="btn pro small" id="predictionUpgradeButton" data-page="membershipPage">升級 DiamondMind Pro</button></div>
+            <div class="access-level-head"><div><h2 id="accessLevelTitle">會員預測權限</h2><p>Pro 會員只顯示通過正式門檻並鎖定發布的推薦；未達門檻的候選僅供創辦人內部審核。</p></div><button type="button" class="btn pro small" id="predictionUpgradeButton" data-page="membershipPage">升級 DiamondMind Pro</button></div>
             <div class="pro-access-grid">
               <article class="pro-access-card open"><div class="pro-access-top"><span class="market-tag">FREE PICK</span><span class="access-chip">已開放</span></div><h3>每日免費精選</h3><p>免費會員每日最多一場，只發布通過信心門檻的獨贏推薦。</p></article>
               <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">MONEYLINE+</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>獨贏精選</h3><div class="pro-prediction-body" data-pro-body="moneylines"><p>所有已啟用棒球聯盟中，通過正式門檻的獨贏候選都會顯示。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
               <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">RUN LINE</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>讓分精選</h3><div class="pro-prediction-body" data-pro-body="run_lines"><p>所有通過正式門檻的讓分候選都會顯示。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
               <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">TOTALS</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>大小分精選</h3><div class="pro-prediction-body" data-pro-body="totals"><p>所有通過正式門檻的大小分候選都會顯示。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
-              <article class="pro-access-card locked watchlist-card" data-pro-feature><div class="pro-access-top"><span class="market-tag">WATCHLIST</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>Pro 觀察名單</h3><div class="pro-prediction-body" data-pro-body="watchlist"><p>接近正式門檻的玩法只供參考，不計入正式推薦、結算或命中率。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
+              <article class="pro-access-card locked watchlist-card" data-pro-feature data-auth-admin hidden><div class="pro-access-top"><span class="market-tag">WATCHLIST</span><span class="access-chip lock" data-pro-access-chip>創辦人</span></div><h3>創辦人觀察名單</h3><div class="pro-prediction-body" data-pro-body="watchlist"><p>接近正式門檻的候選只供創辦人審核，不對免費會員或 Pro 會員顯示。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
               <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">2-LEG</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>二關串關</h3><div class="pro-prediction-body" data-pro-body="two_leg"><p>最多 2 組，由不同場次的合格單場推薦組成。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
               <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">3-LEG</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>三關串關</h3><div class="pro-prediction-body" data-pro-body="three_leg"><p>最多 1 組高風險組合，清楚標示組合依據。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
             </div>
-            <div class="pro-build-note" id="proPredictionNote">正式推薦、觀察名單與今日無推薦三種狀態會清楚分開；觀察名單不計入正式績效。</div>
+            <div class="pro-build-note" id="proPredictionNote">會員區只顯示正式發布推薦；未達門檻的候選不會出現在會員畫面。</div>
           </section>
         </div>
       </div>
@@ -1285,7 +1285,7 @@
         <div class="model-layout">
           <section class="card model-panel"><h2>玩法績效</h2><p>只計算真實推薦；走水與作廢不列入命中率分母。</p><div class="model-breakdown" id="modelMarketBreakdown"><div class="settlement-empty">尚未載入。</div></div></section>
           <section class="card model-panel"><h2>信心區間</h2><p>比較 60–64%、65–69% 與 70% 以上的真實結果。</p><div class="model-breakdown" id="modelConfidenceBreakdown"><div class="settlement-empty">尚未載入。</div></div></section>
-          <section class="card model-panel" style="grid-column:1/-1"><h2>發布來源績效</h2><p>AI 正式推薦與創辦人指定分開統計；Pro 觀察名單不會建立正式快照，因此不會出現在這裡。</p><div class="model-breakdown" id="modelPublicationBreakdown"><div class="settlement-empty">尚未載入。</div></div></section>
+          <section class="card model-panel" style="grid-column:1/-1"><h2>發布來源績效</h2><p>AI 正式推薦與創辦人指定分開統計；創辦人觀察候選不會建立正式快照，因此不會出現在這裡。</p><div class="model-breakdown" id="modelPublicationBreakdown"><div class="settlement-empty">尚未載入。</div></div></section>
         </div>
         <div class="model-layout" style="margin-top:16px">
           <section class="card model-panel"><h2>權重校正建議</h2><p id="modelCalibrationMessage">尚未載入校正樣本。</p><div class="model-weight-list" id="modelWeightList"></div><div class="model-calibration-actions"><button type="button" class="btn ghost" id="modelUseSuggested">套用建議到輸入框</button><button type="button" class="btn primary" id="modelApplyWeights">確認啟用新權重</button></div><div class="model-calibration-note">系統只提供建議，不會自動修改模型。樣本不足時仍可查看，但按鈕會保持停用。</div></section>
@@ -3362,11 +3362,13 @@
       setProBodyMessage("moneylines","所有已啟用棒球聯盟中，通過正式門檻的獨贏候選都會顯示。");
       setProBodyMessage("run_lines","所有通過正式門檻的讓分候選都會顯示。");
       setProBodyMessage("totals","所有通過正式門檻的大小分候選都會顯示。");
-      setProBodyMessage("watchlist","接近門檻的玩法只供 Pro 會員觀察，不計入正式戰績。");
+      if(isAdminMember())setProBodyMessage("watchlist","接近正式門檻的候選只供創辦人內部審核，不列入正式戰績。");
       setProBodyMessage("two_leg","最多 2 組，由已通過門檻的不同場次組成。");
       setProBodyMessage("three_leg","最多 1 組高風險組合，不為湊關硬選。");
       const note=document.getElementById("proPredictionNote");
-      if(note)note.textContent="MLB／NPB 玩法均優先使用真實盤口與固定門檻；NPB 若暫時沒有盤口，只保留官方數據獨贏觀察，不會猜測讓分或大小分。";
+      if(note)note.textContent=isAdminMember()
+        ?"會員區只顯示正式發布推薦；觀察候選僅限創辦人內部審核。"
+        :"MLB／NPB 玩法均優先使用真實盤口與固定門檻；沒有玩法通過時就不發布，不會為了出單降低標準。";
     }
 
     function renderMarketList(key,selections,emptyMessage){
@@ -3527,18 +3529,19 @@
       renderMarketList("totals",totals,"今日沒有大小分玩法通過正式發布門檻。");
       renderParlayList("two_leg",twoLeg);
       renderParlayList("three_leg",threeLeg);
-      const watchCount=renderWatchlist(payload.watchlist||{});
+      const admin=isAdminMember();
+      const watchCount=admin?renderWatchlist(payload.watchlist||{}):0;
       const formalCount=moneylines.length+runLines.length+totals.length+twoLeg.length+threeLeg.length;
       const note=document.getElementById("proPredictionNote");
       if(!note)return;
-      if(formalCount&&watchCount){
-        note.textContent=`今日正式發布 ${formalCount} 項 Pro 推薦，另有 ${watchCount} 項觀察名單；觀察項目不結算、不計命中率。`;
+      if(admin&&formalCount&&watchCount){
+        note.textContent=`今日正式發布 ${formalCount} 項 Pro 推薦，另有 ${watchCount} 項創辦人觀察候選；觀察項目不結算、不計命中率。`;
       }else if(formalCount){
-        note.textContent=`今日正式發布 ${formalCount} 項 Pro 推薦；全部已鎖定，後續不會偷換。`;
-      }else if(watchCount){
-        note.textContent=`今日無正式 Pro 推薦；提供 ${watchCount} 項接近門檻的觀察名單，僅供參考且不計戰績。`;
+        note.textContent=`今日正式發布 ${formalCount} 項 Pro 推薦；全部已鎖定，後續不會更換。`;
+      }else if(admin&&watchCount){
+        note.textContent=`今日無正式 Pro 推薦；目前有 ${watchCount} 項候選只供創辦人內部審核。`;
       }else{
-        note.textContent="今日無正式推薦，也沒有符合觀察標準的玩法；DiamondMind 不會為了每天出單而降低門檻。";
+        note.textContent="今日沒有玩法通過正式發布門檻；DiamondMind 不會為了每天出單而降低標準。";
       }
     }
 
@@ -4106,7 +4109,7 @@
       const aiButton=document.getElementById("founderUseAiMarkets");
       if(!status||!container)return;
       state.founderMarketBundle=payload;
-      status.textContent=payload.message||"正式候選與 Pro 觀察名單已載入。";
+      status.textContent=payload.message||"正式候選與創辦人觀察名單已載入。";
       if(payload.locked){
         const packageData=payload.package||{};
         const counts={
