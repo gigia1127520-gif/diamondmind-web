@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind V18.6 MLB/NPB real-market recommendation pool -->
+  <!-- DiamondMind V18.7 NPB complete analysis modules -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#03080c">
@@ -724,6 +724,29 @@
     .model-toolbar{display:grid;grid-template-columns:repeat(3,minmax(150px,1fr)) auto auto;gap:10px;align-items:end;padding:16px;margin-bottom:18px}.model-toolbar label{display:grid;gap:6px;color:var(--muted);font-size:11px}.model-toolbar select{width:100%}.model-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}.model-summary-card{padding:18px}.model-summary-card small{display:block;color:var(--muted);font-size:10px}.model-summary-card b{display:block;margin-top:7px;font-size:27px}.model-summary-card .green{color:var(--green)}.model-summary-card .gold{color:var(--gold)}.model-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}.model-panel{padding:18px}.model-panel h2{margin:0;font-size:20px}.model-panel>p{margin:6px 0 16px;color:var(--muted);font-size:10px;line-height:1.55}.model-breakdown{display:grid;gap:9px}.model-breakdown-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:12px;border:1px solid rgba(255,255,255,.055);border-radius:13px;background:rgba(255,255,255,.018)}.model-breakdown-row b{font-size:12px}.model-breakdown-row span{color:var(--muted);font-size:10px}.model-breakdown-row strong{font-size:13px}.model-weight-list{display:grid;gap:10px}.model-weight-row{display:grid;grid-template-columns:110px 1fr 64px;gap:10px;align-items:center}.model-weight-row label{font-size:11px}.model-weight-track{height:8px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden}.model-weight-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--green),#b8ff3f)}.model-weight-row input{width:100%;min-height:38px;padding:8px 9px;text-align:right}.model-calibration-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.model-calibration-note{margin-top:12px;padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:13px;color:var(--muted);font-size:10px;line-height:1.55}.model-snapshot-list{display:grid;gap:9px;max-height:560px;overflow:auto}.model-snapshot-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:13px;border:1px solid rgba(255,255,255,.055);border-radius:13px}.model-snapshot-row b{display:block;font-size:12px}.model-snapshot-row span{display:block;margin-top:5px;color:var(--muted);font-size:9px;line-height:1.45}.model-status{align-self:start;padding:6px 8px;border:1px solid var(--line);border-radius:999px;font-size:9px;font-weight:900}.model-status.won{color:var(--green)}.model-status.lost{color:var(--red)}.model-status.pending{color:var(--gold)}.model-test-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.model-test-grid label{display:grid;gap:6px;color:var(--muted);font-size:10px}.model-test-grid .full{grid-column:1/-1}.model-test-grid input,.model-test-grid select{width:100%}.model-test-result{margin-top:12px;min-height:20px;color:var(--muted);font-size:11px;line-height:1.55}.model-test-result.success{color:var(--green)}.model-test-result.error{color:var(--red)}.model-admin-note{margin-top:18px;padding:16px;color:var(--muted);font-size:11px;line-height:1.65}.model-admin-note b{color:var(--green)}
 
     @media (display-mode:standalone){body{min-height:100dvh}.topbar{padding-top:env(safe-area-inset-top)}.bottom-nav{padding-bottom:max(8px,env(safe-area-inset-bottom))}}
+    .npb-complete-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .npb-complete-grid .engine-module:nth-child(2),.npb-complete-grid .engine-module:nth-child(4){border-color:rgba(55,244,164,.2)}
+    .npb-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+    .npb-detail-panel{min-width:0;padding:11px;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(255,255,255,.018)}
+    .npb-detail-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;font-size:10px}
+    .npb-detail-title b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#d5e1e5}
+    .npb-detail-title span{flex:0 0 auto;padding:3px 6px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:8px}
+    .npb-detail-title .ready,.npb-detail-title .fatigue-low{color:var(--green);border-color:var(--line-strong)}
+    .npb-detail-title .waiting,.npb-detail-title .fatigue-mid{color:var(--gold);border-color:rgba(255,215,106,.3)}
+    .npb-detail-title .fatigue-high{color:var(--red);border-color:rgba(255,115,130,.32)}
+    .npb-detail-summary{margin:0 0 8px;color:var(--muted);font-size:9px;line-height:1.45}
+    .npb-lineup-list,.npb-mini-list,.npb-compact-list,.npb-roster-list{display:grid;gap:5px;margin:0;padding:0;list-style:none}
+    .npb-lineup-list li{display:grid;grid-template-columns:18px minmax(0,1fr) auto;align-items:center;gap:6px;min-width:0;padding:5px 0;border-top:1px solid rgba(255,255,255,.04);font-size:9px}
+    .npb-lineup-list li>span{display:grid;place-items:center;width:17px;height:17px;border-radius:6px;color:var(--green);background:rgba(55,244,164,.07)}
+    .npb-lineup-list li>b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px}.npb-lineup-list li>small{color:var(--muted);font-size:8px}
+    .npb-mini-list li{display:grid;grid-template-columns:64px 46px minmax(0,1fr);gap:6px;align-items:center;padding:5px 0;border-top:1px solid rgba(255,255,255,.04);font-size:8px}.npb-mini-list li span{color:var(--muted)}.npb-mini-list li b{color:#d5e1e5}.npb-mini-list li small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)}
+    .npb-compact-list li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 0;border-top:1px solid rgba(255,255,255,.04);font-size:8px}.npb-compact-list li b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.npb-compact-list li span{flex:0 0 auto;color:var(--muted)}
+    .npb-roster-list li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:3px 6px;padding:5px 0;border-top:1px solid rgba(255,255,255,.04);font-size:8px}.npb-roster-list li>span{grid-row:1/3;align-self:center;padding:3px 4px;border-radius:5px;text-align:center}.npb-roster-list li>b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.npb-roster-list li>small{color:var(--muted)}.roster-in{color:var(--green);background:rgba(55,244,164,.08)}.roster-out{color:var(--red);background:rgba(255,115,130,.08)}
+    .npb-lineup-list .empty-row,.npb-mini-list .empty-row,.npb-compact-list .empty-row,.npb-roster-list .empty-row{display:block!important;padding:10px 0;color:var(--muted);text-align:center;font-size:8px}
+    .npb-source-note{margin:9px 0 0;color:#c8b97c;font-size:8px;line-height:1.5}
+    .npb-environment-extra{margin-top:12px}.npb-environment-extra>div{padding:7px 0}.npb-env-tags{display:flex!important;flex-wrap:wrap;gap:5px}.npb-env-tags span{padding:4px 6px;border:1px solid var(--line);border-radius:999px;color:#b9c8ce;font-size:8px;background:rgba(255,255,255,.02)}
+    @media(max-width:680px){.npb-complete-grid,.npb-detail-grid{grid-template-columns:1fr}.npb-complete-grid .engine-module{padding:13px}.npb-lineup-list li{grid-template-columns:18px minmax(0,1fr) 34px}}
+
   </style>
 
   <style>
@@ -3052,14 +3075,15 @@
       const accountCopy=guest?"登入免費會員後可選擇月繳、季繳或年繳方案。":"你目前是免費會員，可直接選擇 Pro 方案解鎖。";
       return `<div class="game-analysis-gate">
         <div class="game-analysis-gate-icon" aria-hidden="true">🔒</div>
-        <h3>五大完整分析引擎</h3>
-        <p>完整數據比較為 DiamondMind Pro 會員專屬內容。</p>
+        <h3>NPB 完整分析引擎</h3>
+        <p>正式打線、先發近況、牛棚用量與賽前環境為 DiamondMind Pro 會員專屬內容。</p>
         <div class="locked-engine-list" aria-label="NPB Pro 專屬分析模組">
-          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>先發投手分析</span></div>
-          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>打線強度分析</span></div>
-          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>牛棚狀態分析</span></div>
-          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>球隊近期狀態</span></div>
-          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>進階勝率數據</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>正式第 1～9 棒</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>先發最近三場</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>牛棚近三日用量</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>一軍登錄與抹消</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>球場、屋頂與天氣</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>FIP／K%／BB%／ISO</span></div>
         </div>
         <button type="button" class="btn pro" data-game-upgrade-pro>升級 Pro 解鎖完整賽事情報</button>
         <p class="game-analysis-gate-note">${escapeHtml(accountCopy)}</p>
@@ -3070,10 +3094,16 @@
       if(value===null||value===undefined||value==="")return "—";
       const number=Number(value);
       if(!Number.isFinite(number))return escapeHtml(String(value));
-      if(String(label).includes("勝率")||String(label).includes("畢氏"))return number.toFixed(3).replace(/^0/,"");
-      if(["球季 OPS","WHIP","K/BB"].some(key=>String(label).includes(key)))return number.toFixed(3).replace(/0+$/,"").replace(/\.$/,"");
-      if(String(label).includes("ERA")||String(label).includes("場均"))return number.toFixed(2);
-      return number.toFixed(1);
+      const text=String(label||"");
+      if(text.includes("%")){
+        const percentage=Math.abs(number)<=1?number*100:number;
+        return `${percentage.toFixed(1)}%`;
+      }
+      if(text.includes("勝率")||text.includes("畢氏"))return number.toFixed(3).replace(/^0/,"");
+      if(["OPS","ISO","WHIP","K/BB"].some(key=>text.includes(key)))return number.toFixed(3).replace(/^0(?=\.)/,"").replace(/0+$/,"").replace(/\.$/,"");
+      if(text.includes("ERA")||text.includes("FIP")||text.includes("場均")||text.includes("局數"))return number.toFixed(2);
+      if(text.includes("溫度"))return `${number.toFixed(1)}°`;
+      return Number.isInteger(number)?String(number):number.toFixed(1);
     }
 
     function renderNpbMetricRows(metrics=[]){
@@ -3082,10 +3112,11 @@
         const home=formatNpbMetricValue(metric.label,metric.home);
         const awayNumber=Number(metric.away);
         const homeNumber=Number(metric.home);
-        const lowerBetter=String(metric.label||"").includes("ERA")||String(metric.label||"").includes("WHIP")||String(metric.label||"").includes("失分");
+        const label=String(metric.label||"");
+        const lowerBetter=["ERA","WHIP","失分","疲勞","抹消","近3日後援局數","近3日面對打者","打線 K%","先發 BB%"].some(key=>label.includes(key));
         let awayClass="";
         let homeClass="";
-        if(Number.isFinite(awayNumber)&&Number.isFinite(homeNumber)&&awayNumber!==homeNumber){
+        if(metric.available!==false&&Number.isFinite(awayNumber)&&Number.isFinite(homeNumber)&&awayNumber!==homeNumber){
           const awayBetter=lowerBetter?awayNumber<homeNumber:awayNumber>homeNumber;
           awayClass=awayBetter?"better":"";
           homeClass=!awayBetter?"better":"";
@@ -3109,41 +3140,98 @@
       </section>`;
     }
 
+    function npbLineupPanel(lineup={},sideLabel="球隊"){
+      const order=(lineup.batting_order||[]).slice(0,9);
+      const status=lineup.official&&order.length===9?"正式打線":"尚未完整公布";
+      const rows=order.length?order.map((player,index)=>`<li><span>${Number(player.batting_order||index+1)}</span><b>${escapeHtml(player.name||"—")}</b><small>${escapeHtml(player.position||"")}</small></li>`).join(""):`<li class="empty-row">賽前官方打線尚未公布</li>`;
+      return `<div class="npb-detail-panel">
+        <div class="npb-detail-title"><b>${escapeHtml(sideLabel)}</b><span class="${lineup.official?"ready":"waiting"}">${status}</span></div>
+        <ol class="npb-lineup-list">${rows}</ol>
+      </div>`;
+    }
+
+    function npbStarterPanel(pitcher={},sideLabel="球隊"){
+      const recent=pitcher.recent_3||{};
+      const logs=(recent.game_logs||[]).slice(0,3);
+      const summary=recent.available?`${recent.starts||logs.length} 場 · ${formatNpbMetricValue("ERA",recent.era)} ERA · ${formatNpbMetricValue("WHIP",recent.whip)} WHIP`:`最近三次先發資料尚不足`;
+      const items=logs.length?logs.map(log=>`<li><span>${escapeHtml(log.date||"")}</span><b>${formatNpbMetricValue("局數",log.innings)} IP</b><small>${Number(log.earned_runs||0)} ER · ${Number(log.strikeouts||0)} K</small></li>`).join(""):`<li class="empty-row">尚無可配對的近期先發紀錄</li>`;
+      return `<div class="npb-detail-panel">
+        <div class="npb-detail-title"><b>${escapeHtml(sideLabel)}｜${escapeHtml(pitcher.name||"先發未公布")}</b></div>
+        <p class="npb-detail-summary">${escapeHtml(summary)}</p>
+        <ul class="npb-mini-list">${items}</ul>
+      </div>`;
+    }
+
+    function npbBullpenPanel(data={},sideLabel="球隊"){
+      const recent=data.recent_3_days||{};
+      const heavy=(recent.heavy_usage||[]).slice(0,4);
+      const rows=heavy.length?heavy.map(player=>`<li><b>${escapeHtml(player.name||"—")}</b><span>${Number(player.appearances||0)} 場 · ${formatNpbMetricValue("局數",player.innings)} IP${player.back_to_back?" · 連投":""}</span></li>`).join(""):`<li class="empty-row">近三日沒有重度使用名單</li>`;
+      return `<div class="npb-detail-panel">
+        <div class="npb-detail-title"><b>${escapeHtml(sideLabel)}</b><span class="fatigue-${recent.fatigue_level==="高"?"high":recent.fatigue_level==="中"?"mid":"low"}">疲勞 ${escapeHtml(recent.fatigue_level||"—")}</span></div>
+        <p class="npb-detail-summary">${Number(recent.appearances||0)} 次後援 · ${formatNpbMetricValue("局數",recent.innings)} IP · ${Number(recent.back_to_back_pitchers||0)} 人連投</p>
+        <ul class="npb-compact-list">${rows}</ul>
+      </div>`;
+    }
+
+    function npbRosterPanel(data={},sideLabel="球隊"){
+      const registered=(data.registered||[]).slice(0,6);
+      const deregistered=(data.deregistered||[]).slice(0,6);
+      const rows=[
+        ...registered.map(player=>`<li><span class="roster-in">登錄</span><b>${escapeHtml(player.name||"—")}</b><small>${escapeHtml(player.position||"")} · ${escapeHtml(player.date||"")}</small></li>`),
+        ...deregistered.map(player=>`<li><span class="roster-out">抹消</span><b>${escapeHtml(player.name||"—")}</b><small>${escapeHtml(player.position||"")} · ${escapeHtml(player.date||"")}</small></li>`)
+      ].join("")||`<li class="empty-row">近七日無相關一軍異動</li>`;
+      return `<div class="npb-detail-panel">
+        <div class="npb-detail-title"><b>${escapeHtml(sideLabel)}</b><span>${registered.length} 入／${deregistered.length} 出</span></div>
+        <ul class="npb-roster-list">${rows}</ul>
+      </div>`;
+    }
+
+    function renderNpbEnvironment(group={}){
+      const venue=group.venue||{};
+      const weather=group.weather||{};
+      const run=group.run_environment||{};
+      const roofMap={fixed_dome:"固定巨蛋",retractable:"可開閉屋頂",open_air:"戶外球場",unknown:"屋頂狀態待確認"};
+      const weatherText=weather.available?`${weather.condition||"天氣"} · ${formatNpbMetricValue("溫度",weather.temperature_c)}C · 風 ${formatNpbMetricValue("風速",weather.wind_speed_mph)} mph ${weather.wind_direction_text||""}`:"天氣資料暫時不可用";
+      const reasons=(run.reasons||[]).map(reason=>`<span>${escapeHtml(reason)}</span>`).join("")||`<span>中性環境基準</span>`;
+      return `<div class="engine-extra npb-environment-extra">
+        <div><b>球場</b><p>${escapeHtml(venue.name||venue.official_name_raw||"尚未確認")} · ${escapeHtml(roofMap[venue.roof_type]||venue.roof_type||"屋頂待確認")} · ${escapeHtml(venue.surface||"")}</p></div>
+        <div><b>比賽時段</b><p>${escapeHtml(weatherText)}</p></div>
+        <div class="npb-env-tags">${reasons}</div>
+        <div><b>預估總分環境修正</b><p>${Number(run.run_adjustment||0)>=0?"+":""}${Number(run.run_adjustment||0).toFixed(2)} 分${run.weather_applied?"（已計入戶外天氣）":"（未套用戶外天氣）"}</p></div>
+      </div>`;
+    }
+
     function renderNpbAnalysis(payload){
       const analysis=payload.analysis||{};
       const groups=analysis.analysis_groups||{};
-      const teamGroup=groups.team||{};
-      const teamMetrics=teamGroup.metrics||[];
-      const recentMetrics=teamMetrics.filter(metric=>!String(metric.label||"").includes("畢氏"));
-      const advancedMetrics=teamMetrics.filter(metric=>String(metric.label||"").includes("畢氏"));
-
       const starter=groups.starter||{};
-      const starterExtra=`<div class="engine-extra">
-        <div><b>客隊預告先發</b><p>${escapeHtml(starter.away_pitcher?.name||"尚未公布")}</p></div>
-        <div><b>主隊預告先發</b><p>${escapeHtml(starter.home_pitcher?.name||"尚未公布")}</p></div>
-      </div>`;
+      const offense=groups.offense||{};
+      const bullpen=groups.bullpen||{};
+      const availability=groups.availability||{};
+      const environment=groups.environment||{};
+      const advanced=groups.advanced||{};
+      const team=groups.team||{};
 
-      const starterCard=npbGroupCard(starter,"先發投手",starterExtra);
-      const offenseCard=npbGroupCard(groups.offense||{},"打線強度");
-      const bullpenCard=npbGroupCard(groups.bullpen||{},"牛棚狀態");
-      const recentCard=npbGroupCard({
-        ...teamGroup,
-        label:"球隊近期狀態",
-        note:"官方戰績、近十場表現與本場主客場戰績",
-        metrics:recentMetrics
-      },"球隊近期狀態");
-      const advancedCard=npbGroupCard({
-        ...teamGroup,
-        label:"進階勝率數據",
-        note:"以球季得失分計算畢氏預期勝率，作為長期實力校正",
-        metrics:advancedMetrics
-      },"進階勝率數據");
+      const starterExtra=`<div class="npb-detail-grid">${npbStarterPanel(starter.away_pitcher||{},"客隊")}${npbStarterPanel(starter.home_pitcher||{},"主隊")}</div>`;
+      const lineupExtra=`<div class="npb-detail-grid">${npbLineupPanel(offense.away_lineup||{},"客隊第 1～9 棒")}${npbLineupPanel(offense.home_lineup||{},"主隊第 1～9 棒")}</div>`;
+      const bullpenExtra=`<div class="npb-detail-grid">${npbBullpenPanel(bullpen.away||{},"客隊牛棚")}${npbBullpenPanel(bullpen.home||{},"主隊牛棚")}</div>`;
+      const rosterExtra=`<div class="npb-detail-grid">${npbRosterPanel(availability.away||{},"客隊近七日")}${npbRosterPanel(availability.home||{},"主隊近七日")}</div><p class="npb-source-note">官方公示未提供統一傷病診斷；抹消代表目前不在一軍可用名單，系統不猜測傷勢。</p>`;
+
+      const cards=[
+        npbGroupCard(starter,"先發最近三場",starterExtra),
+        npbGroupCard(offense,"正式先發打線",lineupExtra),
+        npbGroupCard(bullpen,"牛棚近三日用量",bullpenExtra),
+        npbGroupCard(availability,"登錄異動與缺陣",rosterExtra),
+        npbGroupCard(environment,"球場與天氣",renderNpbEnvironment(environment)),
+        npbGroupCard(advanced,"NPB 進階數據"),
+        npbGroupCard(team,"球隊實力與近況")
+      ].join("");
 
       return `<div class="engine-breakdown-head">
-          <h3>五大完整分析引擎</h3>
-          <span>先發投手 · 打線火力 · 牛棚狀態 · 球隊近況 · 進階勝率</span>
+          <h3>NPB 完整分析引擎</h3>
+          <span>正式打線 · 先發近三場 · 牛棚近三日 · 登錄異動 · 環境 · 進階數據</span>
         </div>
-        <div class="engine-module-grid">${starterCard}${offenseCard}${bullpenCard}${recentCard}${advancedCard}</div>`;
+        <div class="engine-module-grid npb-complete-grid">${cards}</div>`;
     }
 
     async function loadNpbGameDetail(id){
@@ -3159,7 +3247,7 @@
         }
         const analysis=payload.analysis||{};
         const quality=Math.round(Number(analysis.data_quality||0)*100);
-        aiStatus.textContent=`五大引擎完成 · 資料完整度 ${quality}%`;
+        aiStatus.textContent=`NPB 完整引擎完成 · 資料完整度 ${quality}%`;
         document.getElementById("detailEngineBreakdown").innerHTML=renderNpbAnalysis(payload);
       }catch(error){
         if(error.status===401){
@@ -4416,6 +4504,6 @@
     loadHomeLeagueSummary();
     if(initialHash&&pages.includes(`${initialHash}Page`))showPage(`${initialHash}Page`);
     initializeAuth(authCallback);
-  </script>
+    </script>
 </body>
 </html>
