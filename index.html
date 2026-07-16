@@ -2945,11 +2945,9 @@
     }
 
     function npbGameMeta(game){
-      const starters=(game.awayPitcherAnnounced||game.homePitcherAnnounced)
-        ? `預告先發｜客：${escapeHtml(game.awayPitcher)} · 主：${escapeHtml(game.homePitcher)}`
-        : "預告先發尚未公布";
-      const records=`戰績｜客：${escapeHtml(formatNpbRecord(game.awayRecord))}<br>主：${escapeHtml(formatNpbRecord(game.homeRecord))}`;
-      return `${starters}<br>${records}`;
+      const awayPitcher=game.awayPitcherAnnounced?escapeHtml(game.awayPitcher):"尚未公布";
+      const homePitcher=game.homePitcherAnnounced?escapeHtml(game.homePitcher):"尚未公布";
+      return `例行賽 · 客：${awayPitcher}<br>主：${homePitcher}`;
     }
 
     function renderGames(){
@@ -3004,18 +3002,20 @@
 
     function renderNpbAnalysisGate(access={}){
       const guest=String(access.role||"guest").toLowerCase()==="guest";
+      const accountCopy=guest?"登入免費會員後可選擇月繳、季繳或年繳方案。":"你目前是免費會員，可直接選擇 Pro 方案解鎖。";
       return `<div class="game-analysis-gate">
         <div class="game-analysis-gate-icon" aria-hidden="true">🔒</div>
-        <h3>NPB AI 分析</h3>
-        <p>球隊實力、預告先發、打線火力與牛棚數據為 Pro 會員專屬內容。</p>
-        <div class="locked-engine-list">
-          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>球隊戰績與畢氏勝率</span></div>
-          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>先發投手 ERA／WHIP／K-BB</span></div>
-          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>打線 OPS 與近期得分</span></div>
-          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>牛棚球季狀態</span></div>
+        <h3>五大完整分析引擎</h3>
+        <p>完整數據比較為 DiamondMind Pro 會員專屬內容。</p>
+        <div class="locked-engine-list" aria-label="NPB Pro 專屬分析模組">
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>先發投手分析</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>打線強度分析</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>牛棚狀態分析</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>球隊近期狀態</span></div>
+          <div class="locked-engine-item"><span class="locked-engine-lock">🔒</span><span>進階勝率數據</span></div>
         </div>
-        <button type="button" class="btn pro" data-game-upgrade-pro>升級 Pro 解鎖 NPB 分析</button>
-        <p class="game-analysis-gate-note">${guest?"登入後可查看會員方案。":"你目前是免費會員，可升級 Pro 解鎖。"}</p>
+        <button type="button" class="btn pro" data-game-upgrade-pro>升級 Pro 解鎖完整賽事情報</button>
+        <p class="game-analysis-gate-note">${escapeHtml(accountCopy)}</p>
       </div>`;
     }
 
@@ -3030,45 +3030,73 @@
     }
 
     function renderNpbMetricRows(metrics=[]){
-      if(!metrics.length)return `<p class="engine-module-note">目前尚無可比較數據。</p>`;
-      return `<div class="engine-table">
-        <div class="engine-table-row engine-table-head"><span>比較指標</span><span>客隊</span><span>主隊</span></div>
-        ${metrics.map(metric=>`<div class="engine-table-row"><span>${escapeHtml(metric.label||"")}</span><span>${formatNpbMetricValue(metric.label,metric.away)}</span><span>${formatNpbMetricValue(metric.label,metric.home)}</span></div>`).join("")}
-      </div>`;
+      const rows=(metrics||[]).map(metric=>{
+        const away=formatNpbMetricValue(metric.label,metric.away);
+        const home=formatNpbMetricValue(metric.label,metric.home);
+        const awayNumber=Number(metric.away);
+        const homeNumber=Number(metric.home);
+        const lowerBetter=String(metric.label||"").includes("ERA")||String(metric.label||"").includes("WHIP")||String(metric.label||"").includes("失分");
+        let awayClass="";
+        let homeClass="";
+        if(Number.isFinite(awayNumber)&&Number.isFinite(homeNumber)&&awayNumber!==homeNumber){
+          const awayBetter=lowerBetter?awayNumber<homeNumber:awayNumber>homeNumber;
+          awayClass=awayBetter?"better":"";
+          homeClass=!awayBetter?"better":"";
+        }
+        return `<div class="engine-metric"><span>${escapeHtml(metric.label||"指標")}</span><span class="${awayClass}">${away}</span><span class="${homeClass}">${home}</span></div>`;
+      }).join("");
+      return rows||`<div class="engine-unavailable">此模組目前資料不足，權重已自動降低。</div>`;
     }
 
-    function npbEdgeLabel(group={}){
-      const edge=Number(group.edge_home);
-      if(!Number.isFinite(edge))return "資料不足";
-      if(Math.abs(edge)<0.08)return "接近五五波";
-      return edge>0?"主隊略優":"客隊略優";
+    function npbGroupCard(group={},fallback="",extraHtml=""){
+      const quality=Math.round(Number(group.quality||0)*100);
+      const rows=renderNpbMetricRows(group.metrics||[]);
+      return `<section class="engine-module">
+        <div class="engine-module-top"><b>${escapeHtml(group.label||fallback)}</b><span class="engine-quality ${quality<60?"low":""}">完整度 ${quality}%</span></div>
+        <p class="engine-note">${escapeHtml(group.note||"依可取得資料動態評分")}</p>
+        <div class="engine-metrics">
+          <div class="engine-metric"><span>比較指標</span><span>客隊</span><span>主隊</span></div>
+          ${rows}
+        </div>
+        ${extraHtml}
+      </section>`;
     }
 
     function renderNpbAnalysis(payload){
       const analysis=payload.analysis||{};
       const groups=analysis.analysis_groups||{};
-      const pick=analysis.pick||{};
-      const quality=Math.round(Number(analysis.data_quality||0)*100);
-      const groupOrder=["team","starter","offense","bullpen"];
-      const cards=groupOrder.map(key=>{
-        const group=groups[key]||{};
-        const extra=key==="starter"?`<div class="engine-module-note">客隊先發：${escapeHtml(group.away_pitcher?.name||"尚未公布")}<br>主隊先發：${escapeHtml(group.home_pitcher?.name||"尚未公布")}</div>`:"";
-        return `<article class="engine-module-card">
-          <div class="engine-module-title"><b>${escapeHtml(group.label||key)}</b><span>${escapeHtml(npbEdgeLabel(group))} · 完整度 ${Math.round(Number(group.quality||0)*100)}%</span></div>
-          ${renderNpbMetricRows(group.metrics||[])}
-          ${extra}
-          <p class="engine-module-note">${escapeHtml(group.note||"")}</p>
-        </article>`;
-      }).join("");
+      const teamGroup=groups.team||{};
+      const teamMetrics=teamGroup.metrics||[];
+      const recentMetrics=teamMetrics.filter(metric=>!String(metric.label||"").includes("畢氏"));
+      const advancedMetrics=teamMetrics.filter(metric=>String(metric.label||"").includes("畢氏"));
+
+      const starter=groups.starter||{};
+      const starterExtra=`<div class="engine-extra">
+        <div><b>客隊預告先發</b><p>${escapeHtml(starter.away_pitcher?.name||"尚未公布")}</p></div>
+        <div><b>主隊預告先發</b><p>${escapeHtml(starter.home_pitcher?.name||"尚未公布")}</p></div>
+      </div>`;
+
+      const starterCard=npbGroupCard(starter,"先發投手",starterExtra);
+      const offenseCard=npbGroupCard(groups.offense||{},"打線強度");
+      const bullpenCard=npbGroupCard(groups.bullpen||{},"牛棚狀態");
+      const recentCard=npbGroupCard({
+        ...teamGroup,
+        label:"球隊近期狀態",
+        note:"官方戰績、近十場表現與本場主客場戰績",
+        metrics:recentMetrics
+      },"球隊近期狀態");
+      const advancedCard=npbGroupCard({
+        ...teamGroup,
+        label:"進階勝率數據",
+        note:"以球季得失分計算畢氏預期勝率，作為長期實力校正",
+        metrics:advancedMetrics
+      },"進階勝率數據");
+
       return `<div class="engine-breakdown-head">
-          <h3>NPB AI 分析</h3>
-          <span>球隊實力 · 先發投手 · 打線火力 · 牛棚狀態</span>
+          <h3>五大完整分析引擎</h3>
+          <span>先發投手 · 打線火力 · 牛棚狀態 · 球隊近況 · 進階勝率</span>
         </div>
-        <div class="engine-unavailable"><b>${escapeHtml(pick.label||"目前無明確方向")}</b><br>
-          模型信心 ${Number(analysis.confidence||0).toFixed(1)}% · 資料完整度 ${quality}%<br>
-          ${escapeHtml(analysis.message||"NPB 模型目前為測試預覽。")}
-        </div>
-        <div class="engine-module-grid" style="margin-top:14px">${cards}</div>`;
+        <div class="engine-module-grid">${starterCard}${offenseCard}${bullpenCard}${recentCard}${advancedCard}</div>`;
     }
 
     async function loadNpbGameDetail(id){
@@ -3084,7 +3112,7 @@
         }
         const analysis=payload.analysis||{};
         const quality=Math.round(Number(analysis.data_quality||0)*100);
-        aiStatus.textContent=analysis.pick?.label?`${analysis.pick.label} · 信心 ${analysis.confidence}% · 資料 ${quality}%`:"NPB AI 分析完成";
+        aiStatus.textContent=`五大引擎完成 · 資料完整度 ${quality}%`;
         document.getElementById("detailEngineBreakdown").innerHTML=renderNpbAnalysis(payload);
       }catch(error){
         if(error.status===401){
