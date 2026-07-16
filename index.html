@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind contact-information submission update -->
+  <!-- DiamondMind home-screen wake and session refresh update -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#03080c">
@@ -2044,6 +2044,88 @@
     document.getElementById("themeInfo").addEventListener("click",()=>showToast("DiamondMind 前端運作正常 · MLB 賽程按需求載入"));
 
     let authRefreshTimer;
+    let appHeartbeatTimer=null;
+    let appWakePromise=null;
+    let appHiddenAt=0;
+    const APP_HEARTBEAT_MS=5*60*1000;
+    const APP_RESUME_REFRESH_MS=60*1000;
+
+    async function warmDiamondMindBackend(timeout=70000){
+      const controller=new AbortController();
+      const timer=setTimeout(()=>controller.abort(),timeout);
+      try{
+        const response=await fetch(`${API_BASE}/health`,{
+          method:"GET",
+          headers:{Accept:"application/json"},
+          cache:"no-store",
+          signal:controller.signal
+        });
+        return response.ok;
+      }catch{
+        return false;
+      }finally{
+        clearTimeout(timer);
+      }
+    }
+
+    async function refreshSessionAfterResume(){
+      const session=authState.session;
+      if(!session?.refresh_token)return;
+      const secondsLeft=Number(session.expires_at||0)-Math.floor(Date.now()/1000);
+      try{
+        if(secondsLeft<=300){
+          await refreshAuthSession(session.refresh_token);
+          return;
+        }
+        const user=await fetchAuthUser(session);
+        authState.user=user;
+        authState.session.user=user;
+        authState.role=memberRole(user);
+        saveAuthSession(authState.session);
+        renderAuthState();
+      }catch(error){
+        if(error?.status===401||error?.status===403)clearAuthSession();
+      }
+    }
+
+    async function wakeAndRefreshDiamondMind(showStatus=false){
+      if(document.visibilityState==="hidden")return false;
+      if(appWakePromise)return appWakePromise;
+      appWakePromise=(async()=>{
+        if(showStatus)showToast("正在同步會員與最新資料…");
+        const backendReady=await warmDiamondMindBackend();
+        if(authState.ready&&isSignedIn())await refreshSessionAfterResume();
+        if(backendReady&&showStatus)showToast("同步完成");
+        return backendReady;
+      })().finally(()=>{appWakePromise=null});
+      return appWakePromise;
+    }
+
+    function startAppHeartbeat(){
+      clearInterval(appHeartbeatTimer);
+      appHeartbeatTimer=setInterval(()=>{
+        if(document.visibilityState==="visible")warmDiamondMindBackend(15000);
+      },APP_HEARTBEAT_MS);
+    }
+
+    document.addEventListener("visibilitychange",()=>{
+      if(document.visibilityState==="hidden"){
+        appHiddenAt=Date.now();
+        return;
+      }
+      const hiddenFor=appHiddenAt?Date.now()-appHiddenAt:APP_RESUME_REFRESH_MS;
+      appHiddenAt=0;
+      wakeAndRefreshDiamondMind(hiddenFor>=APP_RESUME_REFRESH_MS);
+    });
+
+    window.addEventListener("pageshow",event=>{
+      if(event.persisted)wakeAndRefreshDiamondMind(true);
+      else warmDiamondMindBackend();
+    });
+    window.addEventListener("online",()=>wakeAndRefreshDiamondMind(true));
+    warmDiamondMindBackend();
+    startAppHeartbeat();
+
     async function authRequest(path,{method="GET",body,accessToken,timeout=12000}={}){
       const controller=new AbortController();
       const timer=setTimeout(()=>controller.abort(),timeout);
