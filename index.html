@@ -841,7 +841,7 @@
           </div>
           <div class="home-league-grid" id="homeLeagueGrid">
             <article class="card home-league-card active" data-home-league="MLB"><div class="home-league-top"><span class="home-league-code">MLB</span><span class="home-league-state">完整運作</span></div><h3>美國職棒</h3><p>完整五大引擎、盤口、Pro 推薦與自動結算。</p><span class="home-league-count" id="homeLeagueMLBCount">今日資料載入中</span></article>
-            <article class="card home-league-card active" data-home-league="NPB"><div class="home-league-top"><span class="home-league-code">NPB</span><span class="home-league-state">完整盤口</span></div><h3>日本職棒</h3><p>官方賽程、比分、預告先發、戰績、AI 三大玩法、串關與結算。</p><span class="home-league-count" id="homeLeagueNPBCount">今日資料載入中</span></article>
+            <article class="card home-league-card active" data-home-league="NPB"><div class="home-league-top"><span class="home-league-code">NPB</span><span class="home-league-state">完整運作</span></div><h3>日本職棒</h3><p>完整三大玩法、盤口、Pro 推薦與自動結算。</p><span class="home-league-count" id="homeLeagueNPBCount">今日資料載入中</span></article>
             <article class="card home-league-card planned" data-home-league="KBO"><div class="home-league-top"><span class="home-league-code">KBO</span><span class="home-league-state">下一階段</span></div><h3>韓國職棒</h3><p>將加入賽程、即時比分、和局規則與獨立資料轉換器。</p><span class="home-league-count" id="homeLeagueKBOCount">資料模組準備中</span></article>
             <article class="card home-league-card planned" data-home-league="CPBL"><div class="home-league-top"><span class="home-league-code">CPBL</span><span class="home-league-state">下一階段</span></div><h3>中華職棒</h3><p>將加入官方賽程、即時比分、保留比賽與台灣在地分析。</p><span class="home-league-count" id="homeLeagueCPBLCount">資料模組準備中</span></article>
           </div>
@@ -1757,6 +1757,53 @@
       "Tohoku Rakuten Golden Eagles":"東北樂天金鷲","Saitama Seibu Lions":"埼玉西武獅","Chiba Lotte Marines":"千葉羅德海洋",
       "Central League All-Stars":"中央聯盟明星隊","Pacific League All-Stars":"太平洋聯盟明星隊"
     };
+    const teamZhByAbbr={
+      ARI:"亞利桑那響尾蛇",ATL:"亞特蘭大勇士",BAL:"巴爾的摩金鶯",BOS:"波士頓紅襪",CHC:"芝加哥小熊",CWS:"芝加哥白襪",
+      CIN:"辛辛那提紅人",CLE:"克里夫蘭守護者",COL:"科羅拉多洛磯",DET:"底特律老虎",HOU:"休士頓太空人",KC:"堪薩斯市皇家",KCR:"堪薩斯市皇家",
+      LAA:"洛杉磯天使",LAD:"洛杉磯道奇",MIA:"邁阿密馬林魚",MIL:"密爾瓦基釀酒人",MIN:"明尼蘇達雙城",NYM:"紐約大都會",NYY:"紐約洋基",
+      ATH:"運動家",OAK:"奧克蘭運動家",PHI:"費城費城人",PIT:"匹茲堡海盜",SD:"聖地牙哥教士",SDP:"聖地牙哥教士",SF:"舊金山巨人",SFG:"舊金山巨人",
+      SEA:"西雅圖水手",STL:"聖路易紅雀",TB:"坦帕灣光芒",TBR:"坦帕灣光芒",TEX:"德州遊騎兵",TOR:"多倫多藍鳥",WSH:"華盛頓國民",WSN:"華盛頓國民",
+      AL:"美聯明星隊",NL:"國聯明星隊",S:"東京養樂多燕子",G:"讀賣巨人",DB:"橫濱DeNA海灣之星",D:"中日龍",T:"阪神虎",C:"廣島東洋鯉魚",
+      H:"福岡軟銀鷹",F:"北海道日本火腿鬥士",B:"歐力士猛牛",E:"東北樂天金鷲",L:"埼玉西武獅",M:"千葉羅德海洋",CL:"中央聯盟明星隊",PL:"太平洋聯盟明星隊"
+    };
+    function displayTeamAny(value){
+      const raw=String(value||"").trim();
+      if(!raw)return raw;
+      return teamZhByAbbr[raw.toUpperCase()]||teamZh[raw]||npbTeamZh[raw]||raw;
+    }
+    function localizeMatchup(value){
+      const raw=String(value||"").trim();
+      if(!raw)return raw;
+      return raw.split(/\s*\/\s*/).map(segment=>{
+        const match=segment.match(/^\s*(.+?)\s+(@|VS|vs|v\.?)\s+(.+?)\s*$/);
+        if(!match)return segment;
+        const separator=match[2].toLowerCase().startsWith("v")?"VS":"@";
+        return `${displayTeamAny(match[1])} ${separator} ${displayTeamAny(match[3])}`;
+      }).join(" / ");
+    }
+    function localizePickLabel(value,selection=null){
+      const raw=String(value||selection?.pick?.label||selection?.label||"").trim();
+      const pick=selection?.pick||selection||{};
+      const market=String(pick.market||selection?.market||"").toLowerCase();
+      const teamValue=pick.team_name_zh||pick.name_zh||pick.team_name||pick.team||pick.abbr;
+      const teamName=displayTeamAny(teamValue);
+      if(teamName&&market==="moneyline")return `${teamName} ${raw.includes("觀察")?"獨贏觀察":"獨贏"}`;
+      if(teamName&&market==="run_line"){
+        const numeric=Number(pick.line??selection?.line);
+        const rawLine=raw.match(/([+-]\d+(?:\.\d+)?)\s*$/)?.[1];
+        const line=rawLine||(Number.isFinite(numeric)?`${numeric>0?"+":""}${numeric}`:"");
+        return `${teamName}${line?` ${line}`:""}`;
+      }
+      return raw.split(/\s*＋\s*/).map(part=>{
+        const match=part.trim().match(/^([A-Za-z]{1,4})(?=\s|[+-]|$)(.*)$/);
+        if(!match)return part.trim();
+        const localized=teamZhByAbbr[match[1].toUpperCase()];
+        if(!localized)return part.trim();
+        const suffix=match[2].trim();
+        return `${localized}${suffix?` ${suffix}`:""}`;
+      }).join(" ＋ ");
+    }
+
     const leagueUi={
       MLB:{kicker:"TODAY'S MLB",description:"依台灣日期載入 MLB 全部賽事，點擊任一場查看比賽資料。",connection:"MLB 資料連線"},
       NPB:{kicker:"TODAY'S NPB",description:"日本職棒三大玩法：整合官方賽程、比分、預告先發、球隊戰績、畢氏勝率、打線、牛棚與真實盤口。",connection:"NPB 官方資料＋真實盤口"}
@@ -2667,7 +2714,7 @@
             :`終場 ${result.away_score}–${result.home_score}`;
           const league=isParlay?[...new Set(legs.map(leg=>leg.league||"MLB"))].join("＋"):(selection.league||"MLB");
           const sourceLabel="Pro 精選";
-          return [{key,name,pickLabel,matchup,price,probability,score,status:result.status||"pending",sourceLabel,league}];
+          return [{key,name,pickLabel:localizePickLabel(pickLabel,selection),matchup:localizeMatchup(matchup),price,probability,score,status:result.status||"pending",sourceLabel,league}];
         });
       });
     }
@@ -2728,7 +2775,7 @@
       const homeList=document.getElementById("homePickList");
       homeList.innerHTML=rows.length?rows.slice(0,4).map(row=>`
         <div class="pick-row">
-          <div class="pick-main"><b>⚾ ${escapeHtml(row.matchup)} · ${escapeHtml(row.pick_label)}</b><small>${recordDate(row.recommendation_date)} · MLB · ${recordScore(row)}</small></div>
+          <div class="pick-main"><b>⚾ ${escapeHtml(localizeMatchup(row.matchup))} · ${escapeHtml(localizePickLabel(row.pick_label))}</b><small>${recordDate(row.recommendation_date)} · MLB · ${recordScore(row)}</small></div>
           <span class="result ${resultClass(row.status)}">${resultLabel(row.status)}</span>
         </div>`).join(""):`<div class="empty"><b>${state.recordsLoading?"免費精選紀錄載入中":"尚無免費精選紀錄"}</b>${state.recordsLoading?"正在連接 DiamondMind 紀錄資料庫。":"每日免費精選正式發布後會自動保留在這裡。"}</div>`;
 
@@ -2736,7 +2783,7 @@
       document.getElementById("recordsList").innerHTML=filtered.length?filtered.map(row=>`
         <div class="record-row">
           <div class="record-date">${recordDate(row.recommendation_date)}<br>MLB</div>
-          <div class="record-pick"><b>${escapeHtml(row.matchup)}</b><small>${escapeHtml(row.pick_label)} · 信心 ${Number(row.confidence||0).toFixed(1)}%</small></div>
+          <div class="record-pick"><b>${escapeHtml(localizeMatchup(row.matchup))}</b><small>${escapeHtml(localizePickLabel(row.pick_label))} · 信心 ${Number(row.confidence||0).toFixed(1)}%</small></div>
           <div class="record-score">${recordScore(row)}</div>
           <span class="result ${resultClass(row.status)}">${resultLabel(row.status)}</span>
         </div>`).join(""):`<div class="empty"><b>${state.recordsError?"紀錄服務暫時無法連線":state.recordsLoading?"免費精選紀錄載入中":rows.length?"沒有符合條件的紀錄":"尚無免費精選紀錄"}</b>${state.recordsError?"請稍後重新進入紀錄頁。":state.recordsLoading?"正在讀取 Supabase 真實資料。":"尚未發布的日期不會建立空白或展示紀錄。"}</div>`;
@@ -3255,10 +3302,10 @@
         no.textContent=`${index+1}`;
         const pick=document.createElement("strong");
         pick.className="pro-pick";
-        pick.textContent=selection.pick?.label||"今日正式推薦";
+        pick.textContent=localizePickLabel(selection.pick?.label||"今日正式推薦",selection);
         const matchup=document.createElement("p");
         matchup.className="pro-matchup";
-        matchup.textContent=`${selection.league?`[${selection.league}] `:""}${selection.matchup||"棒球賽事"}${selection.time_taiwan?` · ${selection.time_taiwan}`:""}`;
+        matchup.textContent=`${selection.league?`[${selection.league}] `:""}${localizeMatchup(selection.matchup||"棒球賽事")}${selection.time_taiwan?` · ${selection.time_taiwan}`:""}`;
         const metrics=document.createElement("div");
         metrics.className="pro-metrics";
         [
@@ -3314,9 +3361,9 @@
         (parlay.legs||[]).forEach((leg,legIndex)=>{
           const row=document.createElement("li");
           const matchup=document.createElement("span");
-          matchup.textContent=`${legIndex+1}. ${leg.matchup||"MLB"}`;
+          matchup.textContent=`${legIndex+1}. ${localizeMatchup(leg.matchup||"MLB")}`;
           const pick=document.createElement("b");
-          pick.textContent=leg.pick?.label||"—";
+          pick.textContent=localizePickLabel(leg.pick?.label||"—",leg);
           row.append(matchup,pick);
           legs.append(row);
         });
@@ -3351,10 +3398,10 @@
         badge.textContent=`${label}觀察 · 不計正式戰績`;
         const pick=document.createElement("strong");
         pick.className="pro-pick";
-        pick.textContent=selection.pick?.label||"觀察項目";
+        pick.textContent=localizePickLabel(selection.pick?.label||"觀察項目",selection);
         const matchup=document.createElement("p");
         matchup.className="pro-matchup";
-        matchup.textContent=`${selection.league?`[${selection.league}] `:""}${selection.matchup||"棒球賽事"}${selection.time_taiwan?` · ${selection.time_taiwan}`:""}`;
+        matchup.textContent=`${selection.league?`[${selection.league}] `:""}${localizeMatchup(selection.matchup||"棒球賽事")}${selection.time_taiwan?` · ${selection.time_taiwan}`:""}`;
         const metrics=document.createElement("div");
         metrics.className="pro-metrics";
         [
@@ -3423,8 +3470,8 @@
       const away=item?.away_score,home=item?.home_score;return away===null||away===undefined||home===null||home===undefined?"":` · ${away}:${home}`;
     }
     function settlementRow(item,label=""){
-      const status=String(item?.status||"pending");const title=item?.pick_label||item?.label||item?.matchup||label||"推薦項目";
-      const copy=[label,item?.matchup,item?.detailed_status,item?.result_note].filter(Boolean).join(" · ");
+      const status=String(item?.status||"pending");const title=localizePickLabel(item?.pick_label||item?.label)||localizeMatchup(item?.matchup)||label||"推薦項目";
+      const copy=[label,localizeMatchup(item?.matchup),item?.detailed_status,item?.result_note].filter(Boolean).join(" · ");
       return `<article class="settlement-row"><div class="settlement-row-main"><b>${escapeHtml(title)}${escapeHtml(settlementScore(item))}</b><span>${escapeHtml(copy||"等待官方賽果")}</span></div><span class="settlement-pill ${escapeHtml(status)}">${escapeHtml(settlementStatusLabel(status))}</span></article>`;
     }
     function renderSettlementDashboard(payload){
@@ -3786,7 +3833,7 @@
       status.textContent=payload.message||"候選場次已載入。";
       if(payload.locked){
         const selection=payload.selection||{};
-        list.innerHTML=`<div class="founder-lock"><b>今日推薦已鎖定</b><br>${escapeHtml(selection.matchup||"")} ${escapeHtml(selection.pick?.label||"")}</div>`;
+        list.innerHTML=`<div class="founder-lock"><b>今日推薦已鎖定</b><br>${escapeHtml(localizeMatchup(selection.matchup||""))} ${escapeHtml(localizePickLabel(selection.pick?.label||"",selection))}</div>`;
         return;
       }
       const items=payload.items||[];
@@ -3801,12 +3848,12 @@
         ].join("");
         const buttonText=item.can_publish?(item.requires_confirmation?"確認後指定":"指定為每日推薦"):"目前不可發布";
         return `<article class="founder-candidate ${item.can_publish?"":"blocked"}">
-          <div class="founder-candidate-top"><b>${escapeHtml(item.matchup||"MLB")}</b><span>${escapeHtml(item.time_taiwan||"時間待定")}</span></div>
+          <div class="founder-candidate-top"><b>${escapeHtml(localizeMatchup(item.matchup||"MLB"))}</b><span>${escapeHtml(item.time_taiwan||"時間待定")}</span></div>
           <div class="founder-tags">
             <span class="${item.event?.special?"special":""}">${escapeHtml(item.event?.label||"例行賽")}</span>
             <span>信心 ${Number(item.confidence||0).toFixed(1)}%</span>
             <span>資料完整度 ${Math.round(Number(item.data_quality||0)*100)}%</span>
-            <span>${escapeHtml(item.pick?.label||"尚無推薦方向")}</span>
+            <span>${escapeHtml(localizePickLabel(item.pick?.label||"尚無推薦方向",item))}</span>
             <span>${escapeHtml(item.timing?.label||"賽前狀態待確認")}</span>
             <span>名單驗證 ${item.roster_validation?.status==="valid"?"通過":item.roster_validation?.status==="mismatch"?"不一致":"待確認"}</span>
             <span>打線驗證 ${Math.round(Number(item.lineup_validation_rate||0)*100)}%</span>
@@ -3853,7 +3900,7 @@
       const input=document.getElementById("founderPredictionDate");
       const date=input?.value||taiwanToday();
       const warning=(item.warnings||[]).join("\n");
-      const confirmation=`確定將 ${item.matchup} · ${item.pick?.label||"此場"} 設為 ${date} 的正式每日推薦嗎？\n\n發布後永久鎖定，不能更換。${warning?`\n\n${warning}`:""}`;
+      const confirmation=`確定將 ${localizeMatchup(item.matchup)} · ${localizePickLabel(item.pick?.label||"此場",item)} 設為 ${date} 的正式每日推薦嗎？\n\n發布後永久鎖定，不能更換。${warning?`\n\n${warning}`:""}`;
       if(!window.confirm(confirmation))return;
       const status=document.getElementById("founderCandidateStatus");
       status.textContent="正在發布並寫入不可更換的公開紀錄…";
@@ -3898,8 +3945,8 @@
 
     function founderMarketOptionCopy(item,isParlay,isWatchlist=false){
       if(isParlay){
-        const picks=(item.legs||[]).map(leg=>leg.pick?.label||"—").join(" ＋ ");
-        const matchups=(item.legs||[]).map(leg=>leg.matchup||"MLB").join(" / ");
+        const picks=(item.legs||[]).map(leg=>localizePickLabel(leg.pick?.label||"—",leg)).join(" ＋ ");
+        const matchups=(item.legs||[]).map(leg=>localizeMatchup(leg.matchup||"MLB")).join(" / ");
         return {
           title:picks||item.label||"串關候選",
           meta:`${matchups}${item.combined_model_probability!=null?` · 組合機率 ${item.combined_model_probability}%`:""}${item.combined_american_odds!=null?` · ${formatAmericanOdds(item.combined_american_odds)}`:""}`
@@ -3907,8 +3954,8 @@
       }
       const reasons=asSelectionArray(item.watchlist_reasons);
       return {
-        title:item.pick?.label||(isWatchlist?"觀察項目":"正式推薦"),
-        meta:`${item.league?`[${item.league}] `:""}${item.matchup||"棒球賽事"}${item.model_probability!=null?` · 模型 ${item.model_probability}%`:""}${item.edge!=null?` · 優勢 ${Number(item.edge)>0?"+":""}${item.edge}%`:""}${item.price!=null?` · ${formatAmericanOdds(item.price)}`:""}${item.market_basis==="model_only"?" · 模型獨贏":""}${isWatchlist&&reasons.length?` · ${reasons.join("；")}`:""}`
+        title:localizePickLabel(item.pick?.label||(isWatchlist?"觀察項目":"正式推薦"),item),
+        meta:`${item.league?`[${item.league}] `:""}${localizeMatchup(item.matchup||"棒球賽事")}${item.model_probability!=null?` · 模型 ${item.model_probability}%`:""}${item.edge!=null?` · 優勢 ${Number(item.edge)>0?"+":""}${item.edge}%`:""}${item.price!=null?` · ${formatAmericanOdds(item.price)}`:""}${item.market_basis==="model_only"?" · 模型獨贏":""}${isWatchlist&&reasons.length?` · ${reasons.join("；")}`:""}`
       };
     }
 
@@ -4338,9 +4385,9 @@
       document.getElementById("predictionPreview").hidden=false;
       document.getElementById("predictionConfidence").textContent=`${prediction.confidence}%`;
       document.querySelector(".confidence-ring").style.background=`conic-gradient(var(--green) 0 ${prediction.confidence}%,rgba(255,255,255,.05) ${prediction.confidence}%)`;
-      document.getElementById("predictionMatchup").textContent=prediction.matchup;
+      document.getElementById("predictionMatchup").textContent=localizeMatchup(prediction.matchup);
       document.getElementById("predictionTime").textContent=prediction.time||"";
-      document.getElementById("predictionPick").textContent=prediction.pick;
+      document.getElementById("predictionPick").textContent=localizePickLabel(prediction.pick);
       const meta=document.getElementById("predictionMarketMeta");
       meta.replaceChildren();
       [
