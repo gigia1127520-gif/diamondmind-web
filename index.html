@@ -466,6 +466,11 @@
     .matchup-preview h2{font-size:30px;margin:0 0 6px}.matchup-preview>span{color:var(--muted)}
     .pick-highlight{margin:20px 0;padding:13px 14px;border:1px solid var(--line-strong);border-radius:14px;background:rgba(55,244,164,.055)}
     .pick-highlight small{display:block;color:var(--muted);margin-bottom:3px}.pick-highlight b{color:var(--green);font-size:20px}
+    .prediction-result{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:4px;padding:14px 16px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.025)}
+    .prediction-result>div{min-width:0}.prediction-result small{display:block;margin-bottom:4px;color:var(--muted);font-size:10px;letter-spacing:1.2px}.prediction-result b{display:block;font-size:17px}.prediction-result-score{flex:0 0 auto;font-size:15px;font-weight:900}
+    .prediction-result.win{border-color:rgba(55,244,164,.44);background:rgba(55,244,164,.075)}.prediction-result.win b,.prediction-result.win .prediction-result-score{color:var(--green)}
+    .prediction-result.loss{border-color:rgba(255,115,130,.34);background:rgba(255,115,130,.055)}.prediction-result.loss b,.prediction-result.loss .prediction-result-score{color:var(--red)}
+    .prediction-result.push,.prediction-result.void{border-color:rgba(255,215,106,.28);background:rgba(255,215,106,.045)}.prediction-result.push b,.prediction-result.push .prediction-result-score,.prediction-result.void b,.prediction-result.void .prediction-result-score{color:var(--gold)}
     .factor-list{display:grid;gap:12px}.factor-head{display:flex;justify-content:space-between;color:#b9c8ce;font-size:12px}.factor-bar{height:6px;margin-top:7px;border-radius:999px;background:#101e25;overflow:hidden}.factor-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--green-2),var(--green))}
     .prediction-side{display:grid;gap:16px}
     .side-card{padding:21px}.side-card h3{margin:0 0 15px}.check-list{display:grid;gap:13px}.check-item{display:grid;grid-template-columns:32px 1fr;gap:11px;align-items:start}.check-icon{width:32px;height:32px;display:grid;place-items:center;border-radius:10px;color:var(--green);background:rgba(55,244,164,.07)}.check-item b{display:block;font-size:13px}.check-item p{margin:3px 0 0;color:var(--muted);font-size:11px;line-height:1.45}
@@ -1006,6 +1011,10 @@
                   <span id="predictionTime">—</span>
                   <div class="pick-highlight"><small>AI 獨贏推薦</small><b id="predictionPick">—</b></div>
                   <div class="prediction-market-meta" id="predictionMarketMeta"></div>
+                </div>
+                <div class="prediction-result" id="predictionResult" hidden>
+                  <div><small>FINAL RESULT</small><b id="predictionResultLabel">—</b></div>
+                  <span class="prediction-result-score" id="predictionResultScore">—</span>
                 </div>
               </div>
             </article>
@@ -2718,8 +2727,7 @@
         const resultValue=bundle.results?.[key]??bundle.results?.[key.replace(/s$/,'')];
         const results=asSelectionArray(resultValue);
         return selections.flatMap((selection,index)=>{
-          const result=results.find(item=>item?.candidate_id&&item.candidate_id===selection.candidate_id)||results[index];
-          if(!result)return [];
+          const result=results.find(item=>item?.candidate_id&&item.candidate_id===selection.candidate_id)||results[index]||{status:"pending"};
           const isParlay=key==="two_leg"||key==="three_leg";
           const legs=Array.isArray(selection.legs)?selection.legs:[];
           const pickLabel=isParlay
@@ -2731,7 +2739,7 @@
           const price=isParlay?selection.combined_american_odds:selection.price;
           const probability=isParlay?selection.combined_model_probability:selection.model_probability;
           const score=result.away_score==null||result.home_score==null
-            ?`${result.legs?.length||legs.length} 關已結算`
+            ?(result.status==="pending"?"等待賽果":isParlay?`${result.legs?.length||legs.length} 關已結算`:(result.result_note||"已結算"))
             :`終場 ${result.away_score}–${result.home_score}`;
           const league=isParlay?[...new Set(legs.map(leg=>leg.league||"MLB"))].join("＋"):(selection.league||"MLB");
           const sourceLabel="Pro 精選";
@@ -2761,8 +2769,10 @@
       count.textContent=`${bundles.length} 期`;
       container.innerHTML=bundles.length?bundles.map(bundle=>{
         const rows=marketHistoryRows(bundle);
+        const completed=rows.filter(row=>row.status!=="pending").length;
+        const packageStatus=rows.length&&completed===rows.length?"全部已結算":`已結算 ${completed}/${rows.length}`;
         return `<section class="market-package">
-          <div class="market-package-head"><b>${recordDate(bundle.date)} Pro 完整玩法</b><span>全部已結算</span></div>
+          <div class="market-package-head"><b>${recordDate(bundle.date)} Pro 完整玩法</b><span>${packageStatus}</span></div>
           ${rows.map(row=>`<div class="market-result-row">
             <div class="market-result-name">${row.name}</div>
             <div class="market-result-pick"><b>${escapeHtml(row.pickLabel)}</b><small>${escapeHtml(row.sourceLabel)} · ${escapeHtml(row.league)} · ${escapeHtml(row.matchup)}${row.probability!=null?` · 模型 ${Number(row.probability).toFixed(1)}%`:""}${row.price!=null?` · 賠率 ${row.price>0?"+":""}${row.price}`:""}</small></div>
@@ -2770,7 +2780,7 @@
             <span class="result ${resultClass(row.status)}">${resultLabel(row.status)}</span>
           </div>`).join("")}
         </section>`;
-      }).join(""):`<div class="empty"><b>${state.recordsLoading?"Pro 推薦紀錄載入中":"尚無已結算 Pro 推薦"}</b>${state.recordsLoading?"正在讀取 Pro 完整玩法結算資料。":"第一期 Pro 推薦完成結算後，會保留在會員紀錄中。"}</div>`;
+      }).join(""):`<div class="empty"><b>${state.recordsLoading?"Pro 推薦紀錄載入中":"尚無 Pro 正式推薦紀錄"}</b>${state.recordsLoading?"正在讀取全部正式玩法與即時結算狀態。":"正式發布後會立即建立紀錄，不必等全部賽事結束。"}</div>`;
     }
     function setRecordsApiStatus(text,isError=false){
       ["homeRecordsApiStatus","recordsApiStatus"].forEach(id=>{
@@ -4290,6 +4300,8 @@
       const apiStatus=document.getElementById("predictionApiStatus");
       empty.hidden=false;
       preview.hidden=true;
+      const resultCard=document.getElementById("predictionResult");
+      if(resultCard)resultCard.hidden=true;
       apiStatus.textContent="模型 API 連線中";
       apiStatus.classList.remove("demo-pill");
       title.textContent="AI 正在比較今日全部賽事";
@@ -4319,7 +4331,8 @@
             edge:selection.edge,
             impliedProbability:selection.implied_probability,
             eventLabel:selection.publication?.event_label||selection.game?.event_label,
-            founderSelected:selection.publication?.mode==="founder_selected"
+            founderSelected:selection.publication?.mode==="founder_selected",
+            result:selection.result||null
           });
           loadRecords(true);
         }else{
@@ -4338,7 +4351,7 @@
           }else renderLockedProPredictions();
           if(fallback.published&&fallback.selection){
             const selection=fallback.selection;
-            window.setDiamondMindPrediction({confidence:selection.confidence,matchup:selection.matchup,time:selection.time_taiwan,pick:selection.pick?.label||"—",factors:selection.factors||[],analysisGroups:selection.analysis_groups||{},engine:selection.engine||{},eventLabel:selection.publication?.event_label||selection.game?.event_label,founderSelected:selection.publication?.mode==="founder_selected"});
+            window.setDiamondMindPrediction({confidence:selection.confidence,matchup:selection.matchup,time:selection.time_taiwan,pick:selection.pick?.label||"—",factors:selection.factors||[],analysisGroups:selection.analysis_groups||{},engine:selection.engine||{},eventLabel:selection.publication?.event_label||selection.game?.event_label,founderSelected:selection.publication?.mode==="founder_selected",result:selection.result||null});
           }else{
             title.textContent="今日暫不發布 AI 精選";
             text.textContent=fallback.message||"目前沒有場次達到最低信心門檻。";
@@ -4478,6 +4491,28 @@
       target.innerHTML=`<div class="engine-breakdown-head"><h3>五大完整分析引擎</h3><span>先發投手 · 打線火力 · 牛棚狀態 · 環境條件 · Statcast 進階數據</span></div><div class="engine-module-grid">${cards}</div>`;
     }
 
+    function renderPredictionResult(result){
+      const card=document.getElementById("predictionResult");
+      const label=document.getElementById("predictionResultLabel");
+      const score=document.getElementById("predictionResultScore");
+      if(!card||!label||!score)return;
+      const status=String(result?.status||"pending");
+      if(status==="pending"){
+        card.hidden=true;
+        card.className="prediction-result";
+        return;
+      }
+      const labels={won:"今日免費精選命中",lost:"今日免費精選未中",push:"今日免費精選走水",void:"賽事取消／推薦作廢"};
+      label.textContent=labels[status]||"賽事已結算";
+      if(result?.away_score!=null&&result?.home_score!=null){
+        score.textContent=`終場 ${result.away_score}–${result.home_score}`;
+      }else{
+        score.textContent=result?.result_note||"已結算";
+      }
+      card.className=`prediction-result ${resultClass(status)}`;
+      card.hidden=false;
+    }
+
     window.setDiamondMindPrediction=function(prediction){
       if(!prediction)return;
       document.getElementById("predictionEmpty").hidden=true;
@@ -4503,6 +4538,7 @@
       if(freeFactors)freeFactors.replaceChildren();
       const freeBreakdown=document.getElementById("predictionEngineBreakdown");
       if(freeBreakdown)freeBreakdown.replaceChildren();
+      renderPredictionResult(prediction.result||null);
     };
 
     const authCallback=consumeAuthCallback();
