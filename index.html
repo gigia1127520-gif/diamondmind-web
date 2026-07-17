@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind V18.7.1 record-date and founder-publication fix -->
+  <!-- DiamondMind V18.9.1 formal member performance access -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#03080c">
@@ -525,15 +525,19 @@
     .record-pro-gate{display:grid;place-items:center;min-height:270px;padding:34px 22px;text-align:center;background:radial-gradient(circle at 50% 0,rgba(255,215,106,.1),transparent 44%),linear-gradient(145deg,rgba(11,27,34,.94),rgba(5,14,19,.96))}
     .record-pro-gate-icon{width:66px;height:66px;display:grid;place-items:center;margin:0 auto 16px;border:1px solid rgba(255,215,106,.32);border-radius:20px;color:var(--gold);font-size:27px;background:rgba(255,215,106,.055);box-shadow:0 0 32px rgba(255,215,106,.08)}
     .record-pro-gate h3{margin:0 0 9px;font-size:23px}.record-pro-gate p{max-width:560px;margin:0 auto;color:var(--muted);font-size:12px;line-height:1.65}.record-pro-gate .btn{margin-top:20px}
-    .pro-record-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:18px;border-bottom:1px solid var(--line)}
+    .pro-record-summary-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;padding:18px;border-bottom:1px solid var(--line)}.pro-record-summary-grid.member-view{grid-template-columns:repeat(4,minmax(0,1fr))}
     .pro-record-summary-card{padding:16px;border:1px solid rgba(255,255,255,.06);border-radius:16px;background:rgba(255,255,255,.02)}
-    .pro-record-summary-card small{display:block;color:var(--muted);font-size:10px}.pro-record-summary-card b{display:block;margin-top:7px;font-size:25px}.pro-record-summary-card b.green{color:var(--green)}
+    .pro-record-summary-card small{display:block;color:var(--muted);font-size:10px}.pro-record-summary-card b{display:block;margin-top:7px;font-size:25px}.pro-record-summary-card b.green{color:var(--green)}.pro-record-summary-card b.red{color:var(--red)}
     .pro-market-visual-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:18px;border-bottom:1px solid var(--line)}
     .pro-market-visual{position:relative;overflow:hidden;padding:17px;border:1px solid rgba(255,255,255,.065);border-radius:18px;background:radial-gradient(circle at 100% 0,rgba(55,244,164,.07),transparent 38%),rgba(255,255,255,.018)}
     .pro-market-visual-top{display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;align-items:center}.pro-market-ring{width:92px;aspect-ratio:1;display:grid;place-items:center;border-radius:50%;position:relative}.pro-market-ring::after{content:"";position:absolute;inset:8px;border:1px solid rgba(255,255,255,.06);border-radius:50%;background:#08151c}.pro-market-ring div{position:relative;z-index:1;text-align:center}.pro-market-ring b{display:block;color:var(--green);font-size:22px;line-height:1}.pro-market-ring span{display:block;margin-top:4px;color:var(--muted);font-size:8px}
     .pro-market-visual h4{margin:6px 0 4px;font-size:18px}.pro-market-visual p{margin:0;color:var(--muted);font-size:10px;line-height:1.5}.pro-market-visual .market-tag{font-size:8px}
     .pro-market-legend{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:13px}.pro-market-legend span{padding:7px 5px;border:1px solid rgba(255,255,255,.05);border-radius:10px;color:var(--muted);font-size:8px;text-align:center;background:rgba(255,255,255,.018)}.pro-market-legend b{display:block;margin-bottom:2px;color:#d9e5ea;font-size:12px}.pro-market-legend .win b{color:var(--green)}.pro-market-legend .loss b{color:var(--red)}
-    .pro-record-list-toolbar{border-bottom:1px solid var(--line)}.pro-record-row{display:grid;grid-template-columns:78px 72px minmax(0,1fr) 110px 58px;align-items:center;gap:12px;padding:15px 18px;border-bottom:1px solid rgba(255,255,255,.05)}.pro-record-row:last-child{border-bottom:0}.pro-record-market{color:var(--gold);font-size:10px;font-weight:900;letter-spacing:.5px}.pro-record-date{color:var(--muted);font-size:11px;line-height:1.45}.pro-record-pick{min-width:0}.pro-record-pick b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}.pro-record-pick small{display:block;margin-top:5px;color:var(--muted);font-size:10px;line-height:1.45}.pro-record-score{text-align:right;color:#bdcbd1;font-size:11px}
+    .pro-performance-layout{display:grid;grid-template-columns:.86fr 1.14fr;gap:12px;padding:18px;border-bottom:1px solid var(--line)}
+    .pro-performance-panel{padding:17px;border:1px solid rgba(255,255,255,.065);border-radius:18px;background:rgba(255,255,255,.018)}.pro-performance-panel h4{margin:0 0 5px;font-size:17px}.pro-performance-panel>p{margin:0 0 13px;color:var(--muted);font-size:10px;line-height:1.5}
+    .pro-league-performance{display:grid;gap:8px}.pro-league-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:11px;border:1px solid rgba(255,255,255,.05);border-radius:12px}.pro-league-row b{font-size:12px}.pro-league-row span{color:var(--muted);font-size:9px}.pro-league-row strong{font-size:12px}.profit-positive{color:var(--green)!important}.profit-negative{color:var(--red)!important}.profit-neutral{color:var(--muted)!important}
+    .pro-profit-chart-wrap{min-height:180px}.pro-profit-chart-meta{display:flex;justify-content:space-between;gap:12px;margin-bottom:8px}.pro-profit-chart-meta b{font-size:18px}.pro-profit-chart-meta span{color:var(--muted);font-size:9px}.pro-profit-svg{display:block;width:100%;height:170px;overflow:visible}.pro-profit-axis{stroke:rgba(255,255,255,.09);stroke-width:1}.pro-profit-line{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 5px rgba(55,244,164,.25))}.pro-profit-area{fill:rgba(55,244,164,.07)}.pro-profit-dot{fill:#071219;stroke:var(--green);stroke-width:2}.pro-profit-label{fill:var(--muted);font-size:9px}
+    .pro-record-list-toolbar{border-bottom:1px solid var(--line)}.pro-record-row{display:grid;grid-template-columns:78px 72px minmax(0,1fr) 100px 74px 58px;align-items:center;gap:12px;padding:15px 18px;border-bottom:1px solid rgba(255,255,255,.05)}.pro-record-row.member-view{grid-template-columns:78px 72px minmax(0,1fr) 100px 58px}.pro-record-row:last-child{border-bottom:0}.pro-record-market{color:var(--gold);font-size:10px;font-weight:900;letter-spacing:.5px}.pro-record-date{color:var(--muted);font-size:11px;line-height:1.45}.pro-record-pick{min-width:0}.pro-record-pick b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}.pro-record-pick small{display:block;margin-top:5px;color:var(--muted);font-size:10px;line-height:1.45}.pro-record-score{text-align:right;color:#bdcbd1;font-size:11px}.pro-record-profit{text-align:right;font-size:11px;font-weight:900}
 
     .more-hero{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;padding:25px;margin-bottom:18px;background:radial-gradient(circle at 84% 38%,rgba(55,244,164,.14),transparent 28%),linear-gradient(140deg,rgba(12,29,37,.96),rgba(6,16,22,.92))}
     .more-hero h2{margin:0 0 8px;font-size:30px}.more-hero p{max-width:650px;margin:0;color:var(--muted);line-height:1.6}.more-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
@@ -725,7 +729,7 @@
       .record-top-grid{grid-template-columns:repeat(2,1fr)}.record-row{grid-template-columns:76px minmax(0,1fr) 52px;padding:14px}.record-score{display:none}
       .records-toolbar{align-items:flex-start;flex-direction:column}
       .market-package-head{align-items:flex-start}.market-result-row{grid-template-columns:68px minmax(0,1fr) 48px;padding:13px 14px}.market-result-score{display:none}
-      .pro-record-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:14px}.pro-market-visual-grid{grid-template-columns:1fr;padding:14px}.pro-record-row{grid-template-columns:62px 48px minmax(0,1fr) 48px;padding:13px 14px;gap:8px}.pro-record-score{display:none}.pro-record-pick b{white-space:normal}.pro-market-visual-top{grid-template-columns:82px minmax(0,1fr)}.pro-market-ring{width:82px}
+      .pro-record-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:14px}.pro-market-visual-grid{grid-template-columns:1fr;padding:14px}.pro-performance-layout{grid-template-columns:1fr;padding:14px}.pro-record-row{grid-template-columns:62px 48px minmax(0,1fr) 58px 48px;padding:13px 14px;gap:8px}.pro-record-row.member-view{grid-template-columns:62px 48px minmax(0,1fr) 48px}.pro-record-score{display:none}.pro-record-pick b{white-space:normal}.pro-market-visual-top{grid-template-columns:82px minmax(0,1fr)}.pro-market-ring{width:82px}.pro-league-row{grid-template-columns:minmax(0,1fr) auto}.pro-league-row span{display:none}
       .more-hero{grid-template-columns:1fr}.more-actions{justify-content:flex-start}
       .footer{padding-top:46px}.footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:31px 24px}.footer-brand{grid-column:1/-1}.footer-column h3{font-size:12px}.footer-link{font-size:11px}.footer-divider{margin:32px 0 22px}.footer-bottom{align-items:flex-start;flex-direction:column}.footer-bottom-links{justify-content:flex-start}.footer-disclaimer{padding:17px 15px;text-align:left}
       .operations-grid{grid-template-columns:1fr 1fr}.operations-layout{grid-template-columns:1fr}.operations-hero{align-items:flex-start;flex-direction:column}
@@ -737,7 +741,7 @@
     .announcement-modal{width:min(620px,calc(100% - 24px));background:radial-gradient(circle at 100% 0,rgba(55,244,164,.16),transparent 38%),linear-gradient(155deg,#0b1d25,#061117 78%)}.announcement-modal.important{background:radial-gradient(circle at 100% 0,rgba(255,215,106,.14),transparent 40%),linear-gradient(155deg,#161b20,#071117 78%)}.announcement-modal.emergency{border-color:rgba(255,115,130,.5);background:radial-gradient(circle at 100% 0,rgba(255,115,130,.14),transparent 40%),linear-gradient(155deg,#1b1218,#071117 78%)}.announcement-modal-badge{display:inline-flex;padding:7px 10px;border:1px solid rgba(55,244,164,.3);border-radius:999px;color:var(--green);font-size:9px;font-weight:900;letter-spacing:1px}.announcement-modal.important .announcement-modal-badge{color:var(--gold);border-color:rgba(255,215,106,.35)}.announcement-modal.emergency .announcement-modal-badge{color:var(--red);border-color:rgba(255,115,130,.4)}.announcement-modal h2{margin:12px 0 0;font-size:29px}.announcement-modal-meta{margin-top:7px;color:var(--muted);font-size:10px}.announcement-modal-body{margin-top:18px;padding:18px;border:1px solid rgba(255,255,255,.06);border-radius:17px;color:#dce8ed;background:rgba(255,255,255,.022);font-size:13px;line-height:1.85;white-space:pre-wrap}.announcement-dismiss{display:flex;align-items:center;gap:9px;margin-top:16px;color:#bfced5;font-size:12px}.announcement-dismiss input{width:18px;height:18px;accent-color:var(--green)}.announcement-modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.announcement-modal-actions .btn{min-width:120px}
     .announcement-admin-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:18px}.announcement-form-card,.announcement-admin-list-card{padding:22px}.announcement-form-card h2,.announcement-admin-list-card h2{margin:0}.announcement-form-card>p,.announcement-admin-list-card>p{margin:6px 0 18px;color:var(--muted);font-size:11px;line-height:1.6}.announcement-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.announcement-form-grid label{display:grid;gap:6px;color:#c5d2d8;font-size:11px}.announcement-form-grid .full{grid-column:1/-1}.announcement-form-grid input,.announcement-form-grid select,.announcement-form-grid textarea{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;color:var(--white);background:#071219;outline:0;color-scheme:dark}.announcement-form-grid textarea{min-height:120px;resize:vertical;line-height:1.55}.announcement-form-grid input:focus,.announcement-form-grid select:focus,.announcement-form-grid textarea:focus{border-color:var(--line-strong);box-shadow:0 0 0 3px rgba(55,244,164,.06)}.announcement-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;grid-column:1/-1}.announcement-check{display:flex!important;grid-template-columns:auto 1fr!important;align-items:center;gap:9px!important;min-height:43px;padding:10px 12px;border:1px solid rgba(255,255,255,.055);border-radius:12px;background:rgba(255,255,255,.018)}.announcement-check input{width:17px!important;height:17px!important;min-height:0!important;accent-color:var(--green)}.announcement-form-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.announcement-admin-note{min-height:19px;margin-top:12px;color:var(--muted);font-size:11px}.announcement-admin-note.error{color:var(--red)}.announcement-admin-note.success{color:var(--green)}.announcement-admin-list{display:grid;gap:10px}.announcement-admin-row{padding:15px;border:1px solid rgba(255,255,255,.06);border-radius:15px;background:rgba(255,255,255,.02)}.announcement-admin-row-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.announcement-admin-row h3{margin:0;font-size:14px}.announcement-admin-row p{margin:7px 0 0;color:var(--muted);font-size:10px;line-height:1.55}.announcement-admin-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.announcement-admin-chips span{padding:5px 7px;border:1px solid rgba(255,255,255,.07);border-radius:999px;color:#9eb1ba;font-size:8px}.announcement-admin-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.announcement-empty{padding:28px 14px;text-align:center;color:var(--muted);font-size:11px}.app-install-note{margin-top:16px;padding:14px;border:1px solid rgba(55,244,164,.15);border-radius:14px;color:var(--muted);font-size:10px;line-height:1.65;background:rgba(55,244,164,.025)}
     .settlement-toolbar{display:grid;grid-template-columns:minmax(190px,1fr) auto auto;gap:10px;align-items:end;padding:16px;margin-bottom:18px}.settlement-toolbar label{display:grid;gap:6px;color:var(--muted);font-size:11px}.settlement-toolbar input{width:100%;min-height:43px}.settlement-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}.settlement-summary-card{padding:18px}.settlement-summary-card small{display:block;color:var(--muted);font-size:10px}.settlement-summary-card b{display:block;margin-top:7px;font-size:27px}.settlement-summary-card .pending{color:var(--gold)}.settlement-summary-card .settled{color:var(--green)}.settlement-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}.settlement-panel{overflow:hidden}.settlement-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px;border-bottom:1px solid var(--line)}.settlement-panel-head h2{margin:0;font-size:20px}.settlement-panel-head p{margin:5px 0 0;color:var(--muted);font-size:10px;line-height:1.5}.settlement-list{display:grid}.settlement-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:15px 18px;border-bottom:1px solid rgba(255,255,255,.05)}.settlement-row:last-child{border-bottom:0}.settlement-row-main{min-width:0}.settlement-row-main b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}.settlement-row-main span{display:block;margin-top:5px;color:var(--muted);font-size:10px;line-height:1.45}.settlement-pill{display:inline-flex;align-items:center;justify-content:center;min-width:58px;padding:7px 9px;border:1px solid var(--line);border-radius:999px;font-size:10px;font-weight:900}.settlement-pill.pending{color:var(--gold);border-color:rgba(255,215,106,.28);background:rgba(255,215,106,.05)}.settlement-pill.won{color:var(--green);border-color:var(--line-strong);background:rgba(55,244,164,.05)}.settlement-pill.lost{color:var(--red);border-color:rgba(255,115,130,.28);background:rgba(255,115,130,.05)}.settlement-pill.push,.settlement-pill.void{color:#b6c5cb;background:rgba(255,255,255,.035)}.settlement-empty{padding:32px 18px;text-align:center;color:var(--muted);font-size:11px}.settlement-meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:15px}.settlement-meta span{padding:6px 8px;border:1px solid rgba(255,255,255,.06);border-radius:999px;color:var(--muted);font-size:9px}.settlement-monitor-note{margin-top:18px;padding:16px;color:var(--muted);font-size:11px;line-height:1.65}.settlement-monitor-note b{color:var(--green)}
-    .model-toolbar{display:grid;grid-template-columns:repeat(3,minmax(150px,1fr)) auto auto;gap:10px;align-items:end;padding:16px;margin-bottom:18px}.model-toolbar label{display:grid;gap:6px;color:var(--muted);font-size:11px}.model-toolbar select{width:100%}.model-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}.model-summary-card{padding:18px}.model-summary-card small{display:block;color:var(--muted);font-size:10px}.model-summary-card b{display:block;margin-top:7px;font-size:27px}.model-summary-card .green{color:var(--green)}.model-summary-card .gold{color:var(--gold)}.model-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}.model-panel{padding:18px}.model-panel h2{margin:0;font-size:20px}.model-panel>p{margin:6px 0 16px;color:var(--muted);font-size:10px;line-height:1.55}.model-breakdown{display:grid;gap:9px}.model-breakdown-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:12px;border:1px solid rgba(255,255,255,.055);border-radius:13px;background:rgba(255,255,255,.018)}.model-breakdown-row b{font-size:12px}.model-breakdown-row span{color:var(--muted);font-size:10px}.model-breakdown-row strong{font-size:13px}.model-weight-list{display:grid;gap:10px}.model-weight-row{display:grid;grid-template-columns:110px 1fr 64px;gap:10px;align-items:center}.model-weight-row label{font-size:11px}.model-weight-track{height:8px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden}.model-weight-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--green),#b8ff3f)}.model-weight-row input{width:100%;min-height:38px;padding:8px 9px;text-align:right}.model-calibration-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.model-calibration-note{margin-top:12px;padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:13px;color:var(--muted);font-size:10px;line-height:1.55}.model-snapshot-list{display:grid;gap:9px;max-height:560px;overflow:auto}.model-snapshot-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:13px;border:1px solid rgba(255,255,255,.055);border-radius:13px}.model-snapshot-row b{display:block;font-size:12px}.model-snapshot-row span{display:block;margin-top:5px;color:var(--muted);font-size:9px;line-height:1.45}.model-status{align-self:start;padding:6px 8px;border:1px solid var(--line);border-radius:999px;font-size:9px;font-weight:900}.model-status.won{color:var(--green)}.model-status.lost{color:var(--red)}.model-status.pending{color:var(--gold)}.model-test-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.model-test-grid label{display:grid;gap:6px;color:var(--muted);font-size:10px}.model-test-grid .full{grid-column:1/-1}.model-test-grid input,.model-test-grid select{width:100%}.model-test-result{margin-top:12px;min-height:20px;color:var(--muted);font-size:11px;line-height:1.55}.model-test-result.success{color:var(--green)}.model-test-result.error{color:var(--red)}.model-admin-note{margin-top:18px;padding:16px;color:var(--muted);font-size:11px;line-height:1.65}.model-admin-note b{color:var(--green)}
+    .model-toolbar{display:grid;grid-template-columns:repeat(3,minmax(150px,1fr)) auto auto;gap:10px;align-items:end;padding:16px;margin-bottom:18px}.model-toolbar label{display:grid;gap:6px;color:var(--muted);font-size:11px}.model-toolbar select{width:100%}.model-summary-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-bottom:18px}.model-summary-card{padding:18px}.model-summary-card small{display:block;color:var(--muted);font-size:10px}.model-summary-card b{display:block;margin-top:7px;font-size:27px}.model-summary-card .green{color:var(--green)}.model-summary-card .red{color:var(--red)}.model-summary-card .gold{color:var(--gold)}.model-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}.model-panel{padding:18px}.model-panel h2{margin:0;font-size:20px}.model-panel>p{margin:6px 0 16px;color:var(--muted);font-size:10px;line-height:1.55}.model-breakdown{display:grid;gap:9px}.model-breakdown-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:12px;border:1px solid rgba(255,255,255,.055);border-radius:13px;background:rgba(255,255,255,.018)}.model-breakdown-row b{font-size:12px}.model-breakdown-row span{color:var(--muted);font-size:10px}.model-breakdown-row strong{font-size:13px}.model-weight-list{display:grid;gap:10px}.model-weight-row{display:grid;grid-template-columns:110px 1fr 64px;gap:10px;align-items:center}.model-weight-row label{font-size:11px}.model-weight-track{height:8px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden}.model-weight-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--green),#b8ff3f)}.model-weight-row input{width:100%;min-height:38px;padding:8px 9px;text-align:right}.model-calibration-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.model-calibration-note{margin-top:12px;padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:13px;color:var(--muted);font-size:10px;line-height:1.55}.model-snapshot-list{display:grid;gap:9px;max-height:560px;overflow:auto}.model-snapshot-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:13px;border:1px solid rgba(255,255,255,.055);border-radius:13px}.model-snapshot-row b{display:block;font-size:12px}.model-snapshot-row span{display:block;margin-top:5px;color:var(--muted);font-size:9px;line-height:1.45}.model-status{align-self:start;padding:6px 8px;border:1px solid var(--line);border-radius:999px;font-size:9px;font-weight:900}.model-status.won{color:var(--green)}.model-status.lost{color:var(--red)}.model-status.pending{color:var(--gold)}.model-test-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.model-test-grid label{display:grid;gap:6px;color:var(--muted);font-size:10px}.model-test-grid .full{grid-column:1/-1}.model-test-grid input,.model-test-grid select{width:100%}.model-test-result{margin-top:12px;min-height:20px;color:var(--muted);font-size:11px;line-height:1.55}.model-test-result.success{color:var(--green)}.model-test-result.error{color:var(--red)}.model-admin-note{margin-top:18px;padding:16px;color:var(--muted);font-size:11px;line-height:1.65}.model-admin-note b{color:var(--green)}
 
     @media (display-mode:standalone){body{min-height:100dvh}.topbar{padding-top:env(safe-area-inset-top)}.bottom-nav{padding-bottom:max(8px,env(safe-area-inset-bottom))}}
     .npb-complete-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -1129,6 +1133,10 @@
           </div>
           <div class="pro-record-summary-grid" id="proRecordSummary"></div>
           <div class="pro-market-visual-grid" id="proMarketVisuals"></div>
+          <div class="pro-performance-layout" id="proPerformanceLayout" hidden>
+            <section class="pro-performance-panel"><h4>創辦人聯盟績效</h4><p>MLB、NPB 與跨聯盟串關的單位盈虧及 ROI，僅創辦人／管理員可見。</p><div class="pro-league-performance" id="proLeaguePerformance"></div></section>
+            <section class="pro-performance-panel"><h4>創辦人累計盈虧走勢</h4><p>採每筆固定 1 單位計算，僅供內部模型校正與營運分析。</p><div class="pro-profit-chart-wrap" id="proProfitChart"></div></section>
+          </div>
           <div class="records-toolbar pro-record-list-toolbar" id="proRecordListToolbar">
             <div><h3>完整推薦明細</h3><p class="market-history-note">不再以每日整包顯示，每一筆推薦依自己的賽果獨立結算。</p></div>
             <div class="filters" id="marketRecordFilters">
@@ -1310,10 +1318,13 @@
           <div class="card model-summary-card"><small>全部快照</small><b id="modelTotal">—</b></div>
           <div class="card model-summary-card"><small>有效決策</small><b id="modelDecisions">—</b></div>
           <div class="card model-summary-card"><small>命中率</small><b class="green" id="modelHitRate">—</b></div>
+          <div class="card model-summary-card"><small>累計盈虧</small><b class="green" id="modelProfit">—</b></div>
+          <div class="card model-summary-card"><small>ROI</small><b class="green" id="modelROI">—</b></div>
           <div class="card model-summary-card"><small>等待結算</small><b class="gold" id="modelPending">—</b></div>
         </div>
         <div class="model-layout">
           <section class="card model-panel"><h2>玩法績效</h2><p>只計算真實推薦；走水與作廢不列入命中率分母。</p><div class="model-breakdown" id="modelMarketBreakdown"><div class="settlement-empty">尚未載入。</div></div></section>
+          <section class="card model-panel"><h2>聯盟績效</h2><p>MLB、NPB 與跨聯盟串關分開統計命中率、單位盈虧與 ROI。</p><div class="model-breakdown" id="modelLeagueBreakdown"><div class="settlement-empty">尚未載入。</div></div></section>
           <section class="card model-panel"><h2>信心區間</h2><p>比較 60–64%、65–69% 與 70% 以上的真實結果。</p><div class="model-breakdown" id="modelConfidenceBreakdown"><div class="settlement-empty">尚未載入。</div></div></section>
           <section class="card model-panel" style="grid-column:1/-1"><h2>發布來源績效</h2><p>AI 正式推薦與創辦人指定分開統計；創辦人觀察候選不會建立正式快照，因此不會出現在這裡。</p><div class="model-breakdown" id="modelPublicationBreakdown"><div class="settlement-empty">尚未載入。</div></div></section>
         </div>
@@ -1761,7 +1772,7 @@
     const pages = ["homePage","gamesPage","predictionPage","recordsPage","membershipPage","adminMembersPage","adminAnnouncementsPage","adminSettlementPage","adminModelPage","adminOperationsPage","morePage"];
     const state = {
       games:[],gameFilter:"all",gamesLoaded:false,activeLeague:"MLB",predictionDate:"",predictionRole:"",
-      records:[],marketRecords:[],recordStats:null,recordFilter:"all",marketRecordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:"",recordsAccessRole:"",
+      records:[],marketRecords:[],proPerformance:null,recordStats:null,recordFilter:"all",marketRecordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:"",recordsAccessRole:"",
       founderCandidateDate:"",founderCandidatesLoading:false,
       founderMarketDate:"",founderMarketsLoading:false,founderMarketBundle:null,
       upgradeReturnGame:null,billingConfig:null,billingStatus:null,selectedPlan:null,paymentHandled:false,
@@ -2459,6 +2470,7 @@
       state.predictionDate="";
       state.predictionRole="";
       state.marketRecords=[];
+      state.proPerformance=null;
       state.recordsLoaded=false;
       state.recordsAccessRole="";
       state.founderCandidateDate="";
@@ -2776,6 +2788,7 @@
             probability,
             score,
             status:result.status||"pending",
+            profitUnits:result.performance?.profit_units,
             league
           }];
         });
@@ -2789,6 +2802,22 @@
         return (order[a.key]??9)-(order[b.key]??9);
       });
     }
+    function americanDecimalOdds(price){
+      const value=Number(price);if(!Number.isFinite(value)||value===0)return null;
+      if(value>1&&value<20&&!Number.isInteger(value))return value;
+      if(value>=100)return 1+value/100;if(value<=-100)return 1+100/Math.abs(value);return null;
+    }
+    function marketRowProfit(row){
+      if(row?.profitUnits!==undefined&&row.profitUnits!==null)return Number(row.profitUnits);
+      const status=String(row?.status||"pending"),decimal=americanDecimalOdds(row?.price);
+      if(status==="void")return 0;if(!["won","lost","push"].includes(status)||decimal===null)return null;
+      if(status==="won")return Number((decimal-1).toFixed(4));if(status==="lost")return -1;return 0;
+    }
+    function formatUnits(value){
+      const number=Number(value);if(!Number.isFinite(number))return "—";return `${number>0?"+":""}${number.toFixed(2)}u`;
+    }
+    function profitClass(value){const number=Number(value);return number>0?"profit-positive":number<0?"profit-negative":"profit-neutral"}
+    function profitTone(value){const number=Number(value);return number>0?"green":number<0?"red":""}
     function marketRecordStats(rows){
       const won=rows.filter(row=>row.status==="won").length;
       const lost=rows.filter(row=>row.status==="lost").length;
@@ -2796,10 +2825,12 @@
       const voided=rows.filter(row=>row.status==="void").length;
       const pending=rows.filter(row=>row.status==="pending").length;
       const decided=won+lost;
-      return {total:rows.length,won,lost,push,void:voided,pending,settled:won+lost+push+voided,rate:decided?Number((won/decided*100).toFixed(1)):null};
+      const priced=rows.map(row=>({row,profit:marketRowProfit(row)})).filter(item=>item.profit!==null&&["won","lost","push"].includes(item.row.status));
+      const stake=priced.length,profit=Number(priced.reduce((sum,item)=>sum+item.profit,0).toFixed(3));
+      return {total:rows.length,decisions:decided,won,lost,push,void:voided,pending,settled:won+lost+push+voided,rate:decided?Number((won/decided*100).toFixed(1)):null,stake,profit,roi:stake?Number((profit/stake*100).toFixed(2)):null};
     }
-    function proSummaryCard(label,value,accent=false){
-      return `<div class="pro-record-summary-card"><small>${label}</small><b class="${accent?"green":""}">${value}</b></div>`;
+    function proSummaryCard(label,value,tone=""){
+      return `<div class="pro-record-summary-card"><small>${label}</small><b class="${tone}">${value}</b></div>`;
     }
     function renderProMarketVisuals(rows){
       const target=document.getElementById("proMarketVisuals");
@@ -2818,10 +2849,35 @@
             <div class="pro-market-ring" style="background:conic-gradient(var(--green) 0 ${rate}%,rgba(255,255,255,.055) ${rate}% 100%)"><div><b>${rateText}</b><span>命中率</span></div></div>
             <div><span class="market-tag pro">${code}</span><h4>${label}戰績</h4><p>${stats.total?`${stats.total} 筆正式推薦，${stats.settled} 筆已結算。`:"尚無正式推薦紀錄。"}</p></div>
           </div>
-          <div class="pro-market-legend"><span class="win"><b>${stats.won}</b>命中</span><span class="loss"><b>${stats.lost}</b>未中</span><span><b>${stats.pending}</b>待賽</span></div>
+          <div class="pro-market-legend">${isAdminMember()
+            ?`<span class="win"><b>${stats.won}</b>命中</span><span class="${profitClass(stats.profit)}"><b>${formatUnits(stats.profit)}</b>盈虧</span><span class="${profitClass(stats.roi)}"><b>${stats.roi==null?"—":`${stats.roi}%`}</b>ROI</span>`
+            :`<span class="win"><b>${stats.won}</b>命中</span><span class="loss"><b>${stats.lost}</b>未中</span><span><b>${stats.pending}</b>待賽</span>`}</div>
         </article>`;
       }).join("");
     }
+
+    function performanceCurve(rows){
+      const grouped={};rows.filter(row=>marketRowProfit(row)!==null&&["won","lost","push"].includes(row.status)).forEach(row=>{const date=String(row.date||"");grouped[date]=(grouped[date]||0)+marketRowProfit(row)});
+      let cumulative=0;return Object.keys(grouped).sort().map(date=>({date,daily:Number(grouped[date].toFixed(3)),cumulative:Number((cumulative+=grouped[date]).toFixed(3))}));
+    }
+    function renderProLeaguePerformance(rows){
+      const target=document.getElementById("proLeaguePerformance");if(!target)return;
+      const backend=Array.isArray(state.proPerformance?.by_league)?state.proPerformance.by_league:[];
+      const keys=[...new Set(rows.map(row=>row.league||"MLB"))];
+      const items=backend.length?backend:keys.map(key=>({key,...marketRecordStats(rows.filter(row=>row.league===key))}));
+      target.innerHTML=items.length?items.map(item=>{const local=backend.length?item:marketRecordStats(rows.filter(row=>row.league===item.key));const profit=backend.length?Number(item.profit_units||0):local.profit;const roi=backend.length?item.roi_percent:local.roi;return `<div class="pro-league-row"><div><b>${escapeHtml(item.key||"其他")}</b><span>${Number(item.decisions??local.decisions??0)} 筆有效決策 · 命中率 ${item.hit_rate==null?(local.rate==null?"—":`${local.rate}%`):`${item.hit_rate}%`}</span></div><strong class="${profitClass(profit)}">${formatUnits(profit)}</strong><strong class="${profitClass(roi)}">${roi==null?"—":`${Number(roi).toFixed(2)}%`}</strong></div>`}).join(""):'<div class="empty">尚無可計算績效的正式推薦。</div>';
+    }
+    function renderProProfitChart(rows){
+      const target=document.getElementById("proProfitChart");if(!target)return;
+      const backend=Array.isArray(state.proPerformance?.profit_curve)?state.proPerformance.profit_curve:[];
+      const curve=backend.length?backend.map(item=>({date:item.date,cumulative:Number(item.cumulative_profit_units||0)})):performanceCurve(rows);
+      if(!curve.length){target.innerHTML='<div class="empty">尚無已結算且具有效賠率的推薦。</div>';return}
+      const width=680,height=170,padX=26,padY=22,values=curve.map(item=>item.cumulative),min=Math.min(0,...values),max=Math.max(0,...values),range=Math.max(.5,max-min);
+      const x=index=>curve.length===1?width/2:padX+index*(width-padX*2)/(curve.length-1);const y=value=>padY+(max-value)*(height-padY*2)/range;const zeroY=y(0);const points=curve.map((item,index)=>`${x(index).toFixed(1)},${y(item.cumulative).toFixed(1)}`).join(" ");const area=`${padX},${zeroY.toFixed(1)} ${points} ${x(curve.length-1).toFixed(1)},${zeroY.toFixed(1)}`;
+      const last=curve[curve.length-1],stats=marketRecordStats(rows);
+      target.innerHTML=`<div class="pro-profit-chart-meta"><div><b class="${profitClass(last.cumulative)}">${formatUnits(last.cumulative)}</b><span>累計盈虧</span></div><div style="text-align:right"><b class="${profitClass(stats.roi)}">${stats.roi==null?"—":`${stats.roi}%`}</b><span>整體 ROI</span></div></div><svg class="pro-profit-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" role="img" aria-label="Pro 推薦累計盈虧走勢"><line class="pro-profit-axis" x1="${padX}" y1="${zeroY}" x2="${width-padX}" y2="${zeroY}"></line><polygon class="pro-profit-area" points="${area}"></polygon><polyline class="pro-profit-line" points="${points}"></polyline>${curve.map((item,index)=>`<circle class="pro-profit-dot" cx="${x(index)}" cy="${y(item.cumulative)}" r="3"></circle>`).join("")}<text class="pro-profit-label" x="${padX}" y="${height-4}">${escapeHtml(recordDate(curve[0].date))}</text><text class="pro-profit-label" text-anchor="end" x="${width-padX}" y="${height-4}">${escapeHtml(recordDate(last.date))}</text></svg>`;
+    }
+    function renderProPerformance(rows){renderProLeaguePerformance(rows);renderProProfitChart(rows)}
 
     function renderMarketRecords(){
       const rows=allMarketHistoryRows();
@@ -2830,12 +2886,14 @@
       const summary=document.getElementById("proRecordSummary");
       const visuals=document.getElementById("proMarketVisuals");
       const toolbar=document.getElementById("proRecordListToolbar");
+      const performanceLayout=document.getElementById("proPerformanceLayout");
       if(!container||!count||!summary||!visuals)return;
       if(!isProMember()){
         count.textContent="PRO";
         summary.hidden=true;
         visuals.hidden=true;
         if(toolbar)toolbar.hidden=true;
+        if(performanceLayout)performanceLayout.hidden=true;
         container.innerHTML=`<div class="record-pro-gate">
           <div>
             <div class="record-pro-gate-icon" aria-hidden="true">🔒</div>
@@ -2847,24 +2905,45 @@
         container.querySelector("[data-records-upgrade]")?.addEventListener("click",focusMembershipPlans);
         return;
       }
+      const admin=isAdminMember();
       summary.hidden=false;
+      summary.classList.toggle("member-view",!admin);
       visuals.hidden=false;
       if(toolbar)toolbar.hidden=false;
+      if(performanceLayout)performanceLayout.hidden=!admin;
       const stats=marketRecordStats(rows);
       count.textContent=`${rows.length} 筆`;
-      summary.innerHTML=[
+      const summaryCards=[
         proSummaryCard("Pro 推薦總數",stats.total),
         proSummaryCard("Pro 推薦已結算",stats.settled),
-        proSummaryCard("Pro 推薦命中",stats.won,true),
-        proSummaryCard("Pro 推薦命中率",stats.rate==null?"—":`${stats.rate}%`,true)
-      ].join("");
+        proSummaryCard("Pro 推薦命中",stats.won,"green"),
+        proSummaryCard("Pro 推薦命中率",stats.rate==null?"—":`${stats.rate}%`,"green")
+      ];
+      if(admin){
+        const backendSummary=state.proPerformance?.summary||{};
+        const profit=backendSummary.profit_units??stats.profit;
+        const roi=backendSummary.roi_percent??stats.roi;
+        summaryCards.push(
+          proSummaryCard("累計盈虧",formatUnits(profit),profitTone(profit)),
+          proSummaryCard("整體 ROI",roi==null?"—":`${Number(roi).toFixed(2)}%`,profitTone(roi))
+        );
+      }
+      summary.innerHTML=summaryCards.join("");
       renderProMarketVisuals(rows);
+      if(admin)renderProPerformance(rows);
+      else{
+        const leagueTarget=document.getElementById("proLeaguePerformance");
+        const chartTarget=document.getElementById("proProfitChart");
+        if(leagueTarget)leagueTarget.innerHTML="";
+        if(chartTarget)chartTarget.innerHTML="";
+      }
       const filtered=rows.filter(row=>state.marketRecordFilter==="all"||row.filterKey===state.marketRecordFilter);
-      container.innerHTML=filtered.length?filtered.map(row=>`<div class="pro-record-row">
+      container.innerHTML=filtered.length?filtered.map(row=>`<div class="pro-record-row ${admin?"":"member-view"}">
         <div class="pro-record-date">${recordDate(row.date)}<br>${escapeHtml(row.league)}</div>
         <div class="pro-record-market">${escapeHtml(row.name)}</div>
         <div class="pro-record-pick"><b>${escapeHtml(row.pickLabel)}</b><small>${escapeHtml(row.matchup)}${row.probability!=null?` · 模型 ${Number(row.probability).toFixed(1)}%`:""}${row.price!=null?` · 賠率 ${row.price>0?"+":""}${row.price}`:""}</small></div>
         <div class="pro-record-score">${escapeHtml(row.score)}</div>
+        ${admin?`<div class="pro-record-profit ${profitClass(marketRowProfit(row))}">${formatUnits(marketRowProfit(row))}</div>`:""}
         <span class="result ${resultClass(row.status)}">${resultLabel(row.status)}</span>
       </div>`).join(""):`<div class="empty"><b>${state.recordsLoading?"Pro 推薦紀錄載入中":rows.length?"此分類尚無紀錄":"尚無 Pro 正式推薦紀錄"}</b>${state.recordsLoading?"正在讀取正式推薦與賽後結果。":rows.length?"可切換其他玩法查看。":"正式發布後，每一筆推薦都會獨立留存與結算。"}</div>`;
     }
@@ -2926,6 +3005,7 @@
             return (!date||date<=taiwanToday())&&mode!=="ai_auto";
           })
           :[];
+        state.proPerformance=isAdminMember()&&payload.pro_performance?payload.pro_performance:null;
         state.recordStats=payload.stats||null;
         state.recordsAccessRole=authState.role;
         state.recordsLoaded=true;
@@ -2933,6 +3013,7 @@
       }catch(error){
         state.records=[];
         state.marketRecords=[];
+        state.proPerformance=null;
         state.recordStats=null;
         state.recordsLoaded=false;
         state.recordsAccessRole=authState.role;
@@ -3703,13 +3784,14 @@
 
 
     const modelMarketLabels={moneyline:"獨贏",run_line:"讓分",totals:"大小分",two_leg:"二關",three_leg:"三關",unknown:"其他"};
+    const modelLeagueLabels={MLB:"MLB 美國職棒",NPB:"NPB 日本職棒","MLB+NPB":"跨聯盟串關",unknown:"其他聯盟"};
     const modelConfidenceLabels={under_60:"低於 60%","60_64":"60–64%","65_69":"65–69%","70_plus":"70% 以上",unknown:"未分類"};
     const modelPublicationLabels={ai_auto:"AI 正式推薦",founder_selected:"創辦人指定",unknown:"其他來源"};
     const modelModuleLabels={team_strength:"球隊實力",starter:"先發投手",lineup:"打線強度",bullpen:"牛棚狀態",advanced:"進階數據",environment:"環境條件"};
     function modelRate(value){return value===null||value===undefined?"—":`${Number(value).toFixed(1)}%`}
     function modelBreakdownRows(items,labels){
       if(!items?.length)return '<div class="settlement-empty">目前尚無已發布快照。</div>';
-      return items.map(item=>`<div class="model-breakdown-row"><div><b>${escapeHtml(labels[item.key]||item.key)}</b><span>命中 ${Number(item.won||0)} · 未中 ${Number(item.lost||0)} · 等待 ${Number(item.pending||0)}</span></div><span>${Number(item.decisions||0)} 筆決策</span><strong>${escapeHtml(modelRate(item.hit_rate))}</strong></div>`).join("");
+      return items.map(item=>`<div class="model-breakdown-row"><div><b>${escapeHtml(labels[item.key]||item.key)}</b><span>命中 ${Number(item.won||0)} · 未中 ${Number(item.lost||0)} · 盈虧 ${escapeHtml(formatUnits(item.profit_units))}</span></div><span>${item.roi_percent==null?"ROI —":`ROI ${Number(item.roi_percent).toFixed(2)}%`}</span><strong>${escapeHtml(modelRate(item.hit_rate))}</strong></div>`).join("");
     }
     function renderModelWeights(calibration={}){
       const list=document.getElementById("modelWeightList");if(!list)return;
@@ -3741,8 +3823,13 @@
       document.getElementById("modelTotal").textContent=summary.total??0;
       document.getElementById("modelDecisions").textContent=summary.decisions??0;
       document.getElementById("modelHitRate").textContent=modelRate(summary.hit_rate);
+      document.getElementById("modelProfit").textContent=formatUnits(summary.profit_units);
+      document.getElementById("modelProfit").className=profitTone(summary.profit_units);
+      document.getElementById("modelROI").textContent=summary.roi_percent==null?"—":`${Number(summary.roi_percent).toFixed(2)}%`;
+      document.getElementById("modelROI").className=profitTone(summary.roi_percent);
       document.getElementById("modelPending").textContent=summary.pending??0;
       document.getElementById("modelMarketBreakdown").innerHTML=modelBreakdownRows(payload?.by_market||[],modelMarketLabels);
+      document.getElementById("modelLeagueBreakdown").innerHTML=modelBreakdownRows(payload?.by_league||[],modelLeagueLabels);
       document.getElementById("modelConfidenceBreakdown").innerHTML=modelBreakdownRows(payload?.by_confidence||[],modelConfidenceLabels);
       document.getElementById("modelPublicationBreakdown").innerHTML=modelBreakdownRows(payload?.by_publication_mode||[],modelPublicationLabels);
       renderModelWeights(payload?.calibration||{});
@@ -3762,6 +3849,7 @@
         renderModelPerformance(performance,snapshots);
       }catch(error){
         document.getElementById("modelMarketBreakdown").innerHTML=`<div class="settlement-empty">${escapeHtml(error.message||"模型績效載入失敗")}</div>`;
+        document.getElementById("modelLeagueBreakdown").innerHTML='<div class="settlement-empty">聯盟績效暫時無法載入。</div>';
         document.getElementById("modelConfidenceBreakdown").innerHTML='<div class="settlement-empty">請確認已執行模型績效 SQL。</div>';
       }finally{state.modelLoading=false;if(refresh)refresh.disabled=false}
     }
