@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind V18.7 NPB complete analysis modules -->
+  <!-- DiamondMind V18.7.1 record-date and founder-publication fix -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#03080c">
@@ -525,6 +525,15 @@
     .record-pro-gate{display:grid;place-items:center;min-height:270px;padding:34px 22px;text-align:center;background:radial-gradient(circle at 50% 0,rgba(255,215,106,.1),transparent 44%),linear-gradient(145deg,rgba(11,27,34,.94),rgba(5,14,19,.96))}
     .record-pro-gate-icon{width:66px;height:66px;display:grid;place-items:center;margin:0 auto 16px;border:1px solid rgba(255,215,106,.32);border-radius:20px;color:var(--gold);font-size:27px;background:rgba(255,215,106,.055);box-shadow:0 0 32px rgba(255,215,106,.08)}
     .record-pro-gate h3{margin:0 0 9px;font-size:23px}.record-pro-gate p{max-width:560px;margin:0 auto;color:var(--muted);font-size:12px;line-height:1.65}.record-pro-gate .btn{margin-top:20px}
+    .pro-record-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:18px;border-bottom:1px solid var(--line)}
+    .pro-record-summary-card{padding:16px;border:1px solid rgba(255,255,255,.06);border-radius:16px;background:rgba(255,255,255,.02)}
+    .pro-record-summary-card small{display:block;color:var(--muted);font-size:10px}.pro-record-summary-card b{display:block;margin-top:7px;font-size:25px}.pro-record-summary-card b.green{color:var(--green)}
+    .pro-market-visual-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:18px;border-bottom:1px solid var(--line)}
+    .pro-market-visual{position:relative;overflow:hidden;padding:17px;border:1px solid rgba(255,255,255,.065);border-radius:18px;background:radial-gradient(circle at 100% 0,rgba(55,244,164,.07),transparent 38%),rgba(255,255,255,.018)}
+    .pro-market-visual-top{display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;align-items:center}.pro-market-ring{width:92px;aspect-ratio:1;display:grid;place-items:center;border-radius:50%;position:relative}.pro-market-ring::after{content:"";position:absolute;inset:8px;border:1px solid rgba(255,255,255,.06);border-radius:50%;background:#08151c}.pro-market-ring div{position:relative;z-index:1;text-align:center}.pro-market-ring b{display:block;color:var(--green);font-size:22px;line-height:1}.pro-market-ring span{display:block;margin-top:4px;color:var(--muted);font-size:8px}
+    .pro-market-visual h4{margin:6px 0 4px;font-size:18px}.pro-market-visual p{margin:0;color:var(--muted);font-size:10px;line-height:1.5}.pro-market-visual .market-tag{font-size:8px}
+    .pro-market-legend{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:13px}.pro-market-legend span{padding:7px 5px;border:1px solid rgba(255,255,255,.05);border-radius:10px;color:var(--muted);font-size:8px;text-align:center;background:rgba(255,255,255,.018)}.pro-market-legend b{display:block;margin-bottom:2px;color:#d9e5ea;font-size:12px}.pro-market-legend .win b{color:var(--green)}.pro-market-legend .loss b{color:var(--red)}
+    .pro-record-list-toolbar{border-bottom:1px solid var(--line)}.pro-record-row{display:grid;grid-template-columns:78px 72px minmax(0,1fr) 110px 58px;align-items:center;gap:12px;padding:15px 18px;border-bottom:1px solid rgba(255,255,255,.05)}.pro-record-row:last-child{border-bottom:0}.pro-record-market{color:var(--gold);font-size:10px;font-weight:900;letter-spacing:.5px}.pro-record-date{color:var(--muted);font-size:11px;line-height:1.45}.pro-record-pick{min-width:0}.pro-record-pick b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}.pro-record-pick small{display:block;margin-top:5px;color:var(--muted);font-size:10px;line-height:1.45}.pro-record-score{text-align:right;color:#bdcbd1;font-size:11px}
 
     .more-hero{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;padding:25px;margin-bottom:18px;background:radial-gradient(circle at 84% 38%,rgba(55,244,164,.14),transparent 28%),linear-gradient(140deg,rgba(12,29,37,.96),rgba(6,16,22,.92))}
     .more-hero h2{margin:0 0 8px;font-size:30px}.more-hero p{max-width:650px;margin:0;color:var(--muted);line-height:1.6}.more-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
@@ -669,6 +678,7 @@
       .pro-access-grid{grid-template-columns:repeat(2,1fr)}
       .pricing-grid{grid-template-columns:1fr}.price-card{max-width:680px;width:100%;margin-inline:auto}
       .record-top-grid{grid-template-columns:repeat(2,1fr)}
+      .pro-market-visual-grid{grid-template-columns:1fr}
       .bottom-nav{display:grid}
       body{padding-bottom:94px}
       .footer-grid{grid-template-columns:repeat(4,1fr)}.footer-brand{grid-column:1/-1;max-width:570px}
@@ -715,6 +725,7 @@
       .record-top-grid{grid-template-columns:repeat(2,1fr)}.record-row{grid-template-columns:76px minmax(0,1fr) 52px;padding:14px}.record-score{display:none}
       .records-toolbar{align-items:flex-start;flex-direction:column}
       .market-package-head{align-items:flex-start}.market-result-row{grid-template-columns:68px minmax(0,1fr) 48px;padding:13px 14px}.market-result-score{display:none}
+      .pro-record-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:14px}.pro-market-visual-grid{grid-template-columns:1fr;padding:14px}.pro-record-row{grid-template-columns:62px 48px minmax(0,1fr) 48px;padding:13px 14px;gap:8px}.pro-record-score{display:none}.pro-record-pick b{white-space:normal}.pro-market-visual-top{grid-template-columns:82px minmax(0,1fr)}.pro-market-ring{width:82px}
       .more-hero{grid-template-columns:1fr}.more-actions{justify-content:flex-start}
       .footer{padding-top:46px}.footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:31px 24px}.footer-brand{grid-column:1/-1}.footer-column h3{font-size:12px}.footer-link{font-size:11px}.footer-divider{margin:32px 0 22px}.footer-bottom{align-items:flex-start;flex-direction:column}.footer-bottom-links{justify-content:flex-start}.footer-disclaimer{padding:17px 15px;text-align:left}
       .operations-grid{grid-template-columns:1fr 1fr}.operations-layout{grid-template-columns:1fr}.operations-hero{align-items:flex-start;flex-direction:column}
@@ -1111,10 +1122,22 @@
           <div class="records-list" id="recordsList"></div>
         </div>
 
-        <div class="card market-history-card">
+        <div class="card market-history-card pro-records-dashboard">
           <div class="records-toolbar">
-            <div><h3>Pro 推薦紀錄</h3><p class="market-history-note">Pro 會員可查看獨贏、讓分、大小分與串關的完整歷史表現。</p></div>
+            <div><h3>Pro 推薦紀錄</h3><p class="market-history-note">正式推薦逐筆保存，獨贏、讓分與大小分皆有獨立戰績與賽後比分。</p></div>
             <span class="micro-pill" id="marketRecordCount">PRO</span>
+          </div>
+          <div class="pro-record-summary-grid" id="proRecordSummary"></div>
+          <div class="pro-market-visual-grid" id="proMarketVisuals"></div>
+          <div class="records-toolbar pro-record-list-toolbar" id="proRecordListToolbar">
+            <div><h3>完整推薦明細</h3><p class="market-history-note">不再以每日整包顯示，每一筆推薦依自己的賽果獨立結算。</p></div>
+            <div class="filters" id="marketRecordFilters">
+              <button type="button" class="filter-btn active" data-market-record-filter="all">全部</button>
+              <button type="button" class="filter-btn" data-market-record-filter="moneylines">獨贏</button>
+              <button type="button" class="filter-btn" data-market-record-filter="run_lines">讓分</button>
+              <button type="button" class="filter-btn" data-market-record-filter="totals">大小分</button>
+              <button type="button" class="filter-btn" data-market-record-filter="parlays">串關</button>
+            </div>
           </div>
           <div class="records-list" id="marketRecordsList"></div>
         </div>
@@ -1738,7 +1761,7 @@
     const pages = ["homePage","gamesPage","predictionPage","recordsPage","membershipPage","adminMembersPage","adminAnnouncementsPage","adminSettlementPage","adminModelPage","adminOperationsPage","morePage"];
     const state = {
       games:[],gameFilter:"all",gamesLoaded:false,activeLeague:"MLB",predictionDate:"",predictionRole:"",
-      records:[],marketRecords:[],recordStats:null,recordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:"",recordsAccessRole:"",
+      records:[],marketRecords:[],recordStats:null,recordFilter:"all",marketRecordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:"",recordsAccessRole:"",
       founderCandidateDate:"",founderCandidatesLoading:false,
       founderMarketDate:"",founderMarketsLoading:false,founderMarketBundle:null,
       upgradeReturnGame:null,billingConfig:null,billingStatus:null,selectedPlan:null,paymentHandled:false,
@@ -2701,7 +2724,7 @@
       return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
     }
     function resultLabel(result){
-      return ({won:"命中",lost:"未中",push:"走水",void:"取消",pending:"未結算"})[result]||"未結算";
+      return ({won:"命中",lost:"未中",push:"走水",void:"作廢",pending:"未結算"})[result]||"未結算";
     }
     function resultClass(result){return result==="won"?"win":result==="lost"?"loss":result==="push"?"push":result==="void"?"void":"pending"}
     function recordDate(value){
@@ -2739,22 +2762,80 @@
           const price=isParlay?selection.combined_american_odds:selection.price;
           const probability=isParlay?selection.combined_model_probability:selection.model_probability;
           const score=result.away_score==null||result.home_score==null
-            ?(result.status==="pending"?"等待賽果":isParlay?`${result.legs?.length||legs.length} 關已結算`:(result.result_note||"已結算"))
+            ?(result.status==="pending"?"等待賽果":isParlay?`${result.legs?.length||legs.length} 關已判定`:(result.result_note||"已判定"))
             :`終場 ${result.away_score}–${result.home_score}`;
           const league=isParlay?[...new Set(legs.map(leg=>leg.league||"MLB"))].join("＋"):(selection.league||"MLB");
-          const sourceLabel="Pro 精選";
-          return [{key,name,pickLabel:localizePickLabel(pickLabel,selection),matchup:localizeMatchup(matchup),price,probability,score,status:result.status||"pending",sourceLabel,league}];
+          return [{
+            key,
+            filterKey:isParlay?"parlays":key,
+            name,
+            date:String(bundle.date||""),
+            pickLabel:localizePickLabel(pickLabel,selection),
+            matchup:localizeMatchup(matchup),
+            price,
+            probability,
+            score,
+            status:result.status||"pending",
+            league
+          }];
         });
       });
     }
+    function allMarketHistoryRows(){
+      return state.marketRecords.flatMap(marketHistoryRows).sort((a,b)=>{
+        const dateOrder=String(b.date||"").localeCompare(String(a.date||""));
+        if(dateOrder)return dateOrder;
+        const order={moneylines:0,run_lines:1,totals:2,two_leg:3,three_leg:4};
+        return (order[a.key]??9)-(order[b.key]??9);
+      });
+    }
+    function marketRecordStats(rows){
+      const won=rows.filter(row=>row.status==="won").length;
+      const lost=rows.filter(row=>row.status==="lost").length;
+      const push=rows.filter(row=>row.status==="push").length;
+      const voided=rows.filter(row=>row.status==="void").length;
+      const pending=rows.filter(row=>row.status==="pending").length;
+      const decided=won+lost;
+      return {total:rows.length,won,lost,push,void:voided,pending,settled:won+lost+push+voided,rate:decided?Number((won/decided*100).toFixed(1)):null};
+    }
+    function proSummaryCard(label,value,accent=false){
+      return `<div class="pro-record-summary-card"><small>${label}</small><b class="${accent?"green":""}">${value}</b></div>`;
+    }
+    function renderProMarketVisuals(rows){
+      const target=document.getElementById("proMarketVisuals");
+      if(!target)return;
+      const definitions=[
+        ["moneylines","MONEYLINE","獨贏"],
+        ["run_lines","RUN LINE","讓分"],
+        ["totals","TOTALS","大小分"]
+      ];
+      target.innerHTML=definitions.map(([key,code,label])=>{
+        const stats=marketRecordStats(rows.filter(row=>row.key===key));
+        const rate=stats.rate==null?0:stats.rate;
+        const rateText=stats.rate==null?"—":`${stats.rate}%`;
+        return `<article class="pro-market-visual">
+          <div class="pro-market-visual-top">
+            <div class="pro-market-ring" style="background:conic-gradient(var(--green) 0 ${rate}%,rgba(255,255,255,.055) ${rate}% 100%)"><div><b>${rateText}</b><span>命中率</span></div></div>
+            <div><span class="market-tag pro">${code}</span><h4>${label}戰績</h4><p>${stats.total?`${stats.total} 筆正式推薦，${stats.settled} 筆已結算。`:"尚無正式推薦紀錄。"}</p></div>
+          </div>
+          <div class="pro-market-legend"><span class="win"><b>${stats.won}</b>命中</span><span class="loss"><b>${stats.lost}</b>未中</span><span><b>${stats.pending}</b>待賽</span></div>
+        </article>`;
+      }).join("");
+    }
 
     function renderMarketRecords(){
-      const bundles=state.marketRecords;
+      const rows=allMarketHistoryRows();
       const container=document.getElementById("marketRecordsList");
       const count=document.getElementById("marketRecordCount");
-      if(!container||!count)return;
+      const summary=document.getElementById("proRecordSummary");
+      const visuals=document.getElementById("proMarketVisuals");
+      const toolbar=document.getElementById("proRecordListToolbar");
+      if(!container||!count||!summary||!visuals)return;
       if(!isProMember()){
         count.textContent="PRO";
+        summary.hidden=true;
+        visuals.hidden=true;
+        if(toolbar)toolbar.hidden=true;
         container.innerHTML=`<div class="record-pro-gate">
           <div>
             <div class="record-pro-gate-icon" aria-hidden="true">🔒</div>
@@ -2766,21 +2847,26 @@
         container.querySelector("[data-records-upgrade]")?.addEventListener("click",focusMembershipPlans);
         return;
       }
-      count.textContent=`${bundles.length} 期`;
-      container.innerHTML=bundles.length?bundles.map(bundle=>{
-        const rows=marketHistoryRows(bundle);
-        const completed=rows.filter(row=>row.status!=="pending").length;
-        const packageStatus=rows.length&&completed===rows.length?"全部已結算":`已結算 ${completed}/${rows.length}`;
-        return `<section class="market-package">
-          <div class="market-package-head"><b>${recordDate(bundle.date)} Pro 完整玩法</b><span>${packageStatus}</span></div>
-          ${rows.map(row=>`<div class="market-result-row">
-            <div class="market-result-name">${row.name}</div>
-            <div class="market-result-pick"><b>${escapeHtml(row.pickLabel)}</b><small>${escapeHtml(row.sourceLabel)} · ${escapeHtml(row.league)} · ${escapeHtml(row.matchup)}${row.probability!=null?` · 模型 ${Number(row.probability).toFixed(1)}%`:""}${row.price!=null?` · 賠率 ${row.price>0?"+":""}${row.price}`:""}</small></div>
-            <div class="market-result-score">${escapeHtml(row.score)}</div>
-            <span class="result ${resultClass(row.status)}">${resultLabel(row.status)}</span>
-          </div>`).join("")}
-        </section>`;
-      }).join(""):`<div class="empty"><b>${state.recordsLoading?"Pro 推薦紀錄載入中":"尚無 Pro 正式推薦紀錄"}</b>${state.recordsLoading?"正在讀取全部正式玩法與即時結算狀態。":"正式發布後會立即建立紀錄，不必等全部賽事結束。"}</div>`;
+      summary.hidden=false;
+      visuals.hidden=false;
+      if(toolbar)toolbar.hidden=false;
+      const stats=marketRecordStats(rows);
+      count.textContent=`${rows.length} 筆`;
+      summary.innerHTML=[
+        proSummaryCard("Pro 推薦總數",stats.total),
+        proSummaryCard("Pro 推薦已結算",stats.settled),
+        proSummaryCard("Pro 推薦命中",stats.won,true),
+        proSummaryCard("Pro 推薦命中率",stats.rate==null?"—":`${stats.rate}%`,true)
+      ].join("");
+      renderProMarketVisuals(rows);
+      const filtered=rows.filter(row=>state.marketRecordFilter==="all"||row.filterKey===state.marketRecordFilter);
+      container.innerHTML=filtered.length?filtered.map(row=>`<div class="pro-record-row">
+        <div class="pro-record-date">${recordDate(row.date)}<br>${escapeHtml(row.league)}</div>
+        <div class="pro-record-market">${escapeHtml(row.name)}</div>
+        <div class="pro-record-pick"><b>${escapeHtml(row.pickLabel)}</b><small>${escapeHtml(row.matchup)}${row.probability!=null?` · 模型 ${Number(row.probability).toFixed(1)}%`:""}${row.price!=null?` · 賠率 ${row.price>0?"+":""}${row.price}`:""}</small></div>
+        <div class="pro-record-score">${escapeHtml(row.score)}</div>
+        <span class="result ${resultClass(row.status)}">${resultLabel(row.status)}</span>
+      </div>`).join(""):`<div class="empty"><b>${state.recordsLoading?"Pro 推薦紀錄載入中":rows.length?"此分類尚無紀錄":"尚無 Pro 正式推薦紀錄"}</b>${state.recordsLoading?"正在讀取正式推薦與賽後結果。":rows.length?"可切換其他玩法查看。":"正式發布後，每一筆推薦都會獨立留存與結算。"}</div>`;
     }
     function setRecordsApiStatus(text,isError=false){
       ["homeRecordsApiStatus","recordsApiStatus"].forEach(id=>{
@@ -2833,7 +2919,13 @@
         const payload=await fetchJsonWithTimeout(`${API_BASE}/records`,12000,{headers});
         if(payload.is_demo||payload.database!=="connected")throw new Error("Records database unavailable");
         state.records=Array.isArray(payload.items)?payload.items:[];
-        state.marketRecords=isProMember()&&Array.isArray(payload.market_packages)?payload.market_packages:[];
+        state.marketRecords=isProMember()&&Array.isArray(payload.market_packages)
+          ?payload.market_packages.filter(bundle=>{
+            const date=String(bundle?.date||"");
+            const mode=String(bundle?.publication?.mode||"");
+            return (!date||date<=taiwanToday())&&mode!=="ai_auto";
+          })
+          :[];
         state.recordStats=payload.stats||null;
         state.recordsAccessRole=authState.role;
         state.recordsLoaded=true;
@@ -2856,6 +2948,12 @@
       state.recordFilter=btn.dataset.recordFilter;
       document.querySelectorAll("[data-record-filter]").forEach(x=>x.classList.toggle("active",x===btn));
       renderRecords();
+    }));
+
+    document.querySelectorAll("[data-market-record-filter]").forEach(btn=>btn.addEventListener("click",()=>{
+      state.marketRecordFilter=btn.dataset.marketRecordFilter;
+      document.querySelectorAll("[data-market-record-filter]").forEach(x=>x.classList.toggle("active",x===btn));
+      renderMarketRecords();
     }));
 
     function shiftDate(dateStr,days){
