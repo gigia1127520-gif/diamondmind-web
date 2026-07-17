@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind V18.10.0 instant league-specific recommendation publishing -->
+  <!-- DiamondMind V18.10.2 independent home-day summary and instant publishing -->
+  <meta name="diamondmind-version" content="18.10.2">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#03080c">
@@ -1025,7 +1026,7 @@
         <div data-auth-user hidden>
           <section class="recommendation-zone" aria-labelledby="latestRecommendationHeading">
             <div class="recommendation-zone-head">
-              <div class="recommendation-zone-title"><span class="recommendation-zone-no">1</span><div><h2 id="latestRecommendationHeading">最新推薦</h2><p>永遠優先顯示目前聯盟最近一次正式發布的批次，不以今天日期限制。</p></div></div>
+              <div class="recommendation-zone-title"><span class="recommendation-zone-no">1</span><div><h2 id="latestRecommendationHeading">最新推薦</h2></div></div>
             </div>
           <div class="prediction-shell">
             <article class="card prediction-main">
@@ -3614,7 +3615,6 @@
       state.predictionDate="";
       state.predictionRole="";
       loadLeagueGames();
-      loadHomeLeagueSummary();
     });
 
     function formatAmericanOdds(value){
@@ -4605,7 +4605,9 @@
     });
 
     async function loadHomeLeagueSummary(){
-      const date=document.getElementById("scheduleDate")?.value||taiwanToday();
+      // The home dashboard always represents Taiwan's current day. The date
+      // selected on the games page is intentionally independent SPA state.
+      const date=taiwanToday();
       try{
         const payload=await fetchJsonWithTimeout(`${API_BASE}/leagues/summary?date=${encodeURIComponent(date)}`,30000);
         (payload.items||[]).forEach(item=>{
