@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind V18.10.2 independent home-day summary and instant publishing -->
-  <meta name="diamondmind-version" content="18.10.2">
+  <!-- DiamondMind V18.10.3 forced current-day home summary -->
+  <meta name="diamondmind-version" content="18.10.3">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#03080c">
@@ -1123,7 +1126,7 @@
 
           <section class="recommendation-zone" aria-labelledby="currentRecommendationHeading">
             <div class="recommendation-zone-head">
-              <div class="recommendation-zone-title"><span class="recommendation-zone-no">2</span><div><h2 id="currentRecommendationHeading">今日進行中</h2><p>保留今天已發布、但比賽尚未結束的推薦；發布隔天賽事不會讓今天的內容消失。</p></div></div>
+              <div class="recommendation-zone-title"><span class="recommendation-zone-no">2</span><div><h2 id="currentRecommendationHeading">今日進行中</h2></div></div>
               <span class="micro-pill" id="predictionCurrentCount">0 筆</span>
             </div>
             <div class="card recommendation-feed-card"><div class="recommendation-feed-list" id="predictionCurrentList"><div class="recommendation-feed-empty">正在讀取今天尚未結束的推薦…</div></div></div>
@@ -1131,7 +1134,7 @@
 
           <section class="recommendation-zone" aria-labelledby="predictionHistoryHeading">
             <div class="recommendation-zone-head">
-              <div class="recommendation-zone-title"><span class="recommendation-zone-no">3</span><div><h2 id="predictionHistoryHeading">歷史紀錄</h2><p>賽後自動顯示命中、未命中、走水或作廢，並保留推薦內容、信心、玩法與實際發布時間。</p></div></div>
+              <div class="recommendation-zone-title"><span class="recommendation-zone-no">3</span><div><h2 id="predictionHistoryHeading">歷史紀錄</h2></div></div>
             </div>
             <div class="card recommendation-feed-card">
               <div class="recommendation-feed-list" id="predictionHistoryList"><div class="recommendation-feed-empty">正在讀取最近結算紀錄…</div></div>
@@ -1963,6 +1966,7 @@
       document.querySelectorAll("[data-page]").forEach(btn=>btn.classList.toggle("active",btn.dataset.page===pageId));
       history.replaceState(null,"",`#${pageId.replace("Page","")}`);
       window.scrollTo({top:0,behavior:"smooth"});
+      if(pageId==="homePage") loadHomeLeagueSummary();
       if(pageId==="gamesPage"&&!state.gamesLoaded) loadLeagueGames();
       if(pageId==="predictionPage"){
         renderPredictionAccess();
@@ -4604,12 +4608,18 @@
       loadFounderMarkets(true);
     });
 
+    let homeLeagueSummaryRequest=0;
     async function loadHomeLeagueSummary(){
-      // The home dashboard always represents Taiwan's current day. The date
-      // selected on the games page is intentionally independent SPA state.
+      const requestId=++homeLeagueSummaryRequest;
       const date=taiwanToday();
+      ["MLB","NPB"].forEach(code=>{
+        const target=document.getElementById(`homeLeague${code}Count`);
+        if(target)target.textContent="今日資料載入中";
+      });
       try{
-        const payload=await fetchJsonWithTimeout(`${API_BASE}/leagues/summary?date=${encodeURIComponent(date)}`,30000);
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/leagues/summary?date=${encodeURIComponent(date)}&build=18.10.3&_=${Date.now()}`,30000);
+        if(requestId!==homeLeagueSummaryRequest)return;
+        if(payload.date!==date)throw new Error(`Home summary date mismatch: ${payload.date||"missing"}`);
         (payload.items||[]).forEach(item=>{
           const target=document.getElementById(`homeLeague${item.code}Count`);
           if(!target)return;
@@ -4623,6 +4633,7 @@
           }
         });
       }catch{
+        if(requestId!==homeLeagueSummaryRequest)return;
         ["MLB","NPB"].forEach(code=>{const target=document.getElementById(`homeLeague${code}Count`);if(target)target.textContent="今日資料暫時無法載入"});
       }
     }
@@ -5028,8 +5039,8 @@
     renderAuthState();
     loadRecords();
     loadHomeAnnouncements(true);
-    loadHomeLeagueSummary();
     if(initialHash&&pages.includes(`${initialHash}Page`))showPage(`${initialHash}Page`);
+    else loadHomeLeagueSummary();
     initializeAuth(authCallback);
     </script>
 </body>
