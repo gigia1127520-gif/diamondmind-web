@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind V18.9.6 separated MLB / NPB prediction operations -->
+  <!-- DiamondMind V18.9.7 compact founder free-pick control -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#03080c">
@@ -4227,13 +4227,21 @@
         const resultStatus=String(result.status||"pending");
         const resultLabels={won:"命中",lost:"未中",push:"走水",void:"作廢",pending:"等待賽果"};
         const score=result.away_score!=null&&result.home_score!=null?`終場 ${result.away_score}–${result.home_score}`:"";
-        list.innerHTML=`<article class="founder-published-card">
-          <div class="prediction-top"><span class="prediction-title">FOUNDER DAILY PICK</span><span class="micro-pill founder-source-chip">${escapeHtml(sourceLabel)} · 已發布鎖定</span></div>
-          <div class="confidence-preview founder-published-preview">
-            <div class="confidence-ring" style="background:conic-gradient(var(--green) 0 ${confidence}%,rgba(255,255,255,.05) ${confidence}%)"><div><b>${confidence.toFixed(1)}%</b><span>模型信心</span></div></div>
-            <div class="matchup-preview"><h2>${escapeHtml(localizeMatchup(selection.matchup||"—"))}</h2><span>${escapeHtml(selection.time_taiwan||"")}</span><div class="pick-highlight"><small>創辦人正式推薦</small><b>${escapeHtml(localizePickLabel(selection.pick?.label||"—",selection))}</b></div></div>
+        const league=String(selection.league||document.getElementById("founderPredictionLeague")?.value||"MLB").toUpperCase();
+        const metrics=[
+          Number.isFinite(confidence)?`模型 ${confidence.toFixed(1)}%`:null,
+          selection.edge!=null?`優勢 ${Number(selection.edge)>0?"+":""}${Number(selection.edge).toFixed(1)}%`:null,
+          selection.price!=null?`盤口 ${formatAmericanOdds(selection.price)}`:null
+        ].filter(Boolean).map(value=>`<span>${escapeHtml(value)}</span>`).join("");
+        list.innerHTML=`<article class="pro-selection-item founder-published-compact">
+          <div class="pro-selection-head">
+            <span class="pro-selection-no">FREE</span>
+            <div class="pro-selection-result"><span class="result ${resultClass(resultStatus)}">${escapeHtml(resultLabels[resultStatus]||"等待賽果")}</span>${score?`<small>${escapeHtml(score)}</small>`:""}</div>
           </div>
-          <div class="founder-published-result"><span>發布後永久鎖定，會員端會以每日免費精選大卡片顯示。</span><b class="result ${resultClass(resultStatus)}">${escapeHtml(resultLabels[resultStatus]||"等待賽果")}${score?` · ${escapeHtml(score)}`:""}</b></div>
+          <strong class="pro-pick">${escapeHtml(localizePickLabel(selection.pick?.label||"—",selection))}</strong>
+          <p class="pro-matchup">[${escapeHtml(league)}] ${escapeHtml(localizeMatchup(selection.matchup||"—"))}${selection.time_taiwan?` · ${escapeHtml(selection.time_taiwan)}`:""}</p>
+          <div class="pro-metrics">${metrics}</div>
+          <p class="pro-summary">${escapeHtml(sourceLabel)} · 已發布鎖定</p>
         </article>`;
         return;
       }
