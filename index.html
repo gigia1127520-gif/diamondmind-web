@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind V18.10.3 forced current-day home summary -->
-  <meta name="diamondmind-version" content="18.10.3">
+  <!-- DiamondMind V18.10.4 reschedule-safe settlement -->
+  <meta name="diamondmind-version" content="18.10.4">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -4617,7 +4617,7 @@
         if(target)target.textContent="今日資料載入中";
       });
       try{
-        const payload=await fetchJsonWithTimeout(`${API_BASE}/leagues/summary?date=${encodeURIComponent(date)}&build=18.10.3&_=${Date.now()}`,30000);
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/leagues/summary?date=${encodeURIComponent(date)}&build=18.10.4&_=${Date.now()}`,30000);
         if(requestId!==homeLeagueSummaryRequest)return;
         if(payload.date!==date)throw new Error(`Home summary date mismatch: ${payload.date||"missing"}`);
         (payload.items||[]).forEach(item=>{
