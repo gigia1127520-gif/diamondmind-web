@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind V18.9.4 Pro result badges, clean records and NPB live-box parsing -->
+  <!-- DiamondMind V18.9.6 separated MLB / NPB prediction operations -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#03080c">
@@ -501,13 +501,14 @@
 .pricing-grid.plan-focus{animation:planFocus 1.35s ease both}.pricing-grid.plan-focus .price-card{box-shadow:0 0 0 1px rgba(255,215,106,.28),0 24px 70px rgba(0,0,0,.34),0 0 42px rgba(255,215,106,.08)}
 @keyframes planFocus{0%{transform:translateY(8px);opacity:.72}45%{transform:none;opacity:1}100%{transform:none;opacity:1}}
     .pro-prediction-body{display:grid;gap:8px}.pro-pick{display:block;color:var(--green);font-size:18px;line-height:1.25}.pro-matchup{color:#c4d0d5!important}.pro-metrics{display:flex;flex-wrap:wrap;gap:5px}.pro-summary{padding-top:7px;border-top:1px solid rgba(255,255,255,.055)}.parlay-legs{display:grid;gap:6px;margin:2px 0 0;padding:0;list-style:none}.parlay-legs li{display:flex;justify-content:space-between;gap:8px;padding:7px 8px;border:1px solid rgba(255,255,255,.055);border-radius:9px;color:#c7d3d7;font-size:10px;background:rgba(255,255,255,.02)}.parlay-legs b{color:var(--green)}
+    .npb-basis-card{margin:0 0 12px;padding:16px;border:1px solid var(--line-strong);border-radius:16px;background:linear-gradient(145deg,rgba(55,244,164,.055),rgba(255,255,255,.018))}.npb-basis-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.npb-basis-head h4{margin:0 0 5px;font-size:16px}.npb-basis-head p{margin:0;color:var(--muted);font-size:10px;line-height:1.5}.npb-basis-score{flex:0 0 auto;padding:7px 10px;border:1px solid var(--line-strong);border-radius:999px;color:var(--green);font-size:10px;font-weight:900}.npb-basis-score.blocked{border-color:rgba(255,215,106,.3);color:var(--gold)}.npb-basis-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.npb-basis-tags span{padding:6px 8px;border:1px solid rgba(255,255,255,.07);border-radius:999px;color:#c1ced3;font-size:9px;background:rgba(255,255,255,.02)}.npb-basis-missing{margin:10px 0 0;color:var(--gold);font-size:10px;line-height:1.5}
     .pro-selection-list{display:grid;gap:9px}.pro-selection-item{padding:11px;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(255,255,255,.022)}.pro-selection-no{display:inline-grid;place-items:center;min-width:22px;height:22px;margin-bottom:7px;border:1px solid var(--line-strong);border-radius:7px;color:var(--green);font-size:10px;font-weight:950}.pro-selection-item .pro-pick{font-size:15px}.pro-selection-item .pro-matchup{margin:4px 0 7px;font-size:10px}.pro-selection-item .pro-summary{margin:7px 0 0;font-size:10px;line-height:1.45}.pro-selection-item .parlay-legs{margin-top:8px}.pro-selection-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.pro-selection-result{flex:0 0 auto;display:grid;justify-items:end;gap:3px}.pro-selection-result .result{min-width:45px;padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.035)}.pro-selection-result small{color:var(--muted);font-size:9px;white-space:nowrap}.pro-selection-result .result.win{background:rgba(55,244,164,.08)}.pro-selection-result .result.loss{background:rgba(255,115,130,.07)}.pro-selection-result .result.push,.pro-selection-result .result.void{background:rgba(255,215,106,.06)}
     .pro-access-card.watchlist-card{grid-column:1/-1;border-color:rgba(255,215,106,.28);background:linear-gradient(155deg,rgba(42,35,15,.38),rgba(5,17,22,.96))}.watchlist-item{border-color:rgba(255,215,106,.18);background:rgba(255,215,106,.028)}.watchlist-label{display:inline-flex;align-items:center;gap:6px;margin-bottom:7px;padding:4px 8px;border:1px solid rgba(255,215,106,.25);border-radius:999px;color:#ffe293;font-size:9px;font-weight:900;letter-spacing:.08em}.watchlist-reason{margin-top:7px;padding-top:7px;border-top:1px dashed rgba(255,215,106,.18);color:#d6cda8;font-size:10px;line-height:1.5}
     .founder-console{margin-top:18px;padding:24px;background:linear-gradient(145deg,rgba(8,27,31,.98),rgba(5,15,21,.98));border-color:rgba(255,209,92,.32)}
     .founder-source-chip{border-color:rgba(255,215,106,.38)!important;color:var(--gold)!important;background:rgba(255,215,106,.055)!important}
     .founder-published-card{margin-top:14px;padding:22px;border:1px solid var(--line-strong);border-radius:20px;background:radial-gradient(circle at 86% 12%,rgba(55,244,164,.1),transparent 34%),linear-gradient(155deg,rgba(11,34,39,.96),rgba(5,17,22,.98));box-shadow:0 18px 48px rgba(0,0,0,.25)}
     .founder-published-preview{grid-template-columns:132px minmax(0,1fr);margin-top:22px}.founder-published-preview .confidence-ring{width:126px}.founder-published-preview .matchup-preview h2{font-size:25px}.founder-published-result{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding:12px 14px;border:1px solid rgba(255,255,255,.065);border-radius:13px;background:rgba(255,255,255,.025)}
-    .founder-console-head,.founder-toolbar,.founder-candidate-top,.founder-candidate-actions{display:flex;align-items:center;justify-content:space-between;gap:12px}.founder-console-head h2{margin:4px 0 5px;font-size:23px}.founder-console-head p,.founder-status{margin:0;color:var(--muted);line-height:1.55}.founder-toolbar{justify-content:flex-start;flex-wrap:wrap;margin:18px 0}.founder-toolbar input{min-height:45px;padding:0 13px;border:1px solid var(--line);border-radius:12px;color:var(--text);background:rgba(0,0,0,.18);font:inherit;color-scheme:dark}.founder-candidates{display:grid;gap:10px;margin-top:14px}.founder-candidate{padding:16px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.022)}.founder-candidate.blocked{opacity:.65}.founder-candidate-top b{font-size:17px}.founder-tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.founder-tags span{padding:5px 8px;border:1px solid var(--line);border-radius:999px;color:#bdcbd0;font-size:10px}.founder-tags .special{border-color:rgba(255,209,92,.36);color:var(--gold)}.founder-warning{margin:7px 0 0;color:#d8c583;font-size:11px;line-height:1.55}.founder-blocker{color:#ee9292}.founder-lock{padding:17px;border:1px solid var(--line-strong);border-radius:14px;color:var(--green);background:rgba(55,244,164,.04)}
+    .founder-console-head,.founder-toolbar,.founder-candidate-top,.founder-candidate-actions{display:flex;align-items:center;justify-content:space-between;gap:12px}.founder-console-head h2{margin:4px 0 5px;font-size:23px}.founder-console-head p,.founder-status{margin:0;color:var(--muted);line-height:1.55}.founder-toolbar{justify-content:flex-start;flex-wrap:wrap;margin:18px 0}.founder-toolbar input{min-height:45px;padding:0 13px;border:1px solid var(--line);border-radius:12px;color:var(--text);background:rgba(0,0,0,.18);font:inherit;color-scheme:dark}.founder-toolbar select{min-height:45px;padding:0 38px 0 13px;border:1px solid var(--line);border-radius:12px;color:var(--text);background:#071219;font:inherit;color-scheme:dark}.prediction-league-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;margin-bottom:16px}.prediction-league-copy b{display:block;font-size:14px}.prediction-league-copy small{display:block;margin-top:4px;color:var(--muted);font-size:11px}.prediction-league-toolbar .league-switch{flex:0 0 auto;border:0;padding:0}.records-league-switch{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 17px;margin-bottom:16px}.records-league-switch span{color:var(--muted);font-size:12px}.founder-candidates{display:grid;gap:10px;margin-top:14px}.founder-candidate{padding:16px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.022)}.founder-candidate.blocked{opacity:.65}.founder-candidate-top b{font-size:17px}.founder-tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.founder-tags span{padding:5px 8px;border:1px solid var(--line);border-radius:999px;color:#bdcbd0;font-size:10px}.founder-tags .special{border-color:rgba(255,209,92,.36);color:var(--gold)}.founder-warning{margin:7px 0 0;color:#d8c583;font-size:11px;line-height:1.55}.founder-blocker{color:#ee9292}.founder-lock{padding:17px;border:1px solid var(--line-strong);border-radius:14px;color:var(--green);background:rgba(55,244,164,.04)}
     .founder-market-groups{display:grid;gap:14px;margin-top:15px}.founder-market-group{padding:15px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.018)}.founder-market-group-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.founder-market-group-head b{font-size:15px}.founder-market-group-head span{color:var(--muted);font-size:10px}.founder-market-subhead{margin:10px 0 7px;color:var(--green);font-size:10px;font-weight:900;letter-spacing:.12em}.founder-market-subhead.watch{color:#ffe293}.founder-market-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.founder-market-option{display:grid;grid-template-columns:22px minmax(0,1fr);gap:9px;align-items:start;padding:11px;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(255,255,255,.02);cursor:pointer}.founder-market-option.watchlist{border-color:rgba(255,215,106,.18);background:rgba(255,215,106,.025)}.founder-market-option:has(input:checked){border-color:var(--line-strong);background:rgba(55,244,164,.055)}.founder-market-option.watchlist:has(input:checked){border-color:rgba(255,215,106,.55);background:rgba(255,215,106,.07)}.founder-market-option input{width:17px;height:17px;min-height:0;margin:2px 0 0;accent-color:var(--green)}.founder-market-option b{display:block;font-size:12px}.founder-market-option small{display:block;margin-top:4px;color:var(--muted);font-size:9px;line-height:1.45}.founder-market-actions{display:flex;align-items:center;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:15px}
 
     .record-top-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
@@ -725,6 +726,7 @@
       .game-card{grid-template-columns:1fr 42px;padding:15px}.game-time{grid-column:1/2;display:flex;align-items:center;gap:9px}.game-time small{margin:0}.game-teams{grid-column:1/2}.pitchers{grid-column:1/2}.status-label{grid-column:2;grid-row:1}.chevron{grid-column:2;grid-row:2/4;align-self:center;justify-self:center}
       .toolbar{align-items:stretch}.date-control{width:100%;min-width:0;flex-basis:100%}.date-actions{width:100%;min-width:0}.date-actions input{flex:1 1 0;width:0;min-width:0;max-width:calc(100% - 48px)}#refreshGames{position:static;flex:0 0 38px}
       .prediction-main{padding:20px;min-height:330px}.confidence-preview{grid-template-columns:1fr;text-align:center}.confidence-ring{margin:auto}.pick-highlight{text-align:left}.engine-module-grid{grid-template-columns:1fr}.engine-breakdown-head{align-items:flex-start;flex-direction:column}.engine-module{text-align:left}.locked-engine-list{grid-template-columns:1fr}.locked-engine-item:last-child{grid-column:auto}
+      .prediction-league-toolbar,.records-league-switch{align-items:flex-start;flex-direction:column}.prediction-league-toolbar .league-switch,.records-league-switch .league-switch{width:100%}.prediction-league-toolbar .league-btn,.records-league-switch .league-btn{flex:1}
       .prediction-access-gate{padding:28px 18px}.access-level-head{align-items:flex-start;flex-direction:column}.pro-access-grid{grid-template-columns:1fr}.pro-access-card{min-height:142px}.membership-hero{grid-template-columns:1fr;padding:21px}.current-plan-box{min-width:0}.benefit-table{overflow-x:auto}.benefit-table-head,.benefit-row{min-width:570px}.checkout-actions{flex-direction:column}.checkout-actions .btn{width:100%}
       .payment-success-modal{padding:22px 18px}.payment-success-modal h2{font-size:26px}.payment-success-row{grid-template-columns:88px minmax(0,1fr);padding:12px}.payment-success-actions{flex-direction:column}.payment-success-actions .btn{width:100%}.payment-preview-controls{grid-template-columns:1fr}.payment-preview-action .btn{width:100%}#membershipPage .page-space{padding-bottom:240px}
       .founder-console{padding:18px}.founder-console-head,.founder-candidate-top,.founder-candidate-actions{align-items:flex-start;flex-direction:column}.founder-toolbar input,.founder-toolbar .btn,.founder-candidate-actions .btn,.founder-market-actions .btn{width:100%}.founder-market-options{grid-template-columns:1fr}.founder-market-actions{align-items:stretch;flex-direction:column}
@@ -1002,6 +1004,14 @@
           <span class="micro-pill" id="predictionApiStatus" aria-live="polite">登入後查看</span>
         </div>
 
+        <div class="card prediction-league-toolbar">
+          <div class="prediction-league-copy"><b>選擇預測聯盟</b><small>MLB 與 NPB 分開載入、分開發布，避免日棒資料尚未公布時被太早判定。</small></div>
+          <div class="league-switch" id="predictionLeagueSwitch" role="group" aria-label="選擇預測聯盟">
+            <button type="button" class="league-btn active" data-prediction-league="MLB">MLB 美棒</button>
+            <button type="button" class="league-btn" data-prediction-league="NPB">NPB 日棒</button>
+          </div>
+        </div>
+
         <div class="card prediction-access-gate" data-auth-guest>
           <div class="access-gate-icon" aria-hidden="true">DM</div>
           <h2>登入後查看今日免費精選</h2>
@@ -1054,6 +1064,20 @@
             </aside>
           </div>
 
+          <section class="card founder-console" data-auth-admin hidden aria-labelledby="founderPredictionTitle">
+            <div class="founder-console-head">
+              <div><div class="kicker">FREE PICK CONTROL</div><h2 id="founderPredictionTitle">每日免費精選指定</h2><p>每天維持一場免費推薦，可先選 MLB 或等 NPB 預告先發與盤口完整後再指定。發布後永久鎖定。</p></div>
+              <span class="micro-pill">僅創辦人可見</span>
+            </div>
+            <div class="founder-toolbar">
+              <input type="date" id="founderPredictionDate" aria-label="免費精選日期">
+              <select id="founderPredictionLeague" aria-label="免費精選聯盟"><option value="MLB">MLB 美棒</option><option value="NPB">NPB 日棒</option></select>
+              <button type="button" class="btn ghost small" id="founderLoadCandidates">載入候選場次</button>
+            </div>
+            <p class="founder-status" id="founderCandidateStatus">選擇聯盟與日期後載入每日免費精選候選。</p>
+            <div class="founder-candidates" id="founderCandidates"></div>
+          </section>
+
           <section class="card founder-console" data-auth-admin hidden aria-labelledby="founderMarketTitle">
             <div class="founder-console-head">
               <div><div class="kicker">PRO PUBLISH CONTROL</div><h2 id="founderMarketTitle">付費會員推薦管理</h2><p>AI 先列出所有通過門檻的玩法並預選建議組合；你可以增減後再一次發布。發布後永久鎖定。</p></div>
@@ -1061,10 +1085,11 @@
             </div>
             <div class="founder-toolbar">
               <input type="date" id="founderMarketDate" aria-label="付費推薦日期">
+              <select id="founderMarketLeague" aria-label="付費推薦聯盟"><option value="MLB">MLB 美棒</option><option value="NPB">NPB 日棒</option></select>
               <button type="button" class="btn ghost small" id="founderLoadMarkets">載入玩法候選</button>
               <button type="button" class="btn ghost small" id="founderUseAiMarkets">使用 AI 建議</button>
             </div>
-            <p class="founder-status" id="founderMarketStatus">選擇日期後載入獨贏、讓分、大小分與串關候選。</p>
+            <p class="founder-status" id="founderMarketStatus">選擇聯盟與日期後，獨立載入該聯盟的獨贏、讓分、大小分與串關候選。</p>
             <div class="founder-market-groups" id="founderMarketCandidates"></div>
             <div class="founder-market-actions">
               <small id="founderMarketSelectedCount">尚未載入候選</small>
@@ -1076,9 +1101,9 @@
             <div class="access-level-head"><div><h2 id="accessLevelTitle">Pro 會員精選</h2><p>Pro 會員只顯示已正式發布並鎖定的推薦，不會混入未發布候選。</p></div><button type="button" class="btn pro small" id="predictionUpgradeButton" data-page="membershipPage">升級 DiamondMind Pro</button></div>
             <div class="pro-access-grid">
               <article class="pro-access-card open"><div class="pro-access-top"><span class="market-tag">FREE PICK</span><span class="access-chip">已開放</span></div><h3>每日免費精選</h3><p>免費會員每日最多一場，只發布通過信心門檻的獨贏推薦。</p></article>
-              <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">MONEYLINE+</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>獨贏精選</h3><div class="pro-prediction-body" data-pro-body="moneylines"><p>所有已啟用棒球聯盟中，通過正式門檻的獨贏候選都會顯示。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
-              <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">RUN LINE</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>讓分精選</h3><div class="pro-prediction-body" data-pro-body="run_lines"><p>所有通過正式門檻的讓分候選都會顯示。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
-              <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">TOTALS</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>大小分精選</h3><div class="pro-prediction-body" data-pro-body="totals"><p>所有通過正式門檻的大小分候選都會顯示。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
+              <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">MONEYLINE+</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>獨贏精選</h3><div class="pro-prediction-body" data-pro-body="moneylines"><p>只顯示目前所選聯盟中，已正式發布並鎖定的獨贏推薦。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
+              <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">RUN LINE</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>讓分精選</h3><div class="pro-prediction-body" data-pro-body="run_lines"><p>只顯示目前所選聯盟中，已正式發布並鎖定的讓分推薦。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
+              <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">TOTALS</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>大小分精選</h3><div class="pro-prediction-body" data-pro-body="totals"><p>只顯示目前所選聯盟中，已正式發布並鎖定的大小分推薦。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
               <article class="pro-access-card locked watchlist-card" data-pro-feature data-auth-admin hidden><div class="pro-access-top"><span class="market-tag">WATCHLIST</span><span class="access-chip lock" data-pro-access-chip>創辦人</span></div><h3>創辦人觀察名單</h3><div class="pro-prediction-body" data-pro-body="watchlist"><p>接近正式門檻的候選只供創辦人審核，不對免費會員或 Pro 會員顯示。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
               <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">2-LEG</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>二關串關</h3><div class="pro-prediction-body" data-pro-body="two_leg"><p>最多 2 組，由不同場次的合格單場推薦組成。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
               <article class="pro-access-card locked" data-pro-feature><div class="pro-access-top"><span class="market-tag pro">3-LEG</span><span class="access-chip lock" data-pro-access-chip>PRO</span></div><h3>三關串關</h3><div class="pro-prediction-body" data-pro-body="three_leg"><p>最多 1 組高風險組合，清楚標示組合依據。</p></div><span class="pro-lock-icon" data-pro-lock aria-hidden="true">◇</span></article>
@@ -1094,6 +1119,15 @@
         <div class="page-head">
           <div><div class="kicker">VERIFIED TRACK RECORD</div><h1 id="recordsTitle">推薦紀錄</h1><p>公開保留每日免費精選與真實賽果；Pro 會員可查看完整玩法歷史。</p></div>
           <span class="micro-pill" id="recordsApiStatus" aria-live="polite">真實資料連線中</span>
+        </div>
+
+        <div class="card records-league-switch">
+          <span>完整紀錄可依聯盟切換，統計與明細會同步更新。</span>
+          <div class="filters" id="recordsLeagueFilters">
+            <button type="button" class="filter-btn active" data-record-league="all">全部</button>
+            <button type="button" class="filter-btn" data-record-league="MLB">MLB 美棒</button>
+            <button type="button" class="filter-btn" data-record-league="NPB">NPB 日棒</button>
+          </div>
         </div>
 
         <div class="record-top-grid">
@@ -1761,10 +1795,10 @@
     const AUTH_REDIRECT_URL=/^https?:$/.test(location.protocol)?`${location.origin}${location.pathname}`:"https://gigia1127520-gif.github.io/diamondmind-web/";
     const pages = ["homePage","gamesPage","predictionPage","recordsPage","membershipPage","adminMembersPage","adminAnnouncementsPage","adminSettlementPage","adminModelPage","adminOperationsPage","morePage"];
     const state = {
-      games:[],gameFilter:"all",gamesLoaded:false,activeLeague:"MLB",predictionDate:"",predictionRole:"",
-      records:[],marketRecords:[],proPerformance:null,recordStats:null,recordFilter:"all",marketRecordFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:"",recordsAccessRole:"",
-      founderCandidateDate:"",founderCandidatesLoading:false,
-      founderMarketDate:"",founderMarketsLoading:false,founderMarketBundle:null,
+      games:[],gameFilter:"all",gamesLoaded:false,activeLeague:"MLB",predictionDate:"",predictionRole:"",predictionLeague:"MLB",
+      records:[],marketRecords:[],proPerformance:null,recordStats:null,recordFilter:"all",marketRecordFilter:"all",recordLeagueFilter:"all",recordsLoaded:false,recordsLoading:false,recordsError:"",recordsAccessRole:"",
+      founderCandidateDate:"",founderCandidateLeague:"MLB",founderCandidatesLoading:false,
+      founderMarketDate:"",founderMarketLeague:"MLB",founderMarketsLoading:false,founderMarketBundle:null,
       upgradeReturnGame:null,billingConfig:null,billingStatus:null,selectedPlan:null,paymentHandled:false,
       paymentSuccessTimer:null,paymentSuccessInterval:null,
       adminTab:"members",adminMembers:null,adminTransactions:null,adminMembersOffset:0,adminTransactionsOffset:0,adminPageSize:30,adminSelectedMember:null,adminSelectedTransaction:null,adminPendingAction:null,adminLoading:false,
@@ -2850,14 +2884,14 @@
     }
     function renderProLeaguePerformance(rows){
       const target=document.getElementById("proLeaguePerformance");if(!target)return;
-      const backend=Array.isArray(state.proPerformance?.by_league)?state.proPerformance.by_league:[];
+      const backend=state.recordLeagueFilter==="all"&&Array.isArray(state.proPerformance?.by_league)?state.proPerformance.by_league:[];
       const keys=[...new Set(rows.map(row=>row.league||"MLB"))];
       const items=backend.length?backend:keys.map(key=>({key,...marketRecordStats(rows.filter(row=>row.league===key))}));
       target.innerHTML=items.length?items.map(item=>{const local=backend.length?item:marketRecordStats(rows.filter(row=>row.league===item.key));const profit=backend.length?Number(item.profit_units||0):local.profit;const roi=backend.length?item.roi_percent:local.roi;return `<div class="pro-league-row"><div><b>${escapeHtml(item.key||"其他")}</b><span>${Number(item.decisions??local.decisions??0)} 筆有效決策 · 命中率 ${item.hit_rate==null?(local.rate==null?"—":`${local.rate}%`):`${item.hit_rate}%`}</span></div><strong class="${profitClass(profit)}">${formatUnits(profit)}</strong><strong class="${profitClass(roi)}">${roi==null?"—":`${Number(roi).toFixed(2)}%`}</strong></div>`}).join(""):'<div class="empty">尚無可計算績效的正式推薦。</div>';
     }
     function renderProProfitChart(rows){
       const target=document.getElementById("proProfitChart");if(!target)return;
-      const backend=Array.isArray(state.proPerformance?.profit_curve)?state.proPerformance.profit_curve:[];
+      const backend=state.recordLeagueFilter==="all"&&Array.isArray(state.proPerformance?.profit_curve)?state.proPerformance.profit_curve:[];
       const curve=backend.length?backend.map(item=>({date:item.date,cumulative:Number(item.cumulative_profit_units||0)})):performanceCurve(rows);
       if(!curve.length){target.innerHTML='<div class="empty">尚無已結算且具有效賠率的推薦。</div>';return}
       const width=680,height=170,padX=26,padY=22,values=curve.map(item=>item.cumulative),min=Math.min(0,...values),max=Math.max(0,...values),range=Math.max(.5,max-min);
@@ -2868,7 +2902,8 @@
     function renderProPerformance(rows){renderProLeaguePerformance(rows);renderProProfitChart(rows)}
 
     function renderMarketRecords(){
-      const rows=allMarketHistoryRows();
+      const allRows=allMarketHistoryRows();
+      const rows=allRows.filter(row=>state.recordLeagueFilter==="all"||row.league===state.recordLeagueFilter);
       const container=document.getElementById("marketRecordsList");
       const count=document.getElementById("marketRecordCount");
       const summary=document.getElementById("proRecordSummary");
@@ -2936,30 +2971,47 @@
         element.classList.toggle("demo-pill",isError);
       });
     }
+    function freeRecordLeague(row){
+      const snapshot=row?.prediction_snapshot||{};
+      return String(snapshot.league||snapshot.game?.league||row?.league||"MLB").toUpperCase();
+    }
+    function freeRecordStats(rows){
+      const won=rows.filter(row=>row.status==="won").length;
+      const lost=rows.filter(row=>row.status==="lost").length;
+      const push=rows.filter(row=>row.status==="push").length;
+      const voided=rows.filter(row=>row.status==="void").length;
+      const pending=rows.filter(row=>row.status==="pending").length;
+      const decisions=won+lost;
+      return {total:rows.length,settled:won+lost+push+voided,won,lost,push,void:voided,pending,hit_rate:decisions?Number((won/decisions*100).toFixed(1)):null};
+    }
     function renderRecords(){
-      const rows=state.records;
-      const stats=state.recordStats||{total:0,settled:0,won:0,lost:0,push:0,void:0,pending:0,hit_rate:null};
+      const allRows=state.records;
+      const rows=allRows.filter(row=>state.recordLeagueFilter==="all"||freeRecordLeague(row)===state.recordLeagueFilter);
+      const stats=freeRecordStats(rows);
+      const allStats=freeRecordStats(allRows);
       const hasRate=stats.hit_rate!=null;
       const rate=hasRate?Number(stats.hit_rate):0;
+      const homeHasRate=allStats.hit_rate!=null;
+      const homeRate=homeHasRate?Number(allStats.hit_rate):0;
       document.getElementById("statTotal").textContent=stats.total||0;
       document.getElementById("statSettled").textContent=stats.settled||0;
       document.getElementById("statWins").textContent=stats.won||0;
       document.getElementById("statRate").textContent=hasRate?`${rate}%`:"—";
-      document.getElementById("homeHitRate").textContent=hasRate?`${rate}%`:"—";
-      document.getElementById("homeRateBar").style.width=`${Math.max(0,Math.min(100,rate))}%`;
-      document.getElementById("homeRecordCount").textContent=stats.settled?`${stats.won||0} 命中 / ${stats.settled} 場已結算`:"尚無已結算免費精選紀錄";
+      document.getElementById("homeHitRate").textContent=homeHasRate?`${homeRate}%`:"—";
+      document.getElementById("homeRateBar").style.width=`${Math.max(0,Math.min(100,homeRate))}%`;
+      document.getElementById("homeRecordCount").textContent=allStats.settled?`${allStats.won||0} 命中 / ${allStats.settled} 場已結算`:"尚無已結算免費精選紀錄";
 
       const homeList=document.getElementById("homePickList");
-      homeList.innerHTML=rows.length?rows.slice(0,4).map(row=>`
+      homeList.innerHTML=allRows.length?allRows.slice(0,4).map(row=>`
         <div class="pick-row">
-          <div class="pick-main"><b>⚾ ${escapeHtml(localizeMatchup(row.matchup))} · ${escapeHtml(localizePickLabel(row.pick_label))}</b><small>${recordDate(row.recommendation_date)} · MLB · ${recordScore(row)}</small></div>
+          <div class="pick-main"><b>⚾ ${escapeHtml(localizeMatchup(row.matchup))} · ${escapeHtml(localizePickLabel(row.pick_label))}</b><small>${recordDate(row.recommendation_date)} · ${freeRecordLeague(row)} · ${recordScore(row)}</small></div>
           <span class="result ${resultClass(row.status)}">${resultLabel(row.status)}</span>
         </div>`).join(""):`<div class="empty"><b>${state.recordsLoading?"免費精選紀錄載入中":"尚無免費精選紀錄"}</b>${state.recordsLoading?"正在連接 DiamondMind 紀錄資料庫。":"每日免費精選正式發布後會自動保留在這裡。"}</div>`;
 
       const filtered=rows.filter(x=>state.recordFilter==="all"||x.status===state.recordFilter);
       document.getElementById("recordsList").innerHTML=filtered.length?filtered.map(row=>`
         <div class="record-row">
-          <div class="record-date">${recordDate(row.recommendation_date)}<br>MLB</div>
+          <div class="record-date">${recordDate(row.recommendation_date)}<br>${freeRecordLeague(row)}</div>
           <div class="record-pick"><b>${escapeHtml(localizeMatchup(row.matchup))}</b><small>${escapeHtml(localizePickLabel(row.pick_label))} · 信心 ${Number(row.confidence||0).toFixed(1)}%</small></div>
           <div class="record-score">${recordScore(row)}</div>
           <span class="result ${resultClass(row.status)}">${resultLabel(row.status)}</span>
@@ -3016,6 +3068,11 @@
       state.marketRecordFilter=btn.dataset.marketRecordFilter;
       document.querySelectorAll("[data-market-record-filter]").forEach(x=>x.classList.toggle("active",x===btn));
       renderMarketRecords();
+    }));
+    document.querySelectorAll("[data-record-league]").forEach(btn=>btn.addEventListener("click",()=>{
+      state.recordLeagueFilter=btn.dataset.recordLeague||"all";
+      document.querySelectorAll("[data-record-league]").forEach(x=>x.classList.toggle("active",x===btn));
+      renderRecords();
     }));
 
     function shiftDate(dateStr,days){
@@ -3369,6 +3426,21 @@
       </div>`;
     }
 
+    function renderNpbModelBasis(payload){
+      const analysis=payload.analysis||{};
+      const basis=analysis.data_basis||{};
+      const quality=Math.round(Number(basis.data_quality??analysis.data_quality??0)*100);
+      const ready=basis.recommendation_ready===true;
+      const tags=(basis.used_modules||[]).map(value=>`<span>${escapeHtml(value)}</span>`).join("");
+      const missing=(basis.missing_core||[]);
+      const missingText=missing.length?`目前缺少：${missing.join("、")}`:"核心資料已達正式分析標準";
+      return `<section class="npb-basis-card">
+        <div class="npb-basis-head"><div><h4>本場 AI 實際分析依據</h4><p>顯示模型本次真正採用的資料；未取得的欄位不會假裝已納入。</p></div><span class="npb-basis-score ${ready?"":"blocked"}">完整度 ${quality}%</span></div>
+        <div class="npb-basis-tags">${tags||"<span>資料同步中</span>"}</div>
+        <p class="npb-basis-missing">${escapeHtml(missingText)}${ready?" · 可列入正式推薦":" · 僅供分析，不自動發布新推薦"}</p>
+      </section>`;
+    }
+
     function renderNpbAnalysis(payload){
       const analysis=payload.analysis||{};
       const groups=analysis.analysis_groups||{};
@@ -3395,7 +3467,7 @@
         npbGroupCard(team,"球隊實力與近況")
       ].join("");
 
-      return `<div class="engine-breakdown-head">
+      return `${renderNpbModelBasis(payload)}<div class="engine-breakdown-head">
           <h3>NPB 完整分析引擎</h3>
           <span>正式打線 · 先發近三場 · 牛棚近三日 · 登錄異動 · 環境 · 進階數據</span>
         </div>
@@ -3413,9 +3485,15 @@
           document.getElementById("detailEngineBreakdown").innerHTML=renderNpbAnalysisGate(payload.access||{role:isSignedIn()?"free":"guest"});
           return;
         }
+        const detailGame=payload.game||{};
+        const awayPitcher=detailGame.away?.probable_pitcher?.name;
+        const homePitcher=detailGame.home?.probable_pitcher?.name;
+        if(awayPitcher)document.getElementById("detailAwayPitcher").textContent=awayPitcher;
+        if(homePitcher)document.getElementById("detailHomePitcher").textContent=homePitcher;
         const analysis=payload.analysis||{};
         const quality=Math.round(Number(analysis.data_quality||0)*100);
-        aiStatus.textContent=`NPB 完整引擎完成 · 資料完整度 ${quality}%`;
+        const ready=analysis.official_recommendation_enabled===true;
+        aiStatus.textContent=`NPB 完整引擎完成 · 資料完整度 ${quality}%${ready?" · 正式分析可用":" · 資料不足僅供分析"}`;
         document.getElementById("detailEngineBreakdown").innerHTML=renderNpbAnalysis(payload);
       }catch(error){
         if(error.status===401){
@@ -3527,9 +3605,9 @@
     }
 
     function renderLockedProPredictions(){
-      setProBodyMessage("moneylines","所有已啟用棒球聯盟中，通過正式門檻的獨贏候選都會顯示。");
-      setProBodyMessage("run_lines","所有通過正式門檻的讓分候選都會顯示。");
-      setProBodyMessage("totals","所有通過正式門檻的大小分候選都會顯示。");
+      setProBodyMessage("moneylines","只顯示目前所選聯盟中，已正式發布並鎖定的獨贏推薦。");
+      setProBodyMessage("run_lines","只顯示目前所選聯盟中，已正式發布並鎖定的讓分推薦。");
+      setProBodyMessage("totals","只顯示目前所選聯盟中，已正式發布並鎖定的大小分推薦。");
       if(isAdminMember())setProBodyMessage("watchlist","接近正式門檻的候選只供創辦人內部審核，不列入正式戰績。");
       setProBodyMessage("two_leg","最多 2 組，由已通過門檻的不同場次組成。");
       setProBodyMessage("three_leg","最多 1 組高風險組合，不為湊關硬選。");
@@ -4182,11 +4260,11 @@
             <span>打線驗證 ${Math.round(Number(item.lineup_validation_rate||0)*100)}%</span>
           </div>
           ${notices}
-          <div class="founder-candidate-actions"><small>${escapeHtml(item.updated_at?`分析更新 ${formatAnalysisUpdatedAt(item.updated_at)} · `:"")}發布後即寫入公開紀錄，不能更換。</small><button type="button" class="btn ${item.can_publish?"primary":"ghost"} small" data-founder-publish="${Number(item.game_pk)}" ${item.can_publish?"":"disabled"}>${buttonText}</button></div>
+          <div class="founder-candidate-actions"><small>${escapeHtml(item.updated_at?`分析更新 ${formatAnalysisUpdatedAt(item.updated_at)} · `:"")}發布後即寫入公開紀錄，不能更換。</small><button type="button" class="btn ${item.can_publish?"primary":"ghost"} small" data-founder-publish="${escapeHtml(String(item.game_pk||""))}" ${item.can_publish?"":"disabled"}>${buttonText}</button></div>
         </article>`;
       }).join("");
       list.querySelectorAll("[data-founder-publish]").forEach(button=>button.addEventListener("click",()=>{
-        const item=items.find(candidate=>Number(candidate.game_pk)===Number(button.dataset.founderPublish));
+        const item=items.find(candidate=>String(candidate.game_pk)===String(button.dataset.founderPublish));
         if(item)publishFounderCandidate(item);
       }));
     }
@@ -4194,22 +4272,25 @@
     async function loadFounderCandidates(force=false){
       if(!isAdminMember()||state.founderCandidatesLoading)return;
       const input=document.getElementById("founderPredictionDate");
+      const leagueInput=document.getElementById("founderPredictionLeague");
       const status=document.getElementById("founderCandidateStatus");
       const list=document.getElementById("founderCandidates");
-      if(!input||!status||!list)return;
+      if(!input||!leagueInput||!status||!list)return;
       if(!input.value)input.value=document.getElementById("scheduleDate")?.value||taiwanToday();
       const date=input.value;
-      if(!force&&state.founderCandidateDate===date)return;
+      const league=leagueInput.value||"MLB";
+      if(!force&&state.founderCandidateDate===date&&state.founderCandidateLeague===league)return;
       state.founderCandidatesLoading=true;
-      status.textContent="正在比較所有候選場次與特殊賽事類型…";
+      status.textContent=`正在載入 ${league} 每日免費精選候選…`;
       list.replaceChildren();
       try{
         const payload=await fetchJsonWithTimeout(
-          `${API_BASE}/admin/predictions/candidates?date=${encodeURIComponent(date)}`,
+          `${API_BASE}/admin/predictions/candidates?date=${encodeURIComponent(date)}&league=${encodeURIComponent(league)}`,
           20000,
           {headers:{Authorization:`Bearer ${authState.session.access_token}`}}
         );
         state.founderCandidateDate=date;
+        state.founderCandidateLeague=league;
         renderFounderCandidates(payload);
       }catch(error){
         state.founderCandidateDate="";
@@ -4221,6 +4302,7 @@
 
     async function publishFounderCandidate(item){
       const input=document.getElementById("founderPredictionDate");
+      const league=document.getElementById("founderPredictionLeague")?.value||item.league||"MLB";
       const date=input?.value||taiwanToday();
       const warning=(item.warnings||[]).join("\n");
       const confirmation=`確定將 ${localizeMatchup(item.matchup)} · ${localizePickLabel(item.pick?.label||"此場",item)} 設為 ${date} 的正式每日推薦嗎？\n\n發布後永久鎖定，不能更換。${warning?`\n\n${warning}`:""}`;
@@ -4231,11 +4313,11 @@
         const response=await fetch(`${API_BASE}/admin/predictions/publish`,{
           method:"POST",
           headers:{Authorization:`Bearer ${authState.session.access_token}`,"Content-Type":"application/json",Accept:"application/json"},
-          body:JSON.stringify({date,game_pk:Number(item.game_pk),confirm_warning:Boolean(item.requires_confirmation)})
+          body:JSON.stringify({date,league,game_pk:String(item.game_pk),confirm_warning:Boolean(item.requires_confirmation)})
         });
         const payload=await response.json().catch(()=>({}));
         if(!response.ok)throw Object.assign(new Error(founderDetailMessage(payload,`HTTP ${response.status}`)),{status:response.status});
-        showToast("創辦人指定場次已發布並鎖定");
+        showToast(`${league} 每日免費精選已發布並鎖定`);
         state.predictionDate="";
         state.founderCandidateDate="";
         await loadTopPrediction();
@@ -4249,6 +4331,11 @@
     document.getElementById("founderLoadCandidates")?.addEventListener("click",()=>loadFounderCandidates(true));
     document.getElementById("founderPredictionDate")?.addEventListener("change",()=>{
       state.founderCandidateDate="";
+      loadFounderCandidates(true);
+    });
+    document.getElementById("founderPredictionLeague")?.addEventListener("change",event=>{
+      state.founderCandidateDate="";
+      state.founderCandidateLeague=event.target.value||"MLB";
       loadFounderCandidates(true);
     });
 
@@ -4317,7 +4404,7 @@
         input.checked=input.dataset.founderMarketTier!=="watchlist"&&ids.includes(input.dataset.candidateId);
       });
       updateFounderMarketSelectionCount();
-      showToast("已套用全部跨聯盟正式候選");
+      showToast(`已套用 ${state.founderMarketLeague} AI 正式候選`);
     }
 
     function founderMarketOptionsHtml(group,items,tier,recommended){
@@ -4353,7 +4440,7 @@
           watchlist:Object.values(packageData.watchlist||{}).reduce((sum,items)=>sum+asSelectionArray(items).length,0),
           founder:Number(packageData.publication?.founder_selected_count||0)
         };
-        container.innerHTML=`<div class="founder-lock"><b>今日付費推薦已鎖定</b><br>獨贏 ${counts.moneylines} · 讓分 ${counts.run_lines} · 大小分 ${counts.totals} · 二關 ${counts.two_leg} · 三關 ${counts.three_leg}<br>觀察名單 ${counts.watchlist}${counts.founder?` · 創辦人指定 ${counts.founder}`:""}</div>`;
+        container.innerHTML=`<div class="founder-lock"><b>今日 ${escapeHtml(payload.league||state.founderMarketLeague)} 付費推薦已鎖定</b><br>獨贏 ${counts.moneylines} · 讓分 ${counts.run_lines} · 大小分 ${counts.totals} · 二關 ${counts.two_leg} · 三關 ${counts.three_leg}<br>觀察名單 ${counts.watchlist}${counts.founder?` · 創辦人指定 ${counts.founder}`:""}</div>`;
         if(publish)publish.disabled=true;
         if(aiButton)aiButton.disabled=true;
         const count=document.getElementById("founderMarketSelectedCount");
@@ -4391,23 +4478,26 @@
     async function loadFounderMarkets(force=false){
       if(!isAdminMember()||state.founderMarketsLoading)return;
       const input=document.getElementById("founderMarketDate");
+      const leagueInput=document.getElementById("founderMarketLeague");
       const status=document.getElementById("founderMarketStatus");
       const container=document.getElementById("founderMarketCandidates");
-      if(!input||!status||!container)return;
+      if(!input||!leagueInput||!status||!container)return;
       if(!input.value)input.value=document.getElementById("scheduleDate")?.value||taiwanToday();
       const date=input.value;
-      if(!force&&state.founderMarketDate===date&&state.founderMarketBundle)return;
+      const league=leagueInput.value||"MLB";
+      if(!force&&state.founderMarketDate===date&&state.founderMarketLeague===league&&state.founderMarketBundle)return;
       state.founderMarketsLoading=true;
       document.getElementById("founderPublishMarkets").disabled=true;
-      status.textContent="正在整合 MLB／NPB 真實盤口與官方數據模型候選…";
+      status.textContent=`正在載入 ${league} 真實盤口與官方數據模型候選…`;
       container.replaceChildren();
       try{
         const payload=await fetchJsonWithTimeout(
-          `${API_BASE}/admin/markets/candidates?date=${encodeURIComponent(date)}`,
+          `${API_BASE}/admin/markets/candidates?date=${encodeURIComponent(date)}&league=${encodeURIComponent(league)}`,
           30000,
           {headers:{Authorization:`Bearer ${authState.session.access_token}`}}
         );
         state.founderMarketDate=date;
+        state.founderMarketLeague=league;
         renderFounderMarketCandidates(payload);
       }catch(error){
         state.founderMarketDate="";
@@ -4423,6 +4513,7 @@
     async function publishFounderMarkets(){
       if(!isAdminMember()||state.founderMarketsLoading)return;
       const input=document.getElementById("founderMarketDate");
+      const league=document.getElementById("founderMarketLeague")?.value||"MLB";
       const date=input?.value||taiwanToday();
       const selected=collectFounderMarketSelections();
       const total=Object.values(selected).reduce((sum,items)=>sum+items.length,0);
@@ -4430,7 +4521,7 @@
       const promoted=founderPromotedWatchlistCount();
       const summary=`獨贏 ${selected.moneylines.length}、讓分 ${selected.run_lines.length}、大小分 ${selected.totals.length}、二關 ${selected.two_leg.length}、三關 ${selected.three_leg.length}`;
       const promotedWarning=promoted?`\n\n其中 ${promoted} 項來自觀察名單，將標記為「創辦人指定」，不列入 AI 正式推薦統計。`:"";
-      if(!window.confirm(`確定發布 ${date} 的付費會員推薦嗎？\n\n${summary}${promotedWarning}\n\n發布後永久鎖定，不能更換。`))return;
+      if(!window.confirm(`確定發布 ${date} 的 ${league} 付費會員推薦嗎？\n\n${summary}${promotedWarning}\n\n發布後永久鎖定，不能更換。`))return;
       const status=document.getElementById("founderMarketStatus");
       const button=document.getElementById("founderPublishMarkets");
       state.founderMarketsLoading=true;
@@ -4440,11 +4531,11 @@
         const response=await fetch(`${API_BASE}/admin/markets/publish`,{
           method:"POST",
           headers:{Authorization:`Bearer ${authState.session.access_token}`,"Content-Type":"application/json",Accept:"application/json"},
-          body:JSON.stringify({date,...selected})
+          body:JSON.stringify({date,league,...selected})
         });
         const payload=await response.json().catch(()=>({}));
         if(!response.ok)throw new Error(founderDetailMessage(payload,`HTTP ${response.status}`));
-        showToast("付費會員推薦已發布並鎖定");
+        showToast(`${league} 付費會員推薦已發布並鎖定`);
         state.predictionDate="";
         state.founderMarketDate="";
         state.founderMarketBundle=null;
@@ -4465,6 +4556,12 @@
     document.getElementById("founderPublishMarkets")?.addEventListener("click",publishFounderMarkets);
     document.getElementById("founderMarketDate")?.addEventListener("change",()=>{
       state.founderMarketDate="";
+      state.founderMarketBundle=null;
+      loadFounderMarkets(true);
+    });
+    document.getElementById("founderMarketLeague")?.addEventListener("change",event=>{
+      state.founderMarketDate="";
+      state.founderMarketLeague=event.target.value||"MLB";
       state.founderMarketBundle=null;
       loadFounderMarkets(true);
     });
@@ -4499,14 +4596,42 @@
       loadLeagueGames();
     }));
 
+    function setPredictionLeague(league){
+      state.predictionLeague=league==="NPB"?"NPB":"MLB";
+      state.predictionDate="";
+      state.predictionRole="";
+      document.querySelectorAll("[data-prediction-league]").forEach(button=>button.classList.toggle("active",button.dataset.predictionLeague===state.predictionLeague));
+      const title=document.getElementById("predictionTitle");
+      if(title)title.textContent=`${state.predictionLeague} 今日最高信心`;
+      const proTitle=document.getElementById("accessLevelTitle");
+      if(proTitle)proTitle.textContent=`${state.predictionLeague} Pro 會員精選`;
+      const founderFree=document.getElementById("founderPredictionLeague");
+      const founderPro=document.getElementById("founderMarketLeague");
+      if(founderFree)founderFree.value=state.predictionLeague;
+      if(founderPro)founderPro.value=state.predictionLeague;
+      loadTopPrediction();
+      if(isAdminMember()){
+        state.founderCandidateDate="";
+        state.founderMarketDate="";
+        state.founderMarketBundle=null;
+        loadFounderCandidates(true);
+        loadFounderMarkets(true);
+      }
+    }
+    document.querySelectorAll("[data-prediction-league]").forEach(button=>button.addEventListener("click",()=>setPredictionLeague(button.dataset.predictionLeague)));
+
     async function loadTopPrediction(){
       if(!isSignedIn()){
         renderPredictionAccess();
         return;
       }
       const date=document.getElementById("scheduleDate").value||taiwanToday();
+      const league=state.predictionLeague||"MLB";
+      const cacheKey=`${date}:${league}`;
       const accessKey=authState.role;
-      if(state.predictionDate===date&&state.predictionRole===accessKey)return;
+      if(state.predictionDate===cacheKey&&state.predictionRole===accessKey)return;
+      const pageTitle=document.getElementById("predictionTitle");
+      if(pageTitle)pageTitle.textContent=`${league} 今日最高信心`;
       const empty=document.getElementById("predictionEmpty");
       const preview=document.getElementById("predictionPreview");
       const title=document.getElementById("predictionEmptyTitle");
@@ -4518,19 +4643,19 @@
       if(resultCard)resultCard.hidden=true;
       const sourceChip=document.getElementById("predictionSourceChip");
       const pickSourceLabel=document.getElementById("predictionPickLabel");
-      if(sourceChip){sourceChip.textContent="免費會員每日一場";sourceChip.classList.remove("founder-source-chip")}
+      if(sourceChip){sourceChip.textContent=`${league} 免費精選`;sourceChip.classList.remove("founder-source-chip")}
       if(pickSourceLabel)pickSourceLabel.textContent="AI 獨贏推薦";
       apiStatus.textContent="模型 API 連線中";
       apiStatus.classList.remove("demo-pill");
-      title.textContent="AI 正在比較今日全部賽事";
-      text.textContent="正在讀取先發投手、正式打線、牛棚負荷、天氣球場與 Statcast 進階數據。";
+      title.textContent=`AI 正在比較今日 ${league} 全部賽事`;
+      text.textContent=league==="NPB"?"正在等待日棒預告先發、正式打線與盤口更新；資料完整後會重新計算。":"正在讀取先發投手、正式打線、牛棚負荷、天氣球場與 Statcast 進階數據。";
       try{
         const payload=await fetchJsonWithTimeout(
-          `${API_BASE}/predictions/daily?date=${encodeURIComponent(date)}`,
+          `${API_BASE}/predictions/daily?date=${encodeURIComponent(date)}&league=${encodeURIComponent(league)}`,
           75000,
           {headers:{Authorization:`Bearer ${authState.session.access_token}`}}
         );
-        state.predictionDate=date;
+        state.predictionDate=cacheKey;
         state.predictionRole=payload.member?.role||accessKey;
         apiStatus.textContent="模型 API 已連線";
         apiStatus.classList.remove("demo-pill");
@@ -4554,13 +4679,13 @@
           });
           loadRecords(true);
         }else{
-          title.textContent="今日暫不發布 AI 精選";
-          text.textContent=payload.message||"目前沒有場次達到最低信心門檻。";
+          title.textContent=`今日 ${league} 暫不發布精選`;
+          text.textContent=payload.message||`${league} 目前沒有場次達到最低信心與資料完整度門檻。`;
         }
       }catch(error){
         try{
-          const fallback=await fetchJsonWithTimeout(`${API_BASE}/predictions/top?date=${encodeURIComponent(date)}`,75000);
-          state.predictionDate=date;
+          const fallback=await fetchJsonWithTimeout(`${API_BASE}/predictions/top?date=${encodeURIComponent(date)}&league=${encodeURIComponent(league)}`,75000);
+          state.predictionDate=cacheKey;
           state.predictionRole=accessKey;
           apiStatus.textContent="免費模型已連線 · 會員玩法稍後重試";
           apiStatus.classList.add("demo-pill");
@@ -4571,8 +4696,8 @@
             const selection=fallback.selection;
             window.setDiamondMindPrediction({confidence:selection.confidence,matchup:selection.matchup,time:selection.time_taiwan,pick:selection.pick?.label||"—",factors:selection.factors||[],analysisGroups:selection.analysis_groups||{},engine:selection.engine||{},eventLabel:selection.publication?.event_label||selection.game?.event_label,founderSelected:selection.publication?.mode==="founder_selected",result:selection.result||null});
           }else{
-            title.textContent="今日暫不發布 AI 精選";
-            text.textContent=fallback.message||"目前沒有場次達到最低信心門檻。";
+            title.textContent=`今日 ${league} 暫不發布精選`;
+            text.textContent=fallback.message||`${league} 目前沒有場次達到最低信心與資料完整度門檻。`;
           }
         }catch(fallbackError){
           state.predictionDate="";
@@ -4744,7 +4869,7 @@
       const sourceChip=document.getElementById("predictionSourceChip");
       const pickSourceLabel=document.getElementById("predictionPickLabel");
       if(sourceChip){
-        sourceChip.textContent=founderPick?"創辦人精選 · 已鎖定":"免費會員每日一場";
+        sourceChip.textContent=founderPick?`${state.predictionLeague} 創辦人精選 · 已鎖定`:`${state.predictionLeague} 免費精選`;
         sourceChip.classList.toggle("founder-source-chip",founderPick);
       }
       if(pickSourceLabel)pickSourceLabel.textContent=founderPick?"創辦人正式推薦":"AI 獨贏推薦";
