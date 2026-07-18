@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind V18.10.7 incremental performance settlement -->
-  <meta name="diamondmind-version" content="18.10.7">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
+  <!-- DiamondMind V18.10.0 instant league-specific recommendation publishing -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#03080c">
@@ -1029,7 +1025,7 @@
         <div data-auth-user hidden>
           <section class="recommendation-zone" aria-labelledby="latestRecommendationHeading">
             <div class="recommendation-zone-head">
-              <div class="recommendation-zone-title"><span class="recommendation-zone-no">1</span><div><h2 id="latestRecommendationHeading">最新推薦</h2></div></div>
+              <div class="recommendation-zone-title"><span class="recommendation-zone-no">1</span><div><h2 id="latestRecommendationHeading">最新推薦</h2><p>永遠優先顯示目前聯盟最近一次正式發布的批次，不以今天日期限制。</p></div></div>
             </div>
           <div class="prediction-shell">
             <article class="card prediction-main">
@@ -1126,7 +1122,7 @@
 
           <section class="recommendation-zone" aria-labelledby="currentRecommendationHeading">
             <div class="recommendation-zone-head">
-              <div class="recommendation-zone-title"><span class="recommendation-zone-no">2</span><div><h2 id="currentRecommendationHeading">今日進行中</h2></div></div>
+              <div class="recommendation-zone-title"><span class="recommendation-zone-no">2</span><div><h2 id="currentRecommendationHeading">今日進行中</h2><p>保留今天已發布、但比賽尚未結束的推薦；發布隔天賽事不會讓今天的內容消失。</p></div></div>
               <span class="micro-pill" id="predictionCurrentCount">0 筆</span>
             </div>
             <div class="card recommendation-feed-card"><div class="recommendation-feed-list" id="predictionCurrentList"><div class="recommendation-feed-empty">正在讀取今天尚未結束的推薦…</div></div></div>
@@ -1134,7 +1130,7 @@
 
           <section class="recommendation-zone" aria-labelledby="predictionHistoryHeading">
             <div class="recommendation-zone-head">
-              <div class="recommendation-zone-title"><span class="recommendation-zone-no">3</span><div><h2 id="predictionHistoryHeading">歷史紀錄</h2></div></div>
+              <div class="recommendation-zone-title"><span class="recommendation-zone-no">3</span><div><h2 id="predictionHistoryHeading">歷史紀錄</h2><p>賽後自動顯示命中、未命中、走水或作廢，並保留推薦內容、信心、玩法與實際發布時間。</p></div></div>
             </div>
             <div class="card recommendation-feed-card">
               <div class="recommendation-feed-list" id="predictionHistoryList"><div class="recommendation-feed-empty">正在讀取最近結算紀錄…</div></div>
@@ -1962,17 +1958,15 @@
 
     function showPage(pageId){
       if(!pages.includes(pageId)) pageId="homePage";
-      if(pageId!=="predictionPage")stopPredictionAutoRefresh();
       document.querySelectorAll(".page").forEach(page=>page.classList.toggle("active",page.id===pageId));
       document.querySelectorAll("[data-page]").forEach(btn=>btn.classList.toggle("active",btn.dataset.page===pageId));
       history.replaceState(null,"",`#${pageId.replace("Page","")}`);
       window.scrollTo({top:0,behavior:"smooth"});
-      if(pageId==="homePage") loadHomeLeagueSummary();
       if(pageId==="gamesPage"&&!state.gamesLoaded) loadLeagueGames();
       if(pageId==="predictionPage"){
         renderPredictionAccess();
         if(isSignedIn()){
-          loadTopPrediction(true);
+          loadTopPrediction();
           if(isAdminMember()){loadFounderCandidates();loadFounderMarkets();}
         }
       }
@@ -2263,11 +2257,9 @@
 
     let authRefreshTimer;
     let appHeartbeatTimer=null;
-    let predictionRefreshTimer=null;
     let appWakePromise=null;
     let appHiddenAt=0;
     const APP_HEARTBEAT_MS=5*60*1000;
-    const PREDICTION_REFRESH_MS=60*1000;
     const APP_RESUME_REFRESH_MS=60*1000;
 
     async function warmDiamondMindBackend(timeout=70000){
@@ -2821,10 +2813,7 @@
         const resultValue=bundle.results?.[key]??bundle.results?.[key.replace(/s$/,'')];
         const results=asSelectionArray(resultValue);
         return selections.flatMap((selection,index)=>{
-          const candidateId=selection?.candidate_id;
-          const result=candidateId!=null&&String(candidateId)!==""
-            ?(results.find(item=>item?.candidate_id!=null&&String(item.candidate_id)===String(candidateId))||{status:"pending"})
-            :(results[index]||{status:"pending"});
+          const result=results.find(item=>item?.candidate_id&&item.candidate_id===selection.candidate_id)||results[index]||{status:"pending"};
           const isParlay=key==="two_leg"||key==="three_leg";
           const legs=Array.isArray(selection.legs)?selection.legs:[];
           const pickLabel=isParlay
@@ -3625,6 +3614,7 @@
       state.predictionDate="";
       state.predictionRole="";
       loadLeagueGames();
+      loadHomeLeagueSummary();
     });
 
     function formatAmericanOdds(value){
@@ -3667,10 +3657,7 @@
 
     function publishedSelectionResult(results,key,selection,index){
       const group=asSelectionArray(results?.[key]??results?.[key.replace(/s$/,'')]);
-      const candidateId=selection?.candidate_id;
-      return candidateId!=null&&String(candidateId)!==""
-        ?(group.find(item=>item?.candidate_id!=null&&String(item.candidate_id)===String(candidateId))||{status:"pending"})
-        :(group[index]||{status:"pending"});
+      return group.find(item=>item?.candidate_id&&String(item.candidate_id)===String(selection?.candidate_id))||group[index]||{status:"pending"};
     }
     function selectionResultNode(result){
       const wrap=document.createElement("div");
@@ -4617,18 +4604,10 @@
       loadFounderMarkets(true);
     });
 
-    let homeLeagueSummaryRequest=0;
     async function loadHomeLeagueSummary(){
-      const requestId=++homeLeagueSummaryRequest;
-      const date=taiwanToday();
-      ["MLB","NPB"].forEach(code=>{
-        const target=document.getElementById(`homeLeague${code}Count`);
-        if(target)target.textContent="今日資料載入中";
-      });
+      const date=document.getElementById("scheduleDate")?.value||taiwanToday();
       try{
-        const payload=await fetchJsonWithTimeout(`${API_BASE}/leagues/summary?date=${encodeURIComponent(date)}&build=18.10.7&_=${Date.now()}`,30000);
-        if(requestId!==homeLeagueSummaryRequest)return;
-        if(payload.date!==date)throw new Error(`Home summary date mismatch: ${payload.date||"missing"}`);
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/leagues/summary?date=${encodeURIComponent(date)}`,30000);
         (payload.items||[]).forEach(item=>{
           const target=document.getElementById(`homeLeague${item.code}Count`);
           if(!target)return;
@@ -4642,7 +4621,6 @@
           }
         });
       }catch{
-        if(requestId!==homeLeagueSummaryRequest)return;
         ["MLB","NPB"].forEach(code=>{const target=document.getElementById(`homeLeague${code}Count`);if(target)target.textContent="今日資料暫時無法載入"});
       }
     }
@@ -4718,25 +4696,7 @@
       if(historyList)historyList.innerHTML='<div class="recommendation-feed-empty">正在讀取最近結算紀錄…</div>';
     }
 
-    function stopPredictionAutoRefresh(){
-      clearTimeout(predictionRefreshTimer);
-      predictionRefreshTimer=null;
-    }
-    function predictionPayloadNeedsRefresh(payload){
-      const terminal=new Set(["won","lost","push","void"]);
-      const freeStatus=String(payload?.moneyline?.result?.status||"pending");
-      if(payload?.moneyline&&!terminal.has(freeStatus))return true;
-      if(Number(payload?.formal_recommendation_count||0)>0&&payload?.settled!==true)return true;
-      return Array.isArray(payload?.feed?.current)&&payload.feed.current.length>0;
-    }
-    function schedulePredictionAutoRefresh(shouldRefresh=true){
-      stopPredictionAutoRefresh();
-      if(!shouldRefresh||!isSignedIn()||!document.getElementById("predictionPage")?.classList.contains("active"))return;
-      predictionRefreshTimer=setTimeout(()=>loadTopPrediction(true,true),PREDICTION_REFRESH_MS);
-    }
-
     function setPredictionLeague(league){
-      stopPredictionAutoRefresh();
       state.predictionLeague=league==="NPB"?"NPB":"MLB";
       state.predictionDate="";
       state.predictionRole="";
@@ -4749,7 +4709,7 @@
       const founderPro=document.getElementById("founderMarketLeague");
       if(founderFree)founderFree.value=state.predictionLeague;
       if(founderPro)founderPro.value=state.predictionLeague;
-      loadTopPrediction(true);
+      loadTopPrediction();
       if(isAdminMember()){
         state.founderCandidateDate="";
         state.founderMarketDate="";
@@ -4760,16 +4720,15 @@
     }
     document.querySelectorAll("[data-prediction-league]").forEach(button=>button.addEventListener("click",()=>setPredictionLeague(button.dataset.predictionLeague)));
 
-    async function loadTopPrediction(force=false,silent=false){
+    async function loadTopPrediction(){
       if(!isSignedIn()){
-        stopPredictionAutoRefresh();
         renderPredictionAccess();
         return;
       }
       const league=state.predictionLeague||"MLB";
       const cacheKey=`latest:${league}`;
       const accessKey=authState.role;
-      if(!force&&state.predictionDate===cacheKey&&state.predictionRole===accessKey)return;
+      if(state.predictionDate===cacheKey&&state.predictionRole===accessKey)return;
       const pageTitle=document.getElementById("predictionTitle");
       if(pageTitle)pageTitle.textContent=`${league} 最新已發布推薦`;
       const empty=document.getElementById("predictionEmpty");
@@ -4777,22 +4736,21 @@
       const title=document.getElementById("predictionEmptyTitle");
       const text=document.getElementById("predictionEmptyText");
       const apiStatus=document.getElementById("predictionApiStatus");
-      if(!silent){empty.hidden=false;preview.hidden=true}
+      empty.hidden=false;
+      preview.hidden=true;
       const resultCard=document.getElementById("predictionResult");
-      if(resultCard&&!silent)resultCard.hidden=true;
+      if(resultCard)resultCard.hidden=true;
       const sourceChip=document.getElementById("predictionSourceChip");
       const pickSourceLabel=document.getElementById("predictionPickLabel");
       const publicationMeta=document.getElementById("predictionPublicationMeta");
-      if(!silent){
-        if(sourceChip){sourceChip.textContent=`${league} 免費精選`;sourceChip.classList.remove("founder-source-chip")}
-        if(pickSourceLabel)pickSourceLabel.textContent="AI 獨贏推薦";
-        if(publicationMeta)publicationMeta.replaceChildren();
-        setRecommendationFeedLoading();
-        apiStatus.textContent="模型 API 連線中";
-        apiStatus.classList.remove("demo-pill");
-        title.textContent=`正在讀取 ${league} 最新正式推薦`;
-        text.textContent="系統會依實際按下正式發布的時間載入，不受台灣午夜換日限制。";
-      }
+      if(sourceChip){sourceChip.textContent=`${league} 免費精選`;sourceChip.classList.remove("founder-source-chip")}
+      if(pickSourceLabel)pickSourceLabel.textContent="AI 獨贏推薦";
+      if(publicationMeta)publicationMeta.replaceChildren();
+      setRecommendationFeedLoading();
+      apiStatus.textContent="模型 API 連線中";
+      apiStatus.classList.remove("demo-pill");
+      title.textContent=`正在讀取 ${league} 最新正式推薦`;
+      text.textContent="系統會依實際按下正式發布的時間載入，不受台灣午夜換日限制。";
       try{
         const payload=await fetchJsonWithTimeout(
           `${API_BASE}/predictions/latest?league=${encodeURIComponent(league)}`,
@@ -4805,7 +4763,6 @@
         apiStatus.classList.remove("demo-pill");
         renderProPredictions(payload);
         renderRecommendationFeed(payload.feed||{});
-        schedulePredictionAutoRefresh(predictionPayloadNeedsRefresh(payload));
         if(payload.moneyline){
           const selection=payload.moneyline;
           const batch=payload.free_batch||selection.publication||{};
@@ -4846,9 +4803,7 @@
           if(fallback.published&&fallback.selection){
             const selection=fallback.selection;
             window.setDiamondMindPrediction({confidence:selection.confidence,matchup:selection.matchup,time:selection.time_taiwan,pick:selection.pick?.label||"—",factors:selection.factors||[],analysisGroups:selection.analysis_groups||{},engine:selection.engine||{},eventLabel:selection.publication?.event_label||selection.game?.event_label,founderSelected:selection.publication?.mode==="founder_selected",targetDate:fallback.target_date||selection.target_date,publishedAt:fallback.published_at||selection.published_at,batchStatus:fallback.status||selection.status||"published",result:selection.result||null});
-            schedulePredictionAutoRefresh(true);
           }else{
-            stopPredictionAutoRefresh();
             title.textContent=`${league} 尚無正式發布的免費精選`;
             text.textContent=fallback.message||`${league} 目前尚無已正式發布推薦。`;
           }
@@ -4860,7 +4815,6 @@
           title.textContent="AI 服務暫時無法連線";
           text.textContent="賽事頁仍可使用 MLB 直連備援，請稍後再試。";
           renderRecommendationFeed({current:[],history:[]});
-          schedulePredictionAutoRefresh(true);
         }
       }
     }
@@ -5072,8 +5026,8 @@
     renderAuthState();
     loadRecords();
     loadHomeAnnouncements(true);
+    loadHomeLeagueSummary();
     if(initialHash&&pages.includes(`${initialHash}Page`))showPage(`${initialHash}Page`);
-    else loadHomeLeagueSummary();
     initializeAuth(authCallback);
     </script>
 </body>
