@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind V18.10.4 reschedule-safe settlement -->
-  <meta name="diamondmind-version" content="18.10.4">
+  <!-- DiamondMind V18.10.5 live result reconciliation -->
+  <meta name="diamondmind-version" content="18.10.5">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -1962,6 +1962,7 @@
 
     function showPage(pageId){
       if(!pages.includes(pageId)) pageId="homePage";
+      if(pageId!=="predictionPage")stopPredictionAutoRefresh();
       document.querySelectorAll(".page").forEach(page=>page.classList.toggle("active",page.id===pageId));
       document.querySelectorAll("[data-page]").forEach(btn=>btn.classList.toggle("active",btn.dataset.page===pageId));
       history.replaceState(null,"",`#${pageId.replace("Page","")}`);
@@ -1971,7 +1972,7 @@
       if(pageId==="predictionPage"){
         renderPredictionAccess();
         if(isSignedIn()){
-          loadTopPrediction();
+          loadTopPrediction(true);
           if(isAdminMember()){loadFounderCandidates();loadFounderMarkets();}
         }
       }
@@ -2262,9 +2263,11 @@
 
     let authRefreshTimer;
     let appHeartbeatTimer=null;
+    let predictionRefreshTimer=null;
     let appWakePromise=null;
     let appHiddenAt=0;
     const APP_HEARTBEAT_MS=5*60*1000;
+    const PREDICTION_REFRESH_MS=60*1000;
     const APP_RESUME_REFRESH_MS=60*1000;
 
     async function warmDiamondMindBackend(timeout=70000){
@@ -4617,7 +4620,7 @@
         if(target)target.textContent="今日資料載入中";
       });
       try{
-        const payload=await fetchJsonWithTimeout(`${API_BASE}/leagues/summary?date=${encodeURIComponent(date)}&build=18.10.4&_=${Date.now()}`,30000);
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/leagues/summary?date=${encodeURIComponent(date)}&build=18.10.5&_=${Date.now()}`,30000);
         if(requestId!==homeLeagueSummaryRequest)return;
         if(payload.date!==date)throw new Error(`Home summary date mismatch: ${payload.date||"missing"}`);
         (payload.items||[]).forEach(item=>{
@@ -4709,7 +4712,25 @@
       if(historyList)historyList.innerHTML='<div class="recommendation-feed-empty">正在讀取最近結算紀錄…</div>';
     }
 
+    function stopPredictionAutoRefresh(){
+      clearTimeout(predictionRefreshTimer);
+      predictionRefreshTimer=null;
+    }
+    function predictionPayloadNeedsRefresh(payload){
+      const terminal=new Set(["won","lost","push","void"]);
+      const freeStatus=String(payload?.moneyline?.result?.status||"pending");
+      if(payload?.moneyline&&!terminal.has(freeStatus))return true;
+      if(Number(payload?.formal_recommendation_count||0)>0&&payload?.settled!==true)return true;
+      return Array.isArray(payload?.feed?.current)&&payload.feed.current.length>0;
+    }
+    function schedulePredictionAutoRefresh(shouldRefresh=true){
+      stopPredictionAutoRefresh();
+      if(!shouldRefresh||!isSignedIn()||!document.getElementById("predictionPage")?.classList.contains("active"))return;
+      predictionRefreshTimer=setTimeout(()=>loadTopPrediction(true,true),PREDICTION_REFRESH_MS);
+    }
+
     function setPredictionLeague(league){
+      stopPredictionAutoRefresh();
       state.predictionLeague=league==="NPB"?"NPB":"MLB";
       state.predictionDate="";
       state.predictionRole="";
@@ -4722,7 +4743,7 @@
       const founderPro=document.getElementById("founderMarketLeague");
       if(founderFree)founderFree.value=state.predictionLeague;
       if(founderPro)founderPro.value=state.predictionLeague;
-      loadTopPrediction();
+      loadTopPrediction(true);
       if(isAdminMember()){
         state.founderCandidateDate="";
         state.founderMarketDate="";
@@ -4733,15 +4754,16 @@
     }
     document.querySelectorAll("[data-prediction-league]").forEach(button=>button.addEventListener("click",()=>setPredictionLeague(button.dataset.predictionLeague)));
 
-    async function loadTopPrediction(){
+    async function loadTopPrediction(force=false,silent=false){
       if(!isSignedIn()){
+        stopPredictionAutoRefresh();
         renderPredictionAccess();
         return;
       }
       const league=state.predictionLeague||"MLB";
       const cacheKey=`latest:${league}`;
       const accessKey=authState.role;
-      if(state.predictionDate===cacheKey&&state.predictionRole===accessKey)return;
+      if(!force&&state.predictionDate===cacheKey&&state.predictionRole===accessKey)return;
       const pageTitle=document.getElementById("predictionTitle");
       if(pageTitle)pageTitle.textContent=`${league} 最新已發布推薦`;
       const empty=document.getElementById("predictionEmpty");
@@ -4749,21 +4771,22 @@
       const title=document.getElementById("predictionEmptyTitle");
       const text=document.getElementById("predictionEmptyText");
       const apiStatus=document.getElementById("predictionApiStatus");
-      empty.hidden=false;
-      preview.hidden=true;
+      if(!silent){empty.hidden=false;preview.hidden=true}
       const resultCard=document.getElementById("predictionResult");
-      if(resultCard)resultCard.hidden=true;
+      if(resultCard&&!silent)resultCard.hidden=true;
       const sourceChip=document.getElementById("predictionSourceChip");
       const pickSourceLabel=document.getElementById("predictionPickLabel");
       const publicationMeta=document.getElementById("predictionPublicationMeta");
-      if(sourceChip){sourceChip.textContent=`${league} 免費精選`;sourceChip.classList.remove("founder-source-chip")}
-      if(pickSourceLabel)pickSourceLabel.textContent="AI 獨贏推薦";
-      if(publicationMeta)publicationMeta.replaceChildren();
-      setRecommendationFeedLoading();
-      apiStatus.textContent="模型 API 連線中";
-      apiStatus.classList.remove("demo-pill");
-      title.textContent=`正在讀取 ${league} 最新正式推薦`;
-      text.textContent="系統會依實際按下正式發布的時間載入，不受台灣午夜換日限制。";
+      if(!silent){
+        if(sourceChip){sourceChip.textContent=`${league} 免費精選`;sourceChip.classList.remove("founder-source-chip")}
+        if(pickSourceLabel)pickSourceLabel.textContent="AI 獨贏推薦";
+        if(publicationMeta)publicationMeta.replaceChildren();
+        setRecommendationFeedLoading();
+        apiStatus.textContent="模型 API 連線中";
+        apiStatus.classList.remove("demo-pill");
+        title.textContent=`正在讀取 ${league} 最新正式推薦`;
+        text.textContent="系統會依實際按下正式發布的時間載入，不受台灣午夜換日限制。";
+      }
       try{
         const payload=await fetchJsonWithTimeout(
           `${API_BASE}/predictions/latest?league=${encodeURIComponent(league)}`,
@@ -4776,6 +4799,7 @@
         apiStatus.classList.remove("demo-pill");
         renderProPredictions(payload);
         renderRecommendationFeed(payload.feed||{});
+        schedulePredictionAutoRefresh(predictionPayloadNeedsRefresh(payload));
         if(payload.moneyline){
           const selection=payload.moneyline;
           const batch=payload.free_batch||selection.publication||{};
@@ -4816,7 +4840,9 @@
           if(fallback.published&&fallback.selection){
             const selection=fallback.selection;
             window.setDiamondMindPrediction({confidence:selection.confidence,matchup:selection.matchup,time:selection.time_taiwan,pick:selection.pick?.label||"—",factors:selection.factors||[],analysisGroups:selection.analysis_groups||{},engine:selection.engine||{},eventLabel:selection.publication?.event_label||selection.game?.event_label,founderSelected:selection.publication?.mode==="founder_selected",targetDate:fallback.target_date||selection.target_date,publishedAt:fallback.published_at||selection.published_at,batchStatus:fallback.status||selection.status||"published",result:selection.result||null});
+            schedulePredictionAutoRefresh(true);
           }else{
+            stopPredictionAutoRefresh();
             title.textContent=`${league} 尚無正式發布的免費精選`;
             text.textContent=fallback.message||`${league} 目前尚無已正式發布推薦。`;
           }
@@ -4828,6 +4854,7 @@
           title.textContent="AI 服務暫時無法連線";
           text.textContent="賽事頁仍可使用 MLB 直連備援，請稍後再試。";
           renderRecommendationFeed({current:[],history:[]});
+          schedulePredictionAutoRefresh(true);
         }
       }
     }
