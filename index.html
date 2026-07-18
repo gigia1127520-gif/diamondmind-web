@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind V18.10.5 live result reconciliation -->
-  <meta name="diamondmind-version" content="18.10.5">
+  <!-- DiamondMind V18.10.6 settlement integrity -->
+  <meta name="diamondmind-version" content="18.10.6">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -2821,7 +2821,10 @@
         const resultValue=bundle.results?.[key]??bundle.results?.[key.replace(/s$/,'')];
         const results=asSelectionArray(resultValue);
         return selections.flatMap((selection,index)=>{
-          const result=results.find(item=>item?.candidate_id&&item.candidate_id===selection.candidate_id)||results[index]||{status:"pending"};
+          const candidateId=selection?.candidate_id;
+          const result=candidateId!=null&&String(candidateId)!==""
+            ?(results.find(item=>item?.candidate_id!=null&&String(item.candidate_id)===String(candidateId))||{status:"pending"})
+            :(results[index]||{status:"pending"});
           const isParlay=key==="two_leg"||key==="three_leg";
           const legs=Array.isArray(selection.legs)?selection.legs:[];
           const pickLabel=isParlay
@@ -3664,7 +3667,10 @@
 
     function publishedSelectionResult(results,key,selection,index){
       const group=asSelectionArray(results?.[key]??results?.[key.replace(/s$/,'')]);
-      return group.find(item=>item?.candidate_id&&String(item.candidate_id)===String(selection?.candidate_id))||group[index]||{status:"pending"};
+      const candidateId=selection?.candidate_id;
+      return candidateId!=null&&String(candidateId)!==""
+        ?(group.find(item=>item?.candidate_id!=null&&String(item.candidate_id)===String(candidateId))||{status:"pending"})
+        :(group[index]||{status:"pending"});
     }
     function selectionResultNode(result){
       const wrap=document.createElement("div");
@@ -4620,7 +4626,7 @@
         if(target)target.textContent="今日資料載入中";
       });
       try{
-        const payload=await fetchJsonWithTimeout(`${API_BASE}/leagues/summary?date=${encodeURIComponent(date)}&build=18.10.5&_=${Date.now()}`,30000);
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/leagues/summary?date=${encodeURIComponent(date)}&build=18.10.6&_=${Date.now()}`,30000);
         if(requestId!==homeLeagueSummaryRequest)return;
         if(payload.date!==date)throw new Error(`Home summary date mismatch: ${payload.date||"missing"}`);
         (payload.items||[]).forEach(item=>{
