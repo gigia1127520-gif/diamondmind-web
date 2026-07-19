@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind V18.13.0 NPB complete-model real-odds auto publish -->
-  <meta name="diamondmind-version" content="18.13.0">
+  <!-- DiamondMind V18.13.1 NPB model timeout and auto-publish recovery -->
+  <meta name="diamondmind-version" content="18.13.1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -3071,7 +3071,7 @@
       try{
         const headers={};
         if(authState.session?.access_token)headers.Authorization=`Bearer ${authState.session.access_token}`;
-        const payload=await fetchJsonWithTimeout(`${API_BASE}/records`,12000,{headers});
+        const payload=await fetchJsonWithRetry(`${API_BASE}/records`,60000,{headers},1);
         if(payload.is_demo||payload.database!=="connected")throw new Error("Records database unavailable");
         state.records=Array.isArray(payload.items)?payload.items:[];
         state.marketRecords=isProMember()&&Array.isArray(payload.market_packages)
@@ -3236,6 +3236,22 @@
       }finally{
         clearTimeout(timer);
       }
+    }
+
+    async function fetchJsonWithRetry(url,timeout=6500,options={},retries=1){
+      let lastError;
+      for(let attempt=0;attempt<=Math.max(0,retries);attempt+=1){
+        try{
+          return await fetchJsonWithTimeout(url,timeout,options);
+        }catch(error){
+          lastError=error;
+          const status=Number(error?.status||0);
+          const retryable=!status||status===408||status===429||status>=500;
+          if(!retryable||attempt>=retries)throw error;
+          await new Promise(resolve=>setTimeout(resolve,1500));
+        }
+      }
+      throw lastError;
     }
 
     async function loadMlbDirect(date){
@@ -4350,13 +4366,16 @@
       const league=leagueInput.value||"MLB";
       if(!force&&state.founderCandidateDate===date&&state.founderCandidateLeague===league)return;
       state.founderCandidatesLoading=true;
-      status.textContent=`正在載入 ${league} 每日免費精選候選…`;
+      status.textContent=league==="NPB"
+        ?"正在載入 NPB 完整官方數據模型，首次整理約需 20～60 秒…"
+        :`正在載入 ${league} 每日免費精選候選…`;
       list.replaceChildren();
       try{
-        const payload=await fetchJsonWithTimeout(
+        const payload=await fetchJsonWithRetry(
           `${API_BASE}/admin/predictions/candidates?date=${encodeURIComponent(date)}&league=${encodeURIComponent(league)}`,
-          20000,
-          {headers:{Authorization:`Bearer ${authState.session.access_token}`}}
+          league==="NPB"?90000:45000,
+          {headers:{Authorization:`Bearer ${authState.session.access_token}`}},
+          league==="NPB"?1:0
         );
         state.founderCandidateDate=date;
         state.founderCandidateLeague=league;
@@ -4573,13 +4592,16 @@
       if(!force&&state.founderMarketDate===date&&state.founderMarketLeague===league&&state.founderMarketBundle)return;
       state.founderMarketsLoading=true;
       document.getElementById("founderPublishMarkets").disabled=true;
-      status.textContent=`正在載入 ${league} 真實盤口與官方數據模型候選…`;
+      status.textContent=league==="NPB"
+        ?"正在載入 NPB 完整模型與真實盤口，首次整理約需 30～90 秒…"
+        :`正在載入 ${league} 真實盤口與官方數據模型候選…`;
       container.replaceChildren();
       try{
-        const payload=await fetchJsonWithTimeout(
+        const payload=await fetchJsonWithRetry(
           `${API_BASE}/admin/markets/candidates?date=${encodeURIComponent(date)}&league=${encodeURIComponent(league)}`,
-          30000,
-          {headers:{Authorization:`Bearer ${authState.session.access_token}`}}
+          league==="NPB"?150000:60000,
+          {headers:{Authorization:`Bearer ${authState.session.access_token}`}},
+          league==="NPB"?1:0
         );
         state.founderMarketDate=date;
         state.founderMarketLeague=league;
@@ -4660,7 +4682,7 @@
         if(target)target.textContent="今日資料載入中";
       });
       try{
-        const payload=await fetchJsonWithTimeout(`${API_BASE}/leagues/summary?date=${encodeURIComponent(date)}&build=18.13.0&_=${Date.now()}`,30000);
+        const payload=await fetchJsonWithTimeout(`${API_BASE}/leagues/summary?date=${encodeURIComponent(date)}&build=18.13.1&_=${Date.now()}`,30000);
         if(requestId!==homeLeagueSummaryRequest)return;
         if(payload.date!==date)throw new Error(`Home summary date mismatch: ${payload.date||"missing"}`);
         (payload.items||[]).forEach(item=>{
