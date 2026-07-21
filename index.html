@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind Frontend V18.14.2 schedule sanitation · Backend V20.2.5 -->
-  <meta name="diamondmind-version" content="18.14.2">
-  <meta name="diamondmind-backend-target" content="20.2.5">
+  <!-- DiamondMind Frontend V18.14.3 complete-score display · Backend V20.2.7 -->
+  <meta name="diamondmind-version" content="18.14.3">
+  <meta name="diamondmind-backend-target" content="20.2.7">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -447,7 +447,7 @@
     .game-time b{display:block;font-size:18px}.game-time small{display:block;margin-top:4px;color:var(--muted)}
     .game-teams{display:grid;gap:9px;min-width:0}
     .team-line{display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:9px}
-    .abbr{color:var(--green);font-weight:950}.team-line span:nth-child(2){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.score{font-size:19px;font-weight:950}
+    .abbr{color:var(--green);font-weight:950}.team-line span:nth-child(2){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.score{min-width:30px;text-align:right;font-size:19px;font-weight:950;font-variant-numeric:tabular-nums}
     .pitchers{color:var(--muted);font-size:11px;line-height:1.55}
     .status-label{justify-self:end;padding:7px 10px;border-radius:999px;color:#b8c6cd;font-size:11px;background:rgba(255,255,255,.04)}
     .status-label.live{color:var(--red);background:rgba(255,115,130,.08)}
@@ -731,7 +731,7 @@
       .home-league-grid{grid-template-columns:1fr 1fr}
       .feature-grid,.how-grid,.record-summary,.menu-grid{grid-template-columns:1fr}
       .record-card-head{padding:20px 18px 15px}.pick-list{padding:0 18px 18px}.record-summary{padding:0 18px 20px}
-      .game-card{grid-template-columns:1fr 42px;padding:15px}.game-time{grid-column:1/2;display:flex;align-items:center;gap:9px}.game-time small{margin:0}.game-teams{grid-column:1/2}.pitchers{grid-column:1/2}.status-label{grid-column:2;grid-row:1}.chevron{grid-column:2;grid-row:2/4;align-self:center;justify-self:center}
+      .game-card{grid-template-columns:1fr 42px;padding:15px}.game-time{grid-column:1/2;display:flex;align-items:center;gap:9px}.game-time small{margin:0}.game-teams{grid-column:1/2;width:100%}.pitchers{grid-column:1/2}.status-label{grid-column:2;grid-row:1}.chevron{grid-column:2;grid-row:2/4;align-self:center;justify-self:center}
       .toolbar{align-items:stretch}.date-control{width:100%;min-width:0;flex-basis:100%}.date-actions{width:100%;min-width:0}.date-actions input{flex:1 1 0;width:0;min-width:0;max-width:calc(100% - 48px)}#refreshGames{position:static;flex:0 0 38px}
       .prediction-main{padding:20px;min-height:330px}.confidence-preview{grid-template-columns:1fr;text-align:center}.confidence-ring{margin:auto}.pick-highlight{text-align:left}.engine-module-grid{grid-template-columns:1fr}.engine-breakdown-head{align-items:flex-start;flex-direction:column}.engine-module{text-align:left}.locked-engine-list{grid-template-columns:1fr}.locked-engine-item:last-child{grid-column:auto}
       .prediction-league-toolbar,.records-league-switch{align-items:flex-start;flex-direction:column}.prediction-league-toolbar .league-switch,.records-league-switch .league-switch{width:100%}.prediction-league-toolbar .league-btn,.records-league-switch .league-btn{flex:1}
@@ -3173,6 +3173,17 @@
       if(abstract==="final")return "final";
       return "upcoming";
     }
+    function normalizedScore(value){
+      if(value===null||value===undefined||value==="")return null;
+      const numeric=Number(value);
+      return Number.isFinite(numeric)&&numeric>=0&&numeric<=99?numeric:null;
+    }
+    function cleanGameTimeLabel(value,fallback="時間待定"){
+      const text=safeGameText(value,fallback,40);
+      // Defensive cleanup for older CPBL payloads that accidentally appended
+      // one isolated score node to the time label (for example 台灣 18:35 9).
+      return text.replace(/^(台灣\s+\d{1,2}:\d{2})(?:\s+\d{1,2})+$/u,"$1");
+    }
     function statusText(game){
       if(game.status==="live"){
         const inning=game.inning?`${game.inningState||""}${game.inning}局`:"進行中";
@@ -3224,14 +3235,19 @@
       if(league==="MLB")return normalizeBackendGame(game);
       const away=safeGameText(game.away?.name,"Away",80);
       const home=safeGameText(game.home?.name,"Home",80);
-      const fallbackTime=game.status==="final"?"已完賽":"時間待定";
+      const awayScore=normalizedScore(game.away?.score);
+      const homeScore=normalizedScore(game.home?.score);
+      const scoreComplete=awayScore!==null&&homeScore!==null;
+      let normalizedStatus=safeGameText(game.status,"upcoming",24);
+      if(normalizedStatus==="final"&&!scoreComplete)normalizedStatus="result_pending";
+      const fallbackTime=normalizedStatus==="final"?"已完賽":"時間待定";
       return {
         id:String(game.game_pk||game.external_game_id||`${league}-${away}-${home}`),league,gameDate:game.game_date||"",
-        time:safeGameText(game.display_time_taiwan||(game.time_taiwan?`台灣 ${game.time_taiwan}`:fallbackTime),fallbackTime,32),status:safeGameText(game.status,"upcoming",24),
+        time:cleanGameTimeLabel(game.display_time_taiwan||(game.time_taiwan?`台灣 ${game.time_taiwan}`:fallbackTime),fallbackTime),status:normalizedStatus,
         detailedState:safeGameText(game.detailed_status,"",48),inning:game.inning||null,inningState:safeGameText(game.inning_state,"",24),
         away,home,awayZh:safeGameText(game.away?.name_zh||npbTeamZh[away]||away,away,80),homeZh:safeGameText(game.home?.name_zh||npbTeamZh[home]||home,home,80),
         awayAbbr:safeGameText(game.away?.abbr,"AWY",8),homeAbbr:safeGameText(game.home?.abbr,"HME",8),
-        awayScore:game.away?.score,homeScore:game.home?.score,
+        awayScore,homeScore,scoreComplete,
         awayPitcher:safeGameText(game.away?.probable_pitcher?.name,"尚未公布",64),homePitcher:safeGameText(game.home?.probable_pitcher?.name,"尚未公布",64),
         awayPitcherAnnounced:game.away?.probable_pitcher?.announced===true,homePitcherAnnounced:game.home?.probable_pitcher?.announced===true,
         awayRecord:game.away?.record||null,homeRecord:game.home?.record||null,
