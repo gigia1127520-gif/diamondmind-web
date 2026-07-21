@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind Frontend V18.14.0 four-league selector · Backend V20.2.2 -->
-  <meta name="diamondmind-version" content="18.14.0">
-  <meta name="diamondmind-backend-target" content="20.2.2">
+  <!-- DiamondMind Frontend V18.14.1 four-league selector · Backend V20.2.4 -->
+  <meta name="diamondmind-version" content="18.14.1">
+  <meta name="diamondmind-backend-target" content="20.2.4">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -2282,7 +2282,8 @@
     let appWakePromise=null;
     let appHiddenAt=0;
     const APP_HEARTBEAT_MS=5*60*1000;
-    const PREDICTION_REFRESH_MS=60*1000;
+    const PREDICTION_REFRESH_MS=3*60*1000;
+    const PREDICTION_RETRY_MS=6*60*1000;
     const APP_RESUME_REFRESH_MS=60*1000;
 
     async function warmDiamondMindBackend(timeout=70000){
@@ -3086,7 +3087,7 @@
       try{
         const headers={};
         if(authState.session?.access_token)headers.Authorization=`Bearer ${authState.session.access_token}`;
-        const payload=await fetchJsonWithRetry(`${API_BASE}/records`,60000,{headers},1);
+        const payload=await fetchJsonWithRetry(`${API_BASE}/records`,30000,{headers},1);
         if(payload.is_demo||payload.database!=="connected")throw new Error("Records database unavailable");
         state.records=Array.isArray(payload.items)?payload.items:[];
         state.marketRecords=isProMember()&&Array.isArray(payload.market_packages)
@@ -4799,7 +4800,7 @@
         if(target)target.textContent="今日資料載入中";
       });
       const results=await Promise.allSettled(leagues.map(code=>fetchJsonWithTimeout(
-        `${API_BASE}/games?league=${encodeURIComponent(code)}&date=${encodeURIComponent(date)}&build=18.14.0&_=${Date.now()}`,
+        `${API_BASE}/games?league=${encodeURIComponent(code)}&date=${encodeURIComponent(date)}&build=18.14.1&_=${Date.now()}`,
         code==="MLB"?15000:30000
       )));
       if(requestId!==homeLeagueSummaryRequest)return;
@@ -4915,10 +4916,10 @@
       if(Number(payload?.formal_recommendation_count||0)>0&&payload?.settled!==true)return true;
       return Array.isArray(payload?.feed?.current)&&payload.feed.current.length>0;
     }
-    function schedulePredictionAutoRefresh(shouldRefresh=true){
+    function schedulePredictionAutoRefresh(shouldRefresh=true,retry=false){
       stopPredictionAutoRefresh();
       if(!shouldRefresh||!isSignedIn()||!document.getElementById("predictionPage")?.classList.contains("active"))return;
-      predictionRefreshTimer=setTimeout(()=>loadTopPrediction(true,true),PREDICTION_REFRESH_MS);
+      predictionRefreshTimer=setTimeout(()=>loadTopPrediction(true,true),retry?PREDICTION_RETRY_MS:PREDICTION_REFRESH_MS);
     }
 
     function setPredictionLeague(league){
@@ -4983,7 +4984,7 @@
       try{
         const payload=await fetchJsonWithTimeout(
           `${API_BASE}/predictions/latest?league=${encodeURIComponent(league)}`,
-          75000,
+          45000,
           {headers:{Authorization:`Bearer ${authState.session.access_token}`}}
         );
         state.predictionDate=cacheKey;
@@ -5020,8 +5021,14 @@
           text.textContent=payload.message||`未正式發布的候選不會顯示；按下正式發布後，會員會立即在這裡看到。`;
         }
       }catch(error){
+        if(silent&&state.predictionDate===cacheKey){
+          apiStatus.textContent="資料更新延遲 · 顯示上次結果";
+          apiStatus.classList.add("demo-pill");
+          schedulePredictionAutoRefresh(true,true);
+          return;
+        }
         try{
-          const fallback=await fetchJsonWithTimeout(`${API_BASE}/predictions/top?latest=true&league=${encodeURIComponent(league)}`,75000);
+          const fallback=await fetchJsonWithTimeout(`${API_BASE}/predictions/top?latest=true&league=${encodeURIComponent(league)}`,30000);
           state.predictionDate=cacheKey;
           state.predictionRole=accessKey;
           apiStatus.textContent="免費模型已連線 · 會員玩法稍後重試";
@@ -5042,12 +5049,12 @@
         }catch(fallbackError){
           state.predictionDate="";
           state.predictionRole="";
-          apiStatus.textContent="模型 API 暫時離線";
+          apiStatus.textContent="資料來源暫時無法更新";
           apiStatus.classList.add("demo-pill");
-          title.textContent="AI 服務暫時無法連線";
-          text.textContent="賽事頁仍可使用 MLB 直連備援，請稍後再試。";
+          title.textContent="AI 資料更新延遲";
+          text.textContent="系統會自動降低重試頻率；已發布資料不會因此被刪除。";
           renderRecommendationFeed({current:[],history:[]});
-          schedulePredictionAutoRefresh(true);
+          schedulePredictionAutoRefresh(true,true);
         }
       }
     }
