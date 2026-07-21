@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind Frontend V18.14.1 four-league selector · Backend V20.2.4 -->
-  <meta name="diamondmind-version" content="18.14.1">
-  <meta name="diamondmind-backend-target" content="20.2.4">
+  <!-- DiamondMind Frontend V18.14.2 schedule sanitation · Backend V20.2.5 -->
+  <meta name="diamondmind-version" content="18.14.2">
+  <meta name="diamondmind-backend-target" content="20.2.5">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -452,6 +452,7 @@
     .status-label{justify-self:end;padding:7px 10px;border-radius:999px;color:#b8c6cd;font-size:11px;background:rgba(255,255,255,.04)}
     .status-label.live{color:var(--red);background:rgba(255,115,130,.08)}
     .status-label.final{color:var(--green);background:rgba(55,244,164,.07)}
+    .status-label.result_pending{color:var(--gold);background:rgba(255,215,106,.07)}
     .chevron{color:var(--green);font-size:22px}
     .empty{padding:34px 20px;text-align:center;color:var(--muted)}
     .empty b{display:block;margin-bottom:8px;color:var(--text);font-size:18px}
@@ -2810,6 +2811,13 @@
     function escapeHtml(value){
       return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
     }
+    function safeGameText(value,fallback="",maxLength=64){
+      const text=String(value??"").replace(/\s+/g," ").trim();
+      if(!text)return fallback;
+      if(text.length>maxLength)return fallback;
+      if(/[{};]/.test(text)||/(?:\.css-|--chakra|@layer|background:|display:|font-size:|border-radius:|webkit-)/i.test(text))return fallback;
+      return text;
+    }
     function resultLabel(result){
       return ({won:"命中",lost:"未中",push:"走水",void:"作廢",pending:"未結算"})[result]||"未結算";
     }
@@ -3172,6 +3180,7 @@
       }
       if(game.status==="final")return "已結束";
       if(game.status==="postponed")return "延賽／取消";
+      if(game.status==="result_pending")return "賽果同步中";
       return "未開賽";
     }
     function normalizeGame(game){
@@ -3213,19 +3222,20 @@
 
     function normalizeLeagueGame(game,league){
       if(league==="MLB")return normalizeBackendGame(game);
-      const away=game.away?.name||"Away";
-      const home=game.home?.name||"Home";
+      const away=safeGameText(game.away?.name,"Away",80);
+      const home=safeGameText(game.home?.name,"Home",80);
+      const fallbackTime=game.status==="final"?"已完賽":"時間待定";
       return {
         id:String(game.game_pk||game.external_game_id||`${league}-${away}-${home}`),league,gameDate:game.game_date||"",
-        time:game.display_time_taiwan||(game.time_taiwan?`台灣 ${game.time_taiwan}`:(game.status==="final"?"已完賽":"時間待定")),status:game.status||"upcoming",
-        detailedState:game.detailed_status||"",inning:game.inning||null,inningState:game.inning_state||"",
-        away,home,awayZh:game.away?.name_zh||npbTeamZh[away]||away,homeZh:game.home?.name_zh||npbTeamZh[home]||home,
-        awayAbbr:game.away?.abbr||"AWY",homeAbbr:game.home?.abbr||"HME",
+        time:safeGameText(game.display_time_taiwan||(game.time_taiwan?`台灣 ${game.time_taiwan}`:fallbackTime),fallbackTime,32),status:safeGameText(game.status,"upcoming",24),
+        detailedState:safeGameText(game.detailed_status,"",48),inning:game.inning||null,inningState:safeGameText(game.inning_state,"",24),
+        away,home,awayZh:safeGameText(game.away?.name_zh||npbTeamZh[away]||away,away,80),homeZh:safeGameText(game.home?.name_zh||npbTeamZh[home]||home,home,80),
+        awayAbbr:safeGameText(game.away?.abbr,"AWY",8),homeAbbr:safeGameText(game.home?.abbr,"HME",8),
         awayScore:game.away?.score,homeScore:game.home?.score,
-        awayPitcher:game.away?.probable_pitcher?.name||"尚未公布",homePitcher:game.home?.probable_pitcher?.name||"尚未公布",
+        awayPitcher:safeGameText(game.away?.probable_pitcher?.name,"尚未公布",64),homePitcher:safeGameText(game.home?.probable_pitcher?.name,"尚未公布",64),
         awayPitcherAnnounced:game.away?.probable_pitcher?.announced===true,homePitcherAnnounced:game.home?.probable_pitcher?.announced===true,
         awayRecord:game.away?.record||null,homeRecord:game.home?.record||null,
-        venue:game.venue||"",eventLabel:game.event_label||`${league} 例行賽`,analysisAvailable:game.analysis_available===true,
+        venue:safeGameText(game.venue,"",48),eventLabel:safeGameText(game.event_label||`${league} 例行賽`,`${league} 例行賽`,48),analysisAvailable:game.analysis_available===true,
         sourceUrl:game.source_url||game.official_schedule_url||""
       };
     }
@@ -3350,11 +3360,11 @@
         return;
       }
       list.innerHTML=filtered.map(game=>`
-        <article class="game-card" data-game-id="${escapeHtml(String(game.id))}" data-game-league="${escapeHtml(game.league||state.activeLeague)}" tabindex="0" role="button" aria-label="查看 ${game.awayZh} 對 ${game.homeZh}">
-          <div class="game-time"><b>${game.time}</b><small>${game.venue||game.league||state.activeLeague}</small></div>
+        <article class="game-card" data-game-id="${escapeHtml(String(game.id))}" data-game-league="${escapeHtml(game.league||state.activeLeague)}" tabindex="0" role="button" aria-label="查看 ${escapeHtml(game.awayZh)} 對 ${escapeHtml(game.homeZh)}">
+          <div class="game-time"><b>${escapeHtml(game.time)}</b><small>${escapeHtml(game.venue||game.league||state.activeLeague)}</small></div>
           <div class="game-teams">
-            <div class="team-line"><span class="abbr">${game.awayAbbr}</span><span>${game.awayZh}</span><span class="score">${game.awayScore??""}</span></div>
-            <div class="team-line"><span class="abbr">${game.homeAbbr}</span><span>${game.homeZh}</span><span class="score">${game.homeScore??""}</span></div>
+            <div class="team-line"><span class="abbr">${escapeHtml(game.awayAbbr)}</span><span>${escapeHtml(game.awayZh)}</span><span class="score">${escapeHtml(game.awayScore??"")}</span></div>
+            <div class="team-line"><span class="abbr">${escapeHtml(game.homeAbbr)}</span><span>${escapeHtml(game.homeZh)}</span><span class="score">${escapeHtml(game.homeScore??"")}</span></div>
           </div>
           <div class="pitchers">${(game.league||state.activeLeague)==="NPB"?npbGameMeta(game):`${game.eventLabel?`${escapeHtml(game.eventLabel)} · `:""}客：${escapeHtml(game.awayPitcher)}<br>主：${escapeHtml(game.homePitcher)}`}</div>
           <span class="status-label ${game.status}">${statusText(game)}</span>
@@ -4800,7 +4810,7 @@
         if(target)target.textContent="今日資料載入中";
       });
       const results=await Promise.allSettled(leagues.map(code=>fetchJsonWithTimeout(
-        `${API_BASE}/games?league=${encodeURIComponent(code)}&date=${encodeURIComponent(date)}&build=18.14.1&_=${Date.now()}`,
+        `${API_BASE}/games?league=${encodeURIComponent(code)}&date=${encodeURIComponent(date)}&build=18.14.2&_=${Date.now()}`,
         code==="MLB"?15000:30000
       )));
       if(requestId!==homeLeagueSummaryRequest)return;
