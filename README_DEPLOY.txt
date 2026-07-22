@@ -1,16 +1,17 @@
-DiamondMind Frontend V21.1.1
+DiamondMind Frontend V21.1.2 — Self-contained Hotfix
 
-會員站：index.html
-創辦人後台：admin.html
+原因：GitHub 儲存庫缺少 assets/styles.css，導致會員站以瀏覽器預設樣式顯示。
 
-本版新增 Founder Console 統一視覺：
-- 總覽、發布、結算、模型、系統五大工作區
-- 桌面左側導覽與手機底部導覽
-- 即時 API／結算／模型／盤口健康摘要
-- 會員與公告作為系統管理子功能
+本版將會員站 CSS、shared.js、member.js 直接內嵌到 index.html／404.html，並將 Founder Console JS 內嵌到 admin.html。即使手機上傳無法保留 assets 資料夾，會員站與管理後台仍可完整運作。
 
-部署：將此資料夾內所有檔案與 assets 資料夾完整上傳到 GitHub Pages 儲存庫根目錄。
-請勿改變 assets 內檔名或資料夾結構。
+上傳到 diamondmind-web 根目錄並覆蓋：
+- index.html
+- admin.html
+- 404.html
+- manifest.webmanifest
+- README_DEPLOY.txt
 
-後端：V21.1.0（本次不需更新）
-SQL：V21.1 Value Engine（本次不需重新執行）
+不需要上傳 assets 資料夾。後端 V21.1.0、Supabase SQL 與 Render 環境變數不用修改。
+
+會員站驗收：/?v=21.1.2
+管理後台：admin.html?v=21.1.2
