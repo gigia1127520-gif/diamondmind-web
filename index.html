@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- DiamondMind Member Frontend V18.14.5 · Preserved V18.14.3 UI · Backend V21.0.0 -->
-  <meta name="diamondmind-version" content="18.14.5-member">
+  <!-- DiamondMind Member Frontend V18.14.6 · Preserved V18.14.3 UI · Backend V21.0.8 -->
+  <meta name="diamondmind-version" content="18.14.6-member">
   <meta name="diamondmind-site" content="member">
   <meta name="diamondmind-backend-target" content="21.0.0">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -3124,8 +3124,7 @@
         state.marketRecords=isProMember()&&Array.isArray(payload.market_packages)
           ?payload.market_packages.filter(bundle=>{
             const date=String(bundle?.date||"");
-            const mode=String(bundle?.publication?.mode||"");
-            return (!date||date<=taiwanToday())&&mode!=="ai_auto";
+            return !date||date<=taiwanToday();
           })
           :[];
         state.proPerformance=isAdminMember()&&payload.pro_performance?payload.pro_performance:null;
